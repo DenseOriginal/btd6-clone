@@ -10,3 +10,10 @@ interface Marker extends RawMarker {
 	center: Point;
 	angle: number;
 }
+
+interface CalibrationBox {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+}
