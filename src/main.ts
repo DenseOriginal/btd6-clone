@@ -10,7 +10,7 @@ if (!calibrationButton) throw new Error('Can\'t find calibration box');
 export let cWidth = 320 * 3;
 export let cHeight = 240 * 3;
 
-const debug = false;
+const debug = true;
 
 // Calibrate id order
 // Top left, Top right, Bottom left, Bottom right
@@ -39,9 +39,15 @@ export let calibrationBox: CalibrationBox = {
 	background(0);
 
 	if (isReady()) {
-		// image(capture, 0, 0, width, height);
-		
 		drawPlayarea();
+
+		// If debug, draw transparent video feed on top of canvas
+		if (debug) {
+			push();
+			tint(255, 255 / 3);
+			image(capture, 0, 0, width, height)
+			pop();
+		}
 
 		const markers = getMarkers();
 
