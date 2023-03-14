@@ -36,7 +36,7 @@ export let calibrationBox: CalibrationBox = {
 };
 
 (window as any).draw = () => {
-	background(0);
+	background(255);
 
 	if (isReady()) {
 		drawPlayarea();
@@ -46,7 +46,20 @@ export let calibrationBox: CalibrationBox = {
 			push();
 			tint(255, 255 / 3);
 			image(capture, 0, 0, width, height)
+
+			noFill();
+			strokeWeight(1);
+			stroke(0, 0, 255);
+
+			// Draw rect showing the calibratyion box on the source image
+			rect(
+				calibrationBox.x,
+				calibrationBox.y,
+				calibrationBox.width,
+				calibrationBox.height
+			)
 			pop();
+
 		}
 
 		const markers = getMarkers();
@@ -124,8 +137,8 @@ function calibrate() {
 	calibrationBox = {
 		x: topLeftMarker.center.x,
 		y: topLeftMarker.center.y,
-		width: width * scaleX,
-		height: height * scaleY,
+		width,
+		height,
 		scaleX,
 		scaleY
 	};
@@ -142,8 +155,8 @@ function drawPlayarea() {
 	rect(
 		0,
 		0,
-		calibrationBox.width,
-		calibrationBox.height
+		calibrationBox.width * calibrationBox.scaleX,
+		calibrationBox.height * calibrationBox.scaleY
 	)
 
 	pop();
