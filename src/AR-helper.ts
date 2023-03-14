@@ -74,9 +74,6 @@ function markerMapper(marker: RawMarker): Marker {
     const dx = p2.x - p1.x;
     const dy = p2.y - p1.y;
 
-    console.log({ dx, dy });
-    
-
     return {
         ...marker,
         center: {
