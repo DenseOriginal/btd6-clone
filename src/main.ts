@@ -4,8 +4,11 @@ import { getMarkers, isReady, setupDetector, setupVideoStream } from "./AR-helpe
 
 let capture: ReturnType<typeof createCapture>;
 
+export let cWidth = 320 * 3;
+export let cHeight = 240 * 3;
+
 (window as any).setup = () => {
-	createCanvas(windowWidth, windowHeight);
+	createCanvas(cWidth, cHeight);
 	capture = createCapture(VIDEO);
   	capture.hide();
 
@@ -16,14 +19,17 @@ let capture: ReturnType<typeof createCapture>;
 
 (window as any).draw = () => {
 	if (isReady()) {
-		image(capture, 0, 0, windowWidth, windowHeight);
+		image(capture, 0, 0, width, height);
+		
 		const markers = getMarkers();
 		console.log(markers);
 
 		strokeWeight(2);
 		stroke(255, 0, 0);
 		markers.forEach(mark => {
-			mark.corners.forEach(({ x, y }) => circle(x, y, 10))
+			const { x, y } = mark.corners[0]
+			circle(x, y, 4)
+			// mark.corners.forEach(({ x, y }) => circle(x, y, 4))
 		})	
 	}
 }

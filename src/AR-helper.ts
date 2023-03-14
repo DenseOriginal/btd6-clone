@@ -1,3 +1,5 @@
+import { cHeight, cWidth } from "./main";
+
 let video: HTMLVideoElement;
 let mediaDevices: Partial<MediaDevices> = {};
 let detector: any;
@@ -9,11 +11,13 @@ export function setupDetector() {
     detector = new (window as any).AR.Detector({
 		dictionaryName: 'ARUCO_4X4_1000'
 	});
-	posit = new (window as any).POS.Posit(modelSize, windowWidth);
+	posit = new (window as any).POS.Posit(modelSize, cWidth);
 }
 
 export function setupVideoStream() {
     video = document.getElementById("video") as HTMLVideoElement;
+    video.width = cWidth;
+    video.height = cHeight;
     if (navigator.mediaDevices != undefined) {
 		mediaDevices = navigator.mediaDevices;
 	}
@@ -49,8 +53,8 @@ export function setupVideoStream() {
 
 export function getMarkers(): Marker[] {
 	let canvas = document.createElement('canvas');
-	canvas.width = windowWidth;
-	canvas.height = windowHeight;
+	canvas.width = cWidth;
+	canvas.height = cHeight;
 	
 	let ctx = canvas.getContext('2d');
 	ctx?.drawImage( video, 0, 0, canvas.width, canvas.height );
