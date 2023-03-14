@@ -74,12 +74,17 @@ function markerMapper(marker: RawMarker): Marker {
     const dx = p2.x - p1.x;
     const dy = p2.y - p1.y;
 
+    console.log({ dx, dy });
+    
+
     return {
         ...marker,
         center: {
             x: (p1.x + p2.x + p3.x + p4.x) / 4,
             y: (p1.y + p2.y + p3.y + p4.y) / 4
         },
-        angle: Math.atan(dy / dx)
+        angle: dx < 0 ?
+            Math.atan(dy / dx) :
+            Math.atan(dy / dx) + PI
     }
 }
