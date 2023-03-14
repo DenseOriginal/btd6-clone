@@ -16,11 +16,13 @@ const debug = false;
 // Top left, Top right, Bottom left, Bottom right
 const calibrationIds = [3, 0, 1, 2];
 
-let calibrationBox: CalibrationBox = {
+export let calibrationBox: CalibrationBox = {
 	x: 0,
 	y: 0,
 	width: Infinity,
-	height: Infinity
+	height: Infinity,
+	scaleX: 1,
+	scaleY: 1
 };
 
 (window as any).setup = () => {
@@ -34,18 +36,33 @@ let calibrationBox: CalibrationBox = {
 };
 
 (window as any).draw = () => {
+	background(0);
+
 	if (isReady()) {
-		image(capture, 0, 0, width, height);
+		// image(capture, 0, 0, width, height);
 		
 		drawPlayarea();
 
 		const markers = getMarkers();
 
-		markers.forEach(mark => {
+		for (const mark of markers) {
+			// If this is a calibration id, drawing it
+			if (calibrationIds.includes(mark.id)) continue;
 
-
+			const [p1, p2, p3, p4] = mark.corners;
+	
+			noStroke();
+			fill(255, 100, 100);
+	
+			beginShape();
+			vertex(p1.x, p1.y);
+			vertex(p2.x, p2.y);
+			vertex(p3.x, p3.y);
+			vertex(p4.x, p4.y);
+			endShape()
+	
 			if (debug) drawDebugMarker(mark);
-		})
+		}
 	}
 }
 
@@ -92,12 +109,19 @@ function calibrate() {
 		});
 		throw new Error('Deltas above skewThreshold');
 	}
+	
+	const width = bottomRightMarker.center.x - topLeftMarker.center.x;
+	const height = bottomRightMarker.center.y - topLeftMarker.center.y;
+	const scaleX = cWidth / width;
+	const scaleY = cHeight / height;
 
 	calibrationBox = {
 		x: topLeftMarker.center.x,
 		y: topLeftMarker.center.y,
-		width: bottomRightMarker.center.x - topLeftMarker.center.x,
-		height: bottomRightMarker.center.y - topLeftMarker.center.y,
+		width: width * scaleX,
+		height: height * scaleY,
+		scaleX,
+		scaleY
 	};
 }
 
@@ -107,11 +131,11 @@ function drawPlayarea() {
 	push();
 	
 	noStroke();
-	fill(255);
+	fill(100, 255, 100);
 
 	rect(
-		calibrationBox.x,
-		calibrationBox.y,
+		0,
+		0,
 		calibrationBox.width,
 		calibrationBox.height
 	)

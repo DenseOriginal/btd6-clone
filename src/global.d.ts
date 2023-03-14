@@ -16,4 +16,6 @@ interface CalibrationBox {
 	y: number;
 	width: number;
 	height: number;
+	scaleX: number;
+	scaleY: number;
 }

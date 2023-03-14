@@ -1,4 +1,4 @@
-import { cHeight, cWidth } from "./main";
+import { calibrationBox, cHeight, cWidth } from "./main";
 
 let video: HTMLVideoElement;
 let mediaDevices: Partial<MediaDevices> = {};
@@ -64,18 +64,23 @@ export function isReady() {
 }
 
 function markerMapper(marker: RawMarker): Marker {
+    const { x: originX, y: originY, scaleX, scaleY } = calibrationBox;
+
     const [
         p1,
         p2,
         p3,
         p4
-    ] = marker.corners;
+    ] = marker
+        .corners
+        .map(({ x, y }) => ({ x: (x - originX) * scaleX, y: (y -originY) * scaleY }));
 
     const dx = p2.x - p1.x;
     const dy = p2.y - p1.y;
 
     return {
         ...marker,
+        corners: [p1, p2, p3, p4],
         center: {
             x: (p1.x + p2.x + p3.x + p4.x) / 4,
             y: (p1.y + p2.y + p3.y + p4.y) / 4
