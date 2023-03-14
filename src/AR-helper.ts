@@ -3,15 +3,12 @@ import { cHeight, cWidth } from "./main";
 let video: HTMLVideoElement;
 let mediaDevices: Partial<MediaDevices> = {};
 let detector: any;
-let posit: any;
-let modelSize = 35.0; //millimeters
 
 
 export function setupDetector() {
     detector = new (window as any).AR.Detector({
 		dictionaryName: 'ARUCO_4X4_1000'
 	});
-	posit = new (window as any).POS.Posit(modelSize, cWidth);
 }
 
 export function setupVideoStream() {
@@ -59,9 +56,30 @@ export function getMarkers(): Marker[] {
 	let ctx = canvas.getContext('2d');
 	ctx?.drawImage( video, 0, 0, canvas.width, canvas.height );
 	const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
-    return detector.detect(imageData);
+    return detector.detect(imageData).map((marker: RawMarker) => markerMapper(marker));
 };
 
 export function isReady() {
     return video.readyState === video.HAVE_ENOUGH_DATA;
+}
+
+function markerMapper(marker: RawMarker): Marker {
+    const [
+        p1,
+        p2,
+        p3,
+        p4
+    ] = marker.corners;
+
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+
+    return {
+        ...marker,
+        center: {
+            x: (p1.x + p2.x + p3.x + p4.x) / 4,
+            y: (p1.y + p2.y + p3.y + p4.y) / 4
+        },
+        angle: Math.atan(dy / dx)
+    }
 }

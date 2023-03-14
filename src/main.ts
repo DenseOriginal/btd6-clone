@@ -22,14 +22,23 @@ export let cHeight = 240 * 3;
 		image(capture, 0, 0, width, height);
 		
 		const markers = getMarkers();
-		console.log(markers);
 
 		strokeWeight(2);
 		stroke(255, 0, 0);
 		markers.forEach(mark => {
-			const { x, y } = mark.corners[0]
-			circle(x, y, 4)
-			// mark.corners.forEach(({ x, y }) => circle(x, y, 4))
+			const { x, y } = mark.center
+			circle(x, y, 4);
+
+			const angle = mark.angle;
+			const rotX = cos(angle) * 20;
+			const rotY = sin(angle) * 20;
+
+			line(
+				x,
+				y,
+				x + rotX,
+				y + rotY
+			);
 		})	
 	}
 }
