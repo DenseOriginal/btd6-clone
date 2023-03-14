@@ -23,9 +23,10 @@ export let cHeight = 240 * 3;
 		
 		const markers = getMarkers();
 
-		strokeWeight(2);
-		stroke(255, 0, 0);
 		markers.forEach(mark => {
+			strokeWeight(2);
+			stroke(255, 0, 0);
+
 			const { x, y } = mark.center
 			circle(x, y, 4);
 
@@ -39,6 +40,10 @@ export let cHeight = 240 * 3;
 				x + rotX,
 				y + rotY
 			);
+
+			noStroke();
+			fill(0, 255, 0)
+			text(mark.id, x, y);
 		})	
 	}
 }
