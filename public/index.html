@@ -14,7 +14,17 @@
   <body>
     <video id="video" autoplay="true" style="display:none;"></video>
 
-    <button id="calibrationButton">Calibrate</button>
+    <button id="openConfigButton">Open config</button>
+    
+    <div id="menu" class="closed">
+      <div class="overlay" id="overlay"></div>
+      <div class="inner" id="menuInner">
+        
+        <button id="calibrationButton">Calibrate</button>
+        <button id="closeButton">Close</button>
+      </div>
+    </div>
+
 
     <script src="./js-aruco/svd.js"></script> 
     <script src="./js-aruco/posit1.js"></script> 

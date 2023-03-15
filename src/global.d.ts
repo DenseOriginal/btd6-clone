@@ -22,3 +22,17 @@ interface CalibrationBox {
 	angle: number;
 	corners: Point[];
 }
+
+interface Settings {
+	debug: boolean;
+	targetFrameRate: number;
+}
+
+type Config<T = unknown> = {
+	defaultValue: Settings[K];
+	onChange?: (value: Settings[K]) => void
+}
+
+type SettingsConfig = {
+	[K in keyof Settings]: Config<Settings[K]>;
+}

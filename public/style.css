@@ -10,3 +10,55 @@ body {
     display: grid;
     place-items: center;
 }
+
+#openConfigButton {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+}
+
+#menu {
+    position: absolute;
+}
+
+#menu.closed {
+    display: none;
+}
+
+#menu .inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: rgba(149, 157, 165, 0.4) 0px 8px 24px;
+    padding: 8px 16px;
+    background-color: white;
+    border-radius: 4px;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#menu .inner .row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#menu .inner .row input {
+    max-width: 60px;
+}
+
+#menu .inner button:last-of-type {
+    margin-top: 12px;
+}
+
+#menu .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}

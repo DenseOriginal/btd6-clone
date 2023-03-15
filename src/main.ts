@@ -1,6 +1,7 @@
 /// <reference path="../node_modules/@types/p5/global.d.ts"/>
 
 import { getMarkers, getRawMarkers, isReady, markerMapper, setupDetector, setupVideoStream } from "./AR-helper";
+import { initSettingsMenu, settings } from "./settings";
 
 let capture: ReturnType<typeof createCapture>;
 
@@ -9,10 +10,6 @@ if (!calibrationButton) throw new Error('Can\'t find calibration box');
 
 export let cWidth = 320 * 3;
 export let cHeight = 240 * 3;
-
-export const debug = true;
-
-const targetFrameRate = 10;
 
 // Calibrate id order
 // Top left, Top right, Bottom left, Bottom right
@@ -31,13 +28,14 @@ export let calibrationBox: CalibrationBox = {
 };
 
 (window as any).setup = () => {
+	initSettingsMenu();
 	createCanvas(cWidth, cHeight);
 	capture = createCapture(VIDEO);
   	capture.hide();
 
 	setupVideoStream();
 	setupDetector();
-	frameRate(targetFrameRate);
+	frameRate(settings.targetFrameRate);
 };
 
 (window as any).draw = () => {
@@ -47,7 +45,7 @@ export let calibrationBox: CalibrationBox = {
 		drawPlayarea();
 
 		// If debug, draw transparent video feed on top of canvas
-		if (debug) {
+		if (settings.debug) {
 			push();
 			tint(255, 255 / 3);
 			image(capture, 0, 0, width, height)
@@ -80,7 +78,7 @@ export let calibrationBox: CalibrationBox = {
 		for (const mark of markers) {
 			// If this is a calibration id, drawing it
 			if (calibrationIds.includes(mark.id)) {
-				if (debug) drawDebugMarker(mark);
+				if (settings.debug) drawDebugMarker(mark);
 				continue
 			};
 
@@ -96,10 +94,10 @@ export let calibrationBox: CalibrationBox = {
 			vertex(p4.x, p4.y);
 			endShape()
 	
-			if (debug) drawDebugMarker(mark);
+			if (settings.debug) drawDebugMarker(mark);
 		}
 
-		if (debug) drawDebugText();
+		if (settings.debug) drawDebugText();
 	}
 }
 
@@ -221,7 +219,7 @@ function drawDebugMarker(mark: Marker) {
 function drawDebugText() {
 	const messages = [
 		`Frame rate: ${frameRate().toFixed(2)}`,
-		`Target frame rate: ${targetFrameRate}`,
+		`Target frame rate: ${settings.targetFrameRate}`,
 		`Calibration box angle: ${calibrationBox.angle.toFixed(4)}`,
 	];
 
