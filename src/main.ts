@@ -14,7 +14,7 @@ const debug = true;
 
 // Calibrate id order
 // Top left, Top right, Bottom left, Bottom right
-const calibrationIds = [3, 0, 1, 2];
+const calibrationIds = [1, 2, 0, 3];
 
 export let calibrationBox: CalibrationBox = {
 	x: 0,
@@ -66,7 +66,10 @@ export let calibrationBox: CalibrationBox = {
 
 		for (const mark of markers) {
 			// If this is a calibration id, drawing it
-			if (calibrationIds.includes(mark.id)) continue;
+			if (calibrationIds.includes(mark.id)) {
+				if (debug) drawDebugMarker(mark);
+				continue
+			};
 
 			const [p1, p2, p3, p4] = mark.corners;
 	
