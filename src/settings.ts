@@ -1,6 +1,7 @@
 const initialConfig: SettingsConfig = {
     debug: { defaultValue: false },
-    targetFrameRate: { defaultValue: 10, onChange: (fps) => frameRate(fps) }
+    targetFrameRate: { defaultValue: 10, onChange: (fps) => frameRate(fps) },
+    cacheHitThreshold: { defaultValue: 3 }
 }
 
 const menuContainer = document.getElementById('menu')!;

@@ -4,7 +4,6 @@ import { settings } from "./settings";
 let video: HTMLVideoElement;
 let mediaDevices: Partial<MediaDevices> = {};
 let detector: any;
-const cacheHitThreshold = 3;
 
 const rawMarkerCache = new Map<number, RawMarker>();
 
@@ -159,7 +158,7 @@ function checkCache(marker: RawMarker): RawMarker {
 		const cacheCenter = markerMapper(cacheHit).center;
 		const center = markerMapper(marker).center;
 
-		if (dist(cacheCenter.x, cacheCenter.y, center.x, center.y) > cacheHitThreshold) {
+		if (dist(cacheCenter.x, cacheCenter.y, center.x, center.y) > settings.cacheHitThreshold) {
 			// Cache hit is invalid
 			rawMarkerCache.set(marker.id, marker);
 			return marker;

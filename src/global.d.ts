@@ -26,6 +26,7 @@ interface CalibrationBox {
 interface Settings {
 	debug: boolean;
 	targetFrameRate: number;
+	cacheHitThreshold: number;
 }
 
 type Config<T = unknown> = {
