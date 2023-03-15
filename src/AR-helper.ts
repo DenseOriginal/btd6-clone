@@ -1,4 +1,4 @@
-import { calibrationBox, cHeight, cWidth } from "./main";
+import { calibrationBox, calibrationIds, cHeight, cWidth, debug } from "./main";
 
 let video: HTMLVideoElement;
 let mediaDevices: Partial<MediaDevices> = {};
@@ -6,16 +6,16 @@ let detector: any;
 
 
 export function setupDetector() {
-    detector = new (window as any).AR.Detector({
+	detector = new (window as any).AR.Detector({
 		dictionaryName: 'ARUCO_4X4_1000'
 	});
 }
 
 export function setupVideoStream() {
-    video = document.getElementById("video") as HTMLVideoElement;
-    video.width = cWidth;
-    video.height = cHeight;
-    if (navigator.mediaDevices != undefined) {
+	video = document.getElementById("video") as HTMLVideoElement;
+	video.width = cWidth;
+	video.height = cHeight;
+	if (navigator.mediaDevices != undefined) {
 		mediaDevices = navigator.mediaDevices;
 	}
 
@@ -52,11 +52,11 @@ export function getRawMarkers(): RawMarker[] {
 	let canvas = document.createElement('canvas');
 	canvas.width = cWidth;
 	canvas.height = cHeight;
-	
+
 	let ctx = canvas.getContext('2d');
-	ctx?.drawImage( video, 0, 0, canvas.width, canvas.height );
+	ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
 	const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
-    return detector.detect(imageData);
+	return detector.detect(imageData);
 };
 
 export function getMarkers(): Marker[] {
@@ -66,44 +66,82 @@ export function getMarkers(): Marker[] {
 }
 
 export function isReady() {
-    return video.readyState === video.HAVE_ENOUGH_DATA;
+	return video.readyState === video.HAVE_ENOUGH_DATA;
 }
 
 export function markerMapper(marker: RawMarker): Marker {
-    const [
-        p1,
-        p2,
-        p3,
-        p4
-    ] = marker.corners;
+	const [
+		p1,
+		p2,
+		p3,
+		p4
+	] = marker.corners;
 
-    const dx = p2.x - p1.x;
-    const dy = p2.y - p1.y;
+	const dx = p2.x - p1.x;
+	const dy = p2.y - p1.y;
 
-    return {
-        ...marker,
-        corners: [p1, p2, p3, p4],
-        center: {
-            x: (p1.x + p2.x + p3.x + p4.x) / 4,
-            y: (p1.y + p2.y + p3.y + p4.y) / 4
-        },
-        angle: dx < 0 ?
-            Math.atan(dy / dx) :
-            Math.atan(dy / dx) + PI
-    }
+	return {
+		...marker,
+		corners: [p1, p2, p3, p4],
+		center: {
+			x: (p1.x + p2.x + p3.x + p4.x) / 4,
+			y: (p1.y + p2.y + p3.y + p4.y) / 4
+		},
+		angle: dx < 0 ?
+			Math.atan(dy / dx) :
+			Math.atan(dy / dx) + PI
+	}
 }
 
 function translateMarker(marker: RawMarker): RawMarker {
-    const { x: originX, y: originY, scaleX, scaleY } = calibrationBox;
+	const { x: originX, y: originY, center: originCenter, scaleX, scaleY, angle: originAngle } = calibrationBox;
 
 	const [
-        p1,
-        p2,
-        p3,
-        p4
-    ] = marker
-        .corners
-        .map(({ x, y }) => ({ x: (x - originX) * scaleX, y: (y -originY) * scaleY }));
+		p1,
+		p2,
+		p3,
+		p4
+	] = marker
+		.corners
+		.map(({ x, y }) => {
+			const dx = x - originX;
+			const dy = y - originY;
+			const len = Math.sqrt(dx ** 2 + dy ** 2) * -1;
+			const cornerAngle = dx < 0 ?
+				Math.atan(dy / dx) :
+				Math.atan(dy / dx) + PI;
+
+			const mappedAngle = cornerAngle - originAngle;
+			const mappedX = originX + Math.cos(mappedAngle) * len;
+			const mappedY = originY + Math.sin(mappedAngle) * len;
+
+			if (!calibrationIds?.includes(marker.id) && debug) {
+				push();
+				strokeWeight(1)
+				stroke(0, 0, 255, 200);
+				line(
+					originX,
+					originY,
+					originX + cos(cornerAngle) * len,
+					originY + sin(cornerAngle) * len
+				)
+
+				stroke(255, 0, 0, 200);
+				line(
+					originX,
+					originY,
+					mappedX,
+					mappedY
+				)
+				pop()
+			}
+
+
+			return {
+				x: (mappedX - originX) * scaleX,
+				y: (mappedY - originY) * scaleY
+			}
+		});
 
 	return {
 		...marker,

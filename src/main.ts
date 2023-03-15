@@ -10,11 +10,11 @@ if (!calibrationButton) throw new Error('Can\'t find calibration box');
 export let cWidth = 320 * 3;
 export let cHeight = 240 * 3;
 
-const debug = true;
+export const debug = true;
 
 // Calibrate id order
 // Top left, Top right, Bottom left, Bottom right
-const calibrationIds = [1, 2, 0, 3];
+export const calibrationIds = [3, 0, 1, 2];
 
 export let calibrationBox: CalibrationBox = {
 	x: 0,
@@ -22,7 +22,10 @@ export let calibrationBox: CalibrationBox = {
 	width: Infinity,
 	height: Infinity,
 	scaleX: 1,
-	scaleY: 1
+	scaleY: 1,
+	center: { x: Infinity, y: Infinity },
+	angle: 0,
+	corners: [],
 };
 
 (window as any).setup = () => {
@@ -37,6 +40,7 @@ export let calibrationBox: CalibrationBox = {
 
 (window as any).draw = () => {
 	background(255);
+    const { x: originX, y: originY, center: originCenter, scaleX, scaleY, angle: originAngle } = calibrationBox;
 
 	if (isReady()) {
 		drawPlayarea();
@@ -52,14 +56,22 @@ export let calibrationBox: CalibrationBox = {
 			stroke(0, 0, 255);
 
 			// Draw rect showing the calibratyion box on the source image
-			rect(
-				calibrationBox.x,
-				calibrationBox.y,
-				calibrationBox.width,
-				calibrationBox.height
-			)
-			pop();
+			beginShape();
+			calibrationBox.corners.forEach((point) => vertex(point.x, point.y))
+			endShape('close');
 
+			const angle = calibrationBox.angle;
+			const rotX = cos(angle) * 30;
+			const rotY = sin(angle) * 30;
+
+			line(
+				calibrationBox.center.x,
+				calibrationBox.center.y,
+				calibrationBox.center.x + rotX,
+				calibrationBox.center.y + rotY
+			);
+
+			pop();
 		}
 
 		const markers = getMarkers();
@@ -112,31 +124,32 @@ function calibrate() {
 		throw new Error('Missing calibration markers: ');
 	}
 
-	const dyTop = topLeftMarker.center.y - topRightMarker.center.y;
-	const dyBottom = bottomLeftMarker.center.y - bottomRightMarker.center.y;
+	const dxTop = topRightMarker.center.x - topLeftMarker.center.x;
+	const dxBottom = bottomRightMarker.center.x - bottomLeftMarker.center.x;
 
-	const dxLeft = topLeftMarker.center.x - bottomLeftMarker.center.x;
-	const dxRight = topRightMarker.center.x - bottomRightMarker.center.x;
+	const dyLeft = bottomLeftMarker.center.y - topLeftMarker.center.y;
+	const dyRight = bottomRightMarker.center.y - topRightMarker.center.y;
 
 	if (
-		dyTop > skewThreshold ||
-		dyBottom > skewThreshold ||
-		dxLeft > skewThreshold ||
-		dxRight > skewThreshold
+		Math.abs(dxTop - dxBottom) > skewThreshold ||
+		Math.abs(dyLeft - dyRight) > skewThreshold
 	) {
 		console.log('Deltas: ', {
-			dyTop,
-			dyBottom,
-			dxLeft,
-			dxRight
+			dxTop,
+			dxBottom,
+			dyLeft,
+			dyRight
 		});
 		throw new Error('Deltas above skewThreshold');
 	}
 	
-	const width = bottomRightMarker.center.x - topLeftMarker.center.x;
-	const height = bottomRightMarker.center.y - topLeftMarker.center.y;
+	const width = dist(topLeftMarker.center.x, topLeftMarker.center.y, topRightMarker.center.x, topRightMarker.center.y);
+	const height = dist(topLeftMarker.center.x, topLeftMarker.center.y, bottomLeftMarker.center.x, bottomLeftMarker.center.y);
 	const scaleX = cWidth / width;
 	const scaleY = cHeight / height;
+
+	const angleDx = topLeftMarker.center.x - topRightMarker.center.x;
+	const angleDy = topLeftMarker.center.y - topRightMarker.center.y;
 
 	calibrationBox = {
 		x: topLeftMarker.center.x,
@@ -144,7 +157,20 @@ function calibrate() {
 		width,
 		height,
 		scaleX,
-		scaleY
+		scaleY,
+		corners: [
+			topLeftMarker.center,
+			topRightMarker.center,
+			bottomRightMarker.center,
+			bottomLeftMarker.center,
+		],
+		angle: angleDx < 0 ?
+			Math.atan(angleDy / angleDx) :
+			Math.atan(angleDy / angleDx) + PI,
+		center: {
+            x: (topLeftMarker.center.x + topRightMarker.center.x + bottomLeftMarker.center.x + bottomRightMarker.center.x) / 4,
+            y: (topLeftMarker.center.y + topRightMarker.center.y + bottomLeftMarker.center.y + bottomRightMarker.center.y) / 4
+        },
 	};
 }
 

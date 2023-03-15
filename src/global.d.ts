@@ -18,4 +18,7 @@ interface CalibrationBox {
 	height: number;
 	scaleX: number;
 	scaleY: number;
+	center: Point;
+	angle: number;
+	corners: Point[];
 }
