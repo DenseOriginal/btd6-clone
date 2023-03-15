@@ -1,6 +1,6 @@
 /// <reference path="../node_modules/@types/p5/global.d.ts"/>
 
-import { getMarkers, isReady, setupDetector, setupVideoStream } from "./AR-helper";
+import { getMarkers, getRawMarkers, isReady, markerMapper, setupDetector, setupVideoStream } from "./AR-helper";
 
 let capture: ReturnType<typeof createCapture>;
 
@@ -91,9 +91,10 @@ export let calibrationBox: CalibrationBox = {
 // Max allowed skew in both directions, when calibrating
 const skewThreshold = 10;
 function calibrate() {
-	const calibrationMarkers = getMarkers()
+	const calibrationMarkers = getRawMarkers()
 		// Only grab the markers that are used for calibration
-		.filter((marker) => calibrationIds.includes(marker.id));
+		.filter((marker) => calibrationIds.includes(marker.id))
+		.map((marker) => markerMapper(marker));
 	
 	const topLeftMarker = calibrationMarkers.find((marker) => marker.id == calibrationIds[0]);
 	const topRightMarker = calibrationMarkers.find((marker) => marker.id == calibrationIds[1]);

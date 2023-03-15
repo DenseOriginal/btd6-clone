@@ -48,7 +48,7 @@ export function setupVideoStream() {
 		);
 }
 
-export function getMarkers(): Marker[] {
+export function getRawMarkers(): RawMarker[] {
 	let canvas = document.createElement('canvas');
 	canvas.width = cWidth;
 	canvas.height = cHeight;
@@ -56,24 +56,26 @@ export function getMarkers(): Marker[] {
 	let ctx = canvas.getContext('2d');
 	ctx?.drawImage( video, 0, 0, canvas.width, canvas.height );
 	const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
-    return detector.detect(imageData).map((marker: RawMarker) => markerMapper(marker));
+    return detector.detect(imageData);
 };
+
+export function getMarkers(): Marker[] {
+	return getRawMarkers()
+		.map((marker: RawMarker) => translateMarker(marker))
+		.map((marker: RawMarker) => markerMapper(marker))
+}
 
 export function isReady() {
     return video.readyState === video.HAVE_ENOUGH_DATA;
 }
 
-function markerMapper(marker: RawMarker): Marker {
-    const { x: originX, y: originY, scaleX, scaleY } = calibrationBox;
-
+export function markerMapper(marker: RawMarker): Marker {
     const [
         p1,
         p2,
         p3,
         p4
-    ] = marker
-        .corners
-        .map(({ x, y }) => ({ x: (x - originX) * scaleX, y: (y -originY) * scaleY }));
+    ] = marker.corners;
 
     const dx = p2.x - p1.x;
     const dy = p2.y - p1.y;
@@ -89,4 +91,22 @@ function markerMapper(marker: RawMarker): Marker {
             Math.atan(dy / dx) :
             Math.atan(dy / dx) + PI
     }
+}
+
+function translateMarker(marker: RawMarker): RawMarker {
+    const { x: originX, y: originY, scaleX, scaleY } = calibrationBox;
+
+	const [
+        p1,
+        p2,
+        p3,
+        p4
+    ] = marker
+        .corners
+        .map(({ x, y }) => ({ x: (x - originX) * scaleX, y: (y -originY) * scaleY }));
+
+	return {
+		...marker,
+		corners: [p1, p2, p3, p4]
+	}
 }
