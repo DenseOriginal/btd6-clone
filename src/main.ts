@@ -12,6 +12,8 @@ export let cHeight = 240 * 3;
 
 export const debug = true;
 
+const targetFrameRate = 10;
+
 // Calibrate id order
 // Top left, Top right, Bottom left, Bottom right
 export const calibrationIds = [3, 0, 1, 2];
@@ -35,12 +37,11 @@ export let calibrationBox: CalibrationBox = {
 
 	setupVideoStream();
 	setupDetector();
-	frameRate(10);
+	frameRate(targetFrameRate);
 };
 
 (window as any).draw = () => {
 	background(255);
-    const { x: originX, y: originY, center: originCenter, scaleX, scaleY, angle: originAngle } = calibrationBox;
 
 	if (isReady()) {
 		drawPlayarea();
@@ -97,6 +98,8 @@ export let calibrationBox: CalibrationBox = {
 	
 			if (debug) drawDebugMarker(mark);
 		}
+
+		if (debug) drawDebugText();
 	}
 }
 
@@ -213,4 +216,17 @@ function drawDebugMarker(mark: Marker) {
 	noStroke();
 	fill(0, 255, 0)
 	text(mark.id, x, y);
+}
+
+function drawDebugText() {
+	const messages = [
+		`Frame rate: ${frameRate().toFixed(2)}`,
+		`Target frame rate: ${targetFrameRate}`,
+		`Calibration box angle: ${calibrationBox.angle.toFixed(4)}`,
+	];
+
+	fill(0);
+	messages.forEach((message, idx) => {
+		text(message, 10, 20 + idx * 10);
+	})
 }
