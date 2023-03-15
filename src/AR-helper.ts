@@ -3,7 +3,9 @@ import { calibrationBox, calibrationIds, cHeight, cWidth, debug } from "./main";
 let video: HTMLVideoElement;
 let mediaDevices: Partial<MediaDevices> = {};
 let detector: any;
+const cacheHitThreshold = 3;
 
+const rawMarkerCache = new Map<number, RawMarker>();
 
 export function setupDetector() {
 	detector = new (window as any).AR.Detector({
@@ -61,6 +63,7 @@ export function getRawMarkers(): RawMarker[] {
 
 export function getMarkers(): Marker[] {
 	return getRawMarkers()
+		.map((marker: RawMarker) => checkCache(marker))
 		.map((marker: RawMarker) => translateMarker(marker))
 		.map((marker: RawMarker) => markerMapper(marker))
 }
@@ -147,4 +150,25 @@ function translateMarker(marker: RawMarker): RawMarker {
 		...marker,
 		corners: [p1, p2, p3, p4]
 	}
+}
+
+function checkCache(marker: RawMarker): RawMarker {
+	if (rawMarkerCache.has(marker.id)) {
+		const cacheHit = rawMarkerCache.get(marker.id)!;
+		const cacheCenter = markerMapper(cacheHit).center;
+		const center = markerMapper(marker).center;
+
+		if (dist(cacheCenter.x, cacheCenter.y, center.x, center.y) > cacheHitThreshold) {
+			// Cache hit is invalid
+			rawMarkerCache.set(marker.id, marker);
+			return marker;
+		} else {
+			// Cache is good
+			return cacheHit;
+		}
+	}
+
+
+	rawMarkerCache.set(marker.id, marker);
+	return marker;
 }
