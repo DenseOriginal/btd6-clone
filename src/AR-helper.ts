@@ -1,4 +1,5 @@
-import { calibrationBox, calibrationIds, cHeight, cWidth } from "./main";
+import { calibrationBox, isCalibrationMarker } from "./calibration";
+import { cHeight, cWidth } from "./main";
 import { settings } from "./settings";
 
 let video: HTMLVideoElement;
@@ -118,7 +119,7 @@ function translateMarker(marker: RawMarker): RawMarker {
 			const mappedX = originX + Math.cos(mappedAngle) * len;
 			const mappedY = originY + Math.sin(mappedAngle) * len;
 
-			if (!calibrationIds?.includes(marker.id) && settings.debug) {
+			if (!isCalibrationMarker(marker.id) && settings.debug) {
 				push();
 				strokeWeight(1)
 				stroke(0, 0, 255, 200);
