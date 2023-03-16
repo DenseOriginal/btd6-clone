@@ -1,5 +1,5 @@
 const initialConfig: SettingsConfig = {
-    debug: { defaultValue: false },
+    debug: { defaultValue: true },
     targetFrameRate: { defaultValue: 10, onChange: (fps) => frameRate(fps) },
     cacheHitThreshold: { defaultValue: 3 }
 }
