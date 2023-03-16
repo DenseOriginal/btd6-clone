@@ -50,8 +50,8 @@ function calibrate() {
 	const dyLeft = bottomLeftMarker.center.y - topLeftMarker.center.y;
 	const dyRight = bottomRightMarker.center.y - topRightMarker.center.y;
 
-	if (Math.abs(dxTop - dxBottom) > settings.skewThreshold) throw new Error(`Horizontal delta too high: dxTop (${dxTop}) dxBottom (${dxBottom})`);
-	if (Math.abs(dyLeft - dyRight) > settings.skewThreshold) throw new Error(`Vertical delta too high: dyLeft (${dyLeft}) dyRight (${dyRight})`);
+	if (Math.abs(dxTop - dxBottom) > settings.skewThreshold) throw new Error(`Horizontal delta too high: dxTop (${dxTop}) dxBottom (${dxBottom}) delta (${Math.abs(dxTop - dxBottom)})`);
+	if (Math.abs(dyLeft - dyRight) > settings.skewThreshold) throw new Error(`Vertical delta too high: dyLeft (${dyLeft}) dyRight (${dyRight}) delta (${Math.abs(dyLeft - dyRight)})`);
 
 	const width = dist(topLeftMarker.center.x, topLeftMarker.center.y, topRightMarker.center.x, topRightMarker.center.y);
 	const height = dist(topLeftMarker.center.x, topLeftMarker.center.y, bottomLeftMarker.center.x, bottomLeftMarker.center.y);
