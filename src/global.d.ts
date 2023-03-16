@@ -27,6 +27,7 @@ interface Settings {
 	debug: boolean;
 	targetFrameRate: number;
 	cacheHitThreshold: number;
+	skewThreshold: number;
 }
 
 type Config<T = unknown> = {

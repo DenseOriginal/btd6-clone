@@ -13,7 +13,7 @@ export let cHeight = 240 * 3;
 
 // Calibrate id order
 // Top left, Top right, Bottom left, Bottom right
-export const calibrationIds = [3, 0, 1, 2];
+export const calibrationIds = [0, 1, 2, 3];
 
 export let calibrationBox: CalibrationBox = {
 	x: 0,
@@ -102,7 +102,6 @@ export let calibrationBox: CalibrationBox = {
 }
 
 // Max allowed skew in both directions, when calibrating
-const skewThreshold = 10;
 function calibrate() {
 	const calibrationMarkers = getRawMarkers()
 		// Only grab the markers that are used for calibration
@@ -131,19 +130,9 @@ function calibrate() {
 	const dyLeft = bottomLeftMarker.center.y - topLeftMarker.center.y;
 	const dyRight = bottomRightMarker.center.y - topRightMarker.center.y;
 
-	if (
-		Math.abs(dxTop - dxBottom) > skewThreshold ||
-		Math.abs(dyLeft - dyRight) > skewThreshold
-	) {
-		console.log('Deltas: ', {
-			dxTop,
-			dxBottom,
-			dyLeft,
-			dyRight
-		});
-		throw new Error('Deltas above skewThreshold');
-	}
-	
+	if (Math.abs(dxTop - dxBottom) > settings.skewThreshold) throw new Error(`Horizontal delta too high: dxTop (${dxTop}) dxBottom (${dxBottom})`);
+	if (Math.abs(dyLeft - dyRight) > settings.skewThreshold) throw new Error(`Vertical delta too high: dyLeft (${dyLeft}) dyRight (${dyRight})`);
+
 	const width = dist(topLeftMarker.center.x, topLeftMarker.center.y, topRightMarker.center.x, topRightMarker.center.y);
 	const height = dist(topLeftMarker.center.x, topLeftMarker.center.y, bottomLeftMarker.center.x, bottomLeftMarker.center.y);
 	const scaleX = cWidth / width;
