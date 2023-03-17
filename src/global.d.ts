@@ -27,6 +27,9 @@ interface Settings {
 	debug: boolean;
 	targetFrameRate: number;
 	cacheHitThreshold: number;
+	skewThreshold: number;
+	showVirtualMarkers: boolean;
+	showVideoFeed: boolean;
 }
 
 type Config<T = unknown> = {

@@ -1,7 +1,10 @@
 const initialConfig: SettingsConfig = {
-    debug: { defaultValue: false },
+    debug: { defaultValue: true },
     targetFrameRate: { defaultValue: 10, onChange: (fps) => frameRate(fps) },
-    cacheHitThreshold: { defaultValue: 3 }
+    cacheHitThreshold: { defaultValue: 3 },
+    skewThreshold: { defaultValue: 10 },
+    showVirtualMarkers: { defaultValue: false, onChange: (show) => toggleVirtualMarkers(show) },
+    showVideoFeed: { defaultValue: false }
 };
 
 const menuContainer = document.getElementById('menu')!;
@@ -9,6 +12,7 @@ const menuInner = document.getElementById('menuInner')!;
 const closeButton = document.getElementById('closeButton')!;
 const openConfigButton = document.getElementById('openConfigButton')!;
 const overlay = document.getElementById('overlay')!;
+const virtualMarkers = document.getElementById('virtual-markers')!;
 
 export const settings: Settings = Object.entries(initialConfig)
     .reduce((acc, cur) => ({ ...acc, [cur[0]]: cur[1].defaultValue }), {} as Settings);
@@ -81,3 +85,19 @@ function openMenu() {
 function closeMenu() {
     menuContainer.classList.add('closed');
 }
+
+function toggleVirtualMarkers(toggle: boolean) {
+    if (!toggle) {
+        virtualMarkers.classList.add('closed');
+    } else {
+        virtualMarkers.classList.remove('closed');
+    }
+}
+
+// Register settings for the console
+(window as any).settings = settings;
+(window as any).setSetting = <K extends keyof Settings>(key: K, value: Settings[K]) => {
+    const config = initialConfig[key];
+    settings[key] = value;
+    config.onChange?.(value);
+};
