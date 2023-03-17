@@ -26,9 +26,9 @@ export let canvasHeight = window.innerHeight;
 	background(255);
 	if (!isReady()) return;
 
-	syncWalls();
-
+	
 	drawPlayarea();
+	syncWalls();
 
 	// If debug, draw transparent video feed on top of canvas
 	if (settings.debug) drawCalibrationBox();
@@ -44,7 +44,6 @@ export let canvasHeight = window.innerHeight;
 		};
 
 		const [p1, p2, p3, p4] = mark.corners;
-
 		noStroke();
 		fill(255, 100, 100);
 
@@ -54,6 +53,15 @@ export let canvasHeight = window.innerHeight;
 		vertex(p3.x, p3.y);
 		vertex(p4.x, p4.y);
 		endShape();
+
+		fill(255, 0, 0)
+		circle(p1.x, p1.y, 5);
+		fill(0, 255, 0)
+		circle(p2.x, p2.y, 5);
+		fill(0, 0, 255)
+		circle(p3.x, p3.y, 5);
+		fill(0, 0, 0)
+		circle(p4.x, p4.y, 5);
 
 		if (settings.debug) drawDebugMarker(mark);
 	}
