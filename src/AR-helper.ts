@@ -15,7 +15,8 @@ export function setupDetector() {
 	// And typescript doesn't know it exists, so just throw all typesafety out the window
 	// Using the any type
 	detector = new (window as any).AR.Detector({
-		dictionaryName: 'ARUCO_4X4_1000'
+		dictionaryName: 'ARUCO_4X4_1000',
+		maxHammingDistance: 2,
 	});
 }
 
