@@ -2,7 +2,7 @@ const initialConfig: SettingsConfig = {
     debug: { defaultValue: false },
     targetFrameRate: { defaultValue: 10, onChange: (fps) => frameRate(fps) },
     cacheHitThreshold: { defaultValue: 3 }
-}
+};
 
 const menuContainer = document.getElementById('menu')!;
 const menuInner = document.getElementById('menuInner')!;
@@ -27,9 +27,9 @@ export function initSettingsMenu() {
             }
         });
 
-    closeButton.addEventListener('click', closeMenu)
-    openConfigButton.addEventListener('click', openMenu)
-    overlay.addEventListener('click', closeMenu)
+    closeButton.addEventListener('click', closeMenu);
+    openConfigButton.addEventListener('click', openMenu);
+    overlay.addEventListener('click', closeMenu);
 }
 
 function createCheckbox(id: keyof Settings, config: Config<boolean>) {
@@ -68,7 +68,7 @@ function createInput(id: keyof Settings, config: Config<string | number>, type: 
         const newVal = type == 'string' ?
             target.value :
             Number(target.value);
-        
+
         (settings as any)[id] = newVal;
         config.onChange?.(newVal);
     });

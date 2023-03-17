@@ -31,7 +31,7 @@ export let calibrationBox: CalibrationBox = {
 	initSettingsMenu();
 	createCanvas(cWidth, cHeight);
 	capture = createCapture(VIDEO);
-  	capture.hide();
+	capture.hide();
 
 	setupVideoStream();
 	setupDetector();
@@ -48,7 +48,7 @@ export let calibrationBox: CalibrationBox = {
 		if (settings.debug) {
 			push();
 			tint(255, 255 / 3);
-			image(capture, 0, 0, width, height)
+			image(capture, 0, 0, width, height);
 
 			noFill();
 			strokeWeight(1);
@@ -56,7 +56,7 @@ export let calibrationBox: CalibrationBox = {
 
 			// Draw rect showing the calibratyion box on the source image
 			beginShape();
-			calibrationBox.corners.forEach((point) => vertex(point.x, point.y))
+			calibrationBox.corners.forEach((point) => vertex(point.x, point.y));
 			endShape('close');
 
 			const angle = calibrationBox.angle;
@@ -79,27 +79,27 @@ export let calibrationBox: CalibrationBox = {
 			// If this is a calibration id, drawing it
 			if (calibrationIds.includes(mark.id)) {
 				if (settings.debug) drawDebugMarker(mark);
-				continue
+				continue;
 			};
 
 			const [p1, p2, p3, p4] = mark.corners;
-	
+
 			noStroke();
 			fill(255, 100, 100);
-	
+
 			beginShape();
 			vertex(p1.x, p1.y);
 			vertex(p2.x, p2.y);
 			vertex(p3.x, p3.y);
 			vertex(p4.x, p4.y);
-			endShape()
-	
+			endShape();
+
 			if (settings.debug) drawDebugMarker(mark);
 		}
 
 		if (settings.debug) drawDebugText();
 	}
-}
+};
 
 // Max allowed skew in both directions, when calibrating
 const skewThreshold = 10;
@@ -108,7 +108,7 @@ function calibrate() {
 		// Only grab the markers that are used for calibration
 		.filter((marker) => calibrationIds.includes(marker.id))
 		.map((marker) => markerMapper(marker));
-	
+
 	const topLeftMarker = calibrationMarkers.find((marker) => marker.id == calibrationIds[0]);
 	const topRightMarker = calibrationMarkers.find((marker) => marker.id == calibrationIds[1]);
 	const bottomLeftMarker = calibrationMarkers.find((marker) => marker.id == calibrationIds[2]);
@@ -143,7 +143,7 @@ function calibrate() {
 		});
 		throw new Error('Deltas above skewThreshold');
 	}
-	
+
 	const width = dist(topLeftMarker.center.x, topLeftMarker.center.y, topRightMarker.center.x, topRightMarker.center.y);
 	const height = dist(topLeftMarker.center.x, topLeftMarker.center.y, bottomLeftMarker.center.x, bottomLeftMarker.center.y);
 	const scaleX = cWidth / width;
@@ -169,9 +169,9 @@ function calibrate() {
 			Math.atan(angleDy / angleDx) :
 			Math.atan(angleDy / angleDx) + PI,
 		center: {
-            x: (topLeftMarker.center.x + topRightMarker.center.x + bottomLeftMarker.center.x + bottomRightMarker.center.x) / 4,
-            y: (topLeftMarker.center.y + topRightMarker.center.y + bottomLeftMarker.center.y + bottomRightMarker.center.y) / 4
-        },
+			x: (topLeftMarker.center.x + topRightMarker.center.x + bottomLeftMarker.center.x + bottomRightMarker.center.x) / 4,
+			y: (topLeftMarker.center.y + topRightMarker.center.y + bottomLeftMarker.center.y + bottomRightMarker.center.y) / 4
+		},
 	};
 }
 
@@ -179,7 +179,7 @@ calibrationButton.addEventListener('click', calibrate);
 
 function drawPlayarea() {
 	push();
-	
+
 	noStroke();
 	fill(100, 255, 100);
 
@@ -188,7 +188,7 @@ function drawPlayarea() {
 		0,
 		calibrationBox.width * calibrationBox.scaleX,
 		calibrationBox.height * calibrationBox.scaleY
-	)
+	);
 
 	pop();
 }
@@ -197,7 +197,7 @@ function drawDebugMarker(mark: Marker) {
 	strokeWeight(2);
 	stroke(255, 0, 0);
 
-	const { x, y } = mark.center
+	const { x, y } = mark.center;
 	circle(x, y, 4);
 
 	const angle = mark.angle;
@@ -212,7 +212,7 @@ function drawDebugMarker(mark: Marker) {
 	);
 
 	noStroke();
-	fill(0, 255, 0)
+	fill(0, 255, 0);
 	text(mark.id, x, y);
 }
 
@@ -226,5 +226,5 @@ function drawDebugText() {
 	fill(0);
 	messages.forEach((message, idx) => {
 		text(message, 10, 20 + idx * 10);
-	})
+	});
 }
