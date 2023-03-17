@@ -84,4 +84,5 @@ function calibrate() {
 	};
 }
 
+(window as any).calibrate = calibrate;
 calibrationButton.addEventListener('click', calibrate);

@@ -92,3 +92,11 @@ function toggleVirtualMarkers(toggle: boolean) {
         virtualMarkers.classList.remove('closed');
     }
 }
+
+// Register settings for the console
+(window as any).settings = settings;
+(window as any).setSetting = <K extends keyof Settings>(key: K, value: Settings[K]) => {
+    const config = initialConfig[key];
+    settings[key] = value;
+    config.onChange?.(value);
+}
