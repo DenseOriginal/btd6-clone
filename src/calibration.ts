@@ -44,42 +44,47 @@ function calibrate() {
 		throw new Error('Missing calibration markers: ');
 	}
 
-	const dxTop = topRightMarker.center.x - topLeftMarker.center.x;
-	const dxBottom = bottomRightMarker.center.x - bottomLeftMarker.center.x;
+	const topLeftPoint = topLeftMarker.corners[0]!;
+	const topRightPoint = topRightMarker.corners[1]!;
+	const bottomLeftPoint = bottomLeftMarker.corners[3]!;
+	const bottomRightPoint = bottomRightMarker.corners[2]!;
 
-	const dyLeft = bottomLeftMarker.center.y - topLeftMarker.center.y;
-	const dyRight = bottomRightMarker.center.y - topRightMarker.center.y;
+	const dxTop = topRightPoint.x - topLeftPoint.x;
+	const dxBottom = bottomRightPoint.x - bottomLeftPoint.x;
+
+	const dyLeft = bottomLeftPoint.y - topLeftPoint.y;
+	const dyRight = bottomRightPoint.y - topRightPoint.y;
 
 	if (Math.abs(dxTop - dxBottom) > settings.skewThreshold) throw new Error(`Horizontal delta too high: dxTop (${dxTop}) dxBottom (${dxBottom}) delta (${Math.abs(dxTop - dxBottom)})`);
 	if (Math.abs(dyLeft - dyRight) > settings.skewThreshold) throw new Error(`Vertical delta too high: dyLeft (${dyLeft}) dyRight (${dyRight}) delta (${Math.abs(dyLeft - dyRight)})`);
 
-	const width = dist(topLeftMarker.center.x, topLeftMarker.center.y, topRightMarker.center.x, topRightMarker.center.y);
-	const height = dist(topLeftMarker.center.x, topLeftMarker.center.y, bottomLeftMarker.center.x, bottomLeftMarker.center.y);
+	const width = dist(topLeftPoint.x, topLeftPoint.y, topRightPoint.x, topRightPoint.y);
+	const height = dist(topLeftPoint.x, topLeftPoint.y, bottomLeftPoint.x, bottomLeftPoint.y);
 	const scaleX = canvasWidth / width;
 	const scaleY = canvasHeight / height;
 
-	const angleDx = topLeftMarker.center.x - topRightMarker.center.x;
-	const angleDy = topLeftMarker.center.y - topRightMarker.center.y;
+	const angleDx = topLeftPoint.x - topRightPoint.x;
+	const angleDy = topLeftPoint.y - topRightPoint.y;
 
 	calibrationBox = {
-		x: topLeftMarker.center.x,
-		y: topLeftMarker.center.y,
+		x: topLeftPoint.x,
+		y: topLeftPoint.y,
 		width,
 		height,
 		scaleX,
 		scaleY,
 		corners: [
-			topLeftMarker.center,
-			topRightMarker.center,
-			bottomRightMarker.center,
-			bottomLeftMarker.center,
+			topLeftPoint,
+			topRightPoint,
+			bottomRightPoint,
+			bottomLeftPoint,
 		],
 		angle: angleDx < 0 ?
 			Math.atan(angleDy / angleDx) :
 			Math.atan(angleDy / angleDx) + PI,
 		center: {
-            x: (topLeftMarker.center.x + topRightMarker.center.x + bottomLeftMarker.center.x + bottomRightMarker.center.x) / 4,
-            y: (topLeftMarker.center.y + topRightMarker.center.y + bottomLeftMarker.center.y + bottomRightMarker.center.y) / 4
+            x: (topLeftPoint.x + topRightPoint.x + bottomLeftPoint.x + bottomRightPoint.x) / 4,
+            y: (topLeftPoint.y + topRightPoint.y + bottomLeftPoint.y + bottomRightPoint.y) / 4
         },
 	};
 }
