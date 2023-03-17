@@ -25,6 +25,7 @@ export class Enemy {
             this.nextPath = this.path[this.currentPath + 1];
             this.pathVector = createVector(this.nextPath.x - this.path[this.currentPath].x, this.nextPath.y - this.path[this.currentPath].y);
             this.pos.x += this.speed * this.pathVector.x / this.pathVector.mag() * deltaTime;
+            this.pos.y += this.speed * this.pathVector.y / this.pathVector.mag() * deltaTime;
 
             if (dist(this.path[this.currentPath].x, this.path[this.currentPath].y, this.nextPath.x, this.nextPath.y) >= this.pathVector.mag()) {
                 this.currentPath += 1;
