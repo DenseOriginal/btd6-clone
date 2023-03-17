@@ -23,40 +23,39 @@ export let canvasHeight = window.innerHeight;
 
 (window as any).draw = () => {
 	background(255);
+	if (!isReady()) return;
 
-	if (isReady()) {
-		drawPlayarea();
+	drawPlayarea();
 
-		// If debug, draw transparent video feed on top of canvas
-		if (settings.debug) drawCalibrationBox();
-		if (settings.showVideoFeed) drawVideoFeed(capture);
+	// If debug, draw transparent video feed on top of canvas
+	if (settings.debug) drawCalibrationBox();
+	if (settings.showVideoFeed) drawVideoFeed(capture);
 
-		const markers = getMarkers();
+	const markers = getMarkers();
 
-		for (const mark of markers) {
-			// If this is a calibration id, drawing it
-			if (isCalibrationMarker(mark.id)) {
-				if (settings.debug) drawDebugMarker(mark);
-				continue;
-			};
-
-			const [p1, p2, p3, p4] = mark.corners;
-
-			noStroke();
-			fill(255, 100, 100);
-
-			beginShape();
-			vertex(p1.x, p1.y);
-			vertex(p2.x, p2.y);
-			vertex(p3.x, p3.y);
-			vertex(p4.x, p4.y);
-			endShape();
-
+	for (const mark of markers) {
+		// If this is a calibration id, drawing it
+		if (isCalibrationMarker(mark.id)) {
 			if (settings.debug) drawDebugMarker(mark);
-		}
+			continue;
+		};
 
-		if (settings.debug) drawDebugText();
+		const [p1, p2, p3, p4] = mark.corners;
+
+		noStroke();
+		fill(255, 100, 100);
+
+		beginShape();
+		vertex(p1.x, p1.y);
+		vertex(p2.x, p2.y);
+		vertex(p3.x, p3.y);
+		vertex(p4.x, p4.y);
+		endShape();
+
+		if (settings.debug) drawDebugMarker(mark);
 	}
+
+	if (settings.debug) drawDebugText();
 };
 
 function drawPlayarea() {
