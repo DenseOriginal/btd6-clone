@@ -28,6 +28,7 @@ interface Settings {
 	targetFrameRate: number;
 	cacheHitThreshold: number;
 	skewThreshold: number;
+	showVirtualMarkers: boolean;
 }
 
 type Config<T = unknown> = {
