@@ -1,4 +1,5 @@
 import { calibrationBox, isCalibrationMarker } from "./calibration";
+import { canvasHeight, canvasWidth } from "./main";
 import { settings } from "./settings";
 
 let video: HTMLVideoElement;
@@ -6,6 +7,9 @@ let detector: any;
 
 export const captureWidth = 320 * 1.5;
 export const captureHeight = 240 * 1.5;
+
+const captureToCanvasRatioX = window.innerWidth / captureWidth;
+const captureToCanvasRatioY = window.innerHeight / captureHeight;
 
 const rawMarkerCache = new Map<number, RawMarker>();
 
@@ -152,19 +156,19 @@ function translateMarker(marker: RawMarker): RawMarker {
 				strokeWeight(1)
 				stroke(0, 0, 255, 200);
 				line(
-					originX,
-					originY,
-					x,
-					y
+					originX * captureToCanvasRatioX,
+					originY * captureToCanvasRatioY,
+					x * captureToCanvasRatioX,
+					y * captureToCanvasRatioY
 				)
 
 				// Draw a red line representing the relative and rotated position of the corner
 				stroke(255, 0, 0, 200);
 				line(
-					originX,
-					originY,
-					mappedX,
-					mappedY
+					originX * captureToCanvasRatioX,
+					originY * captureToCanvasRatioY,
+					mappedX * captureToCanvasRatioX,
+					mappedY * captureToCanvasRatioY
 				)
 				pop()
 			}

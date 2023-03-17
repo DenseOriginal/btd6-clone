@@ -1,5 +1,9 @@
+import { captureHeight, captureWidth } from "./AR-helper";
 import { calibrationBox } from "./calibration";
 import { settings } from "./settings";
+
+const captureToCanvasRatioX = window.innerWidth / captureWidth;
+const captureToCanvasRatioY = window.innerHeight / captureHeight;
 
 export function drawDebugMarker(mark: Marker) {
 	strokeWeight(2);
@@ -53,7 +57,7 @@ export function drawCalibrationBox() {
 
     // Draw rect showing the calibratyion box on the source image
     beginShape();
-    calibrationBox.corners.forEach((point) => vertex(point.x, point.y))
+    calibrationBox.corners.forEach((point) => vertex(point.x * captureToCanvasRatioX, point.y * captureToCanvasRatioY))
     endShape('close');
 
     const angle = calibrationBox.angle;
@@ -61,10 +65,10 @@ export function drawCalibrationBox() {
     const rotY = sin(angle) * 30;
 
     line(
-        calibrationBox.center.x,
-        calibrationBox.center.y,
-        calibrationBox.center.x + rotX,
-        calibrationBox.center.y + rotY
+        calibrationBox.center.x * captureToCanvasRatioX,
+        calibrationBox.center.y * captureToCanvasRatioY,
+        calibrationBox.center.x * captureToCanvasRatioX + rotX,
+        calibrationBox.center.y * captureToCanvasRatioY + rotY
     );
 
     pop();
