@@ -1,9 +1,11 @@
 import { calibrationBox, isCalibrationMarker } from "./calibration";
-import { cHeight, cWidth } from "./main";
 import { settings } from "./settings";
 
 let video: HTMLVideoElement;
 let detector: any;
+
+export const captureWidth = 320 * 1.5;
+export const captureHeight = 240 * 1.5;
 
 const rawMarkerCache = new Map<number, RawMarker>();
 
@@ -20,8 +22,8 @@ export function setupDetector() {
 export function setupVideoStream() {
 	// Get the html video element and set the correct width and height
 	video = document.getElementById("video") as HTMLVideoElement;
-	video.width = cWidth;
-	video.height = cHeight;
+	video.width = captureWidth;
+	video.height = captureHeight;
 
 
 	// Error if there's no mediaDevices
@@ -50,8 +52,8 @@ export function setupVideoStream() {
 export function getRawMarkers(): RawMarker[] {
 	// Idk why we create a canvas element, but this code is mostly from the js-aruco examples
 	let canvas = document.createElement('canvas');
-	canvas.width = cWidth;
-	canvas.height = cHeight;
+	canvas.width = captureWidth;
+	canvas.height = captureHeight;
 
 	// Get the context to the canvas, this is kinda similar to p5js
 	let ctx = canvas.getContext('2d');

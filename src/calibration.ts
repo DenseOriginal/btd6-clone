@@ -2,7 +2,7 @@ const calibrationButton = document.getElementById('calibrationButton');
 if (!calibrationButton) throw new Error('Can\'t find calibration box');
 
 import { getRawMarkers, markerMapper } from "./AR-helper";
-import { cHeight, cWidth } from "./main";
+import { canvasHeight, canvasWidth } from "./main";
 import { settings } from "./settings";
 
 // Top left, Top right, Bottom left, Bottom right
@@ -55,8 +55,8 @@ function calibrate() {
 
 	const width = dist(topLeftMarker.center.x, topLeftMarker.center.y, topRightMarker.center.x, topRightMarker.center.y);
 	const height = dist(topLeftMarker.center.x, topLeftMarker.center.y, bottomLeftMarker.center.x, bottomLeftMarker.center.y);
-	const scaleX = cWidth / width;
-	const scaleY = cHeight / height;
+	const scaleX = canvasWidth / width;
+	const scaleY = canvasHeight / height;
 
 	const angleDx = topLeftMarker.center.x - topRightMarker.center.x;
 	const angleDy = topLeftMarker.center.y - topRightMarker.center.y;

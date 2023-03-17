@@ -7,12 +7,12 @@ import { initSettingsMenu, settings } from "./settings";
 
 let capture: ReturnType<typeof createCapture>;
 
-export let cWidth = 320 * 3.5;
-export let cHeight = 240 * 3.5;
+export let canvasWidth = window.innerWidth;
+export let canvasHeight = window.innerHeight;
 
 (window as any).setup = () => {
 	initSettingsMenu();
-	createCanvas(cWidth, cHeight);
+	createCanvas(canvasWidth, canvasHeight);
 	capture = createCapture(VIDEO);
   	capture.hide();
 
