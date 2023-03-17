@@ -28,10 +28,8 @@ export let canvasHeight = window.innerHeight;
 		drawPlayarea();
 
 		// If debug, draw transparent video feed on top of canvas
-		if (settings.debug) {
-			drawVideoFeed(capture);
-			drawCalibrationBox();
-		}
+		if (settings.debug) drawCalibrationBox();
+		if (settings.showVideoFeed) drawVideoFeed(capture);
 
 		const markers = getMarkers();
 

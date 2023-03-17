@@ -3,7 +3,8 @@ const initialConfig: SettingsConfig = {
     targetFrameRate: { defaultValue: 10, onChange: (fps) => frameRate(fps) },
     cacheHitThreshold: { defaultValue: 3 },
     skewThreshold: { defaultValue: 10 },
-    showVirtualMarkers: { defaultValue: false, onChange: (show) => toggleVirtualMarkers(show) }
+    showVirtualMarkers: { defaultValue: false, onChange: (show) => toggleVirtualMarkers(show) },
+    showVideoFeed: { defaultValue: false }
 }
 
 const menuContainer = document.getElementById('menu')!;

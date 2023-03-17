@@ -29,6 +29,7 @@ interface Settings {
 	cacheHitThreshold: number;
 	skewThreshold: number;
 	showVirtualMarkers: boolean;
+	showVideoFeed: boolean;
 }
 
 type Config<T = unknown> = {
