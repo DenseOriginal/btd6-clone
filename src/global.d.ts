@@ -40,3 +40,11 @@ type Config<T = unknown> = {
 type SettingsConfig = {
 	[K in keyof Settings]: Config<Settings[K]>;
 }
+
+interface WallRatioConfig {
+	id: number;
+	codeWidth: number;
+	width: number;
+	height: number;
+	rotated: boolean; // Redundancy if we fuck up and print/lasercut a rotated code lol
+}

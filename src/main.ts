@@ -1,9 +1,10 @@
 /// <reference path="../node_modules/@types/p5/global.d.ts"/>
 
-import { getMarkers, isReady, setupDetector, setupVideoStream } from "./AR-helper";
+import { isReady, setupDetector, setupVideoStream } from "./AR-helper";
 import { calibrationBox, isCalibrationMarker } from "./calibration";
 import { drawCalibrationBox, drawDebugMarker, drawDebugText, drawVideoFeed } from "./debug-draw";
 import { initSettingsMenu, settings } from "./settings";
+import { getWalls, syncWalls } from "./walls";
 
 let capture: ReturnType<typeof createCapture>;
 
@@ -25,15 +26,17 @@ export let canvasHeight = window.innerHeight;
 	background(255);
 	if (!isReady()) return;
 
+	syncWalls();
+
 	drawPlayarea();
 
 	// If debug, draw transparent video feed on top of canvas
 	if (settings.debug) drawCalibrationBox();
 	if (settings.showVideoFeed) drawVideoFeed(capture);
 
-	const markers = getMarkers();
+	const walls = getWalls();
 
-	for (const mark of markers) {
+	for (const mark of walls) {
 		// If this is a calibration id, drawing it
 		if (isCalibrationMarker(mark.id)) {
 			if (settings.debug) drawDebugMarker(mark);
