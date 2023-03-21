@@ -35,6 +35,7 @@ interface Settings {
 	showVirtualMarkers: boolean;
 	showVideoFeed: boolean;
 	preserveWallsFrames: number; // How many frames a wall can be missing but the still be there
+	sampleMarkersDelay: number;
 }
 
 type Config<T = unknown> = {

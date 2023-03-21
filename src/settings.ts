@@ -1,11 +1,12 @@
 const initialConfig: SettingsConfig = {
     debug: { defaultValue: true },
-    targetFrameRate: { defaultValue: 10, onChange: (fps) => frameRate(fps) },
+    targetFrameRate: { defaultValue: 30, onChange: (fps) => frameRate(fps) },
     cacheHitThreshold: { defaultValue: 3 },
     skewThreshold: { defaultValue: 10 },
     showVirtualMarkers: { defaultValue: true, onChange: (show) => toggleVirtualMarkers(show) },
     showVideoFeed: { defaultValue: false },
-	preserveWallsFrames: { defaultValue: 20 }
+	preserveWallsFrames: { defaultValue: 20 },
+	sampleMarkersDelay: { defaultValue: 3 }
 };
 
 const menuContainer = document.getElementById('menu')!;
