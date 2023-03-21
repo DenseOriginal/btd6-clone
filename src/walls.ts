@@ -1,7 +1,9 @@
 import { getMarkers } from "./AR-helper";
 import { isCalibrationMarker } from "./calibration";
+import { settings } from "./settings";
 
 const ratios = new Map<number, WallRatioConfig>();
+const markerCache = new Map<number, Marker>();
 
 ratios.set(4, { id: 4, codeWidth: 2.5, width: 12, height: 4, rotated: false });
 ratios.set(5, { id: 5, codeWidth: 2.5, width: 12, height: 4, rotated: false });
@@ -18,6 +20,7 @@ export function syncWalls() {
     const markers = getMarkers();
     walls = markers
         .filter(mark => ratios.get(mark.id))
+		.map(mark => checkCache(mark))
         .map(mark => {
             if (isCalibrationMarker(mark.id)) return mark;
 
@@ -54,4 +57,28 @@ export function syncWalls() {
                 ]
             }
         });
+}
+
+function checkCache(marker: Marker): Marker {
+	if (markerCache.has(marker.id)) {
+		const cacheHit = markerCache.get(marker.id)!;
+		const cacheCenter = cacheHit.center;
+		const center = marker.center;
+
+		if (
+			dist(cacheCenter.x, cacheCenter.y, center.x, center.y) > settings.cacheHitThreshold ||
+			Math.abs(cacheHit.angle - marker.angle) > settings.cacheHitThreshold
+		) {
+			// Cache hit is invalid
+			markerCache.set(marker.id, marker);
+			return marker;
+		} else {
+			// Cache is good
+			return cacheHit;
+		}
+	}
+
+
+	markerCache.set(marker.id, marker);
+	return marker;
 }
