@@ -1,9 +1,9 @@
-const calibrationButton = document.getElementById('calibrationButton');
-if (!calibrationButton) throw new Error('Can\'t find calibration box');
-
 import { getRawMarkers, markerMapper } from "./AR-helper";
 import { canvasHeight, canvasWidth } from "./main";
 import { settings } from "./settings";
+
+const calibrationButton = document.getElementById('calibrationButton');
+if (!calibrationButton) throw new Error('Can\'t find calibration box');
 
 // Top left, Top right, Bottom left, Bottom right
 export const calibrationIds = [0, 1, 2, 3];
