@@ -24,6 +24,11 @@ export function initSettingsMenu() {
             const key = entry[0] as keyof Settings;
             const config = entry[1];
 
+			(window as any)[`set_${key}`] = (val: Settings[typeof key]) => {
+				(settings as any)[key] = val;
+        		config.onChange?.(val);
+			}
+
             switch (typeof config.defaultValue) {
                 case 'boolean': return createCheckbox(key, config);
                 case 'string': return createInput(key, config, 'string');
