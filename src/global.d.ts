@@ -11,6 +11,10 @@ interface Marker extends RawMarker {
 	angle: number;
 }
 
+interface Wall extends Marker {
+	timestamp: number; // Timestamp as the current frame
+}
+
 interface CalibrationBox {
 	x: number;
 	y: number;
@@ -30,6 +34,7 @@ interface Settings {
 	skewThreshold: number;
 	showVirtualMarkers: boolean;
 	showVideoFeed: boolean;
+	preserveWallsFrames: number; // How many frames a wall can be missing but the still be there
 }
 
 type Config<T = unknown> = {

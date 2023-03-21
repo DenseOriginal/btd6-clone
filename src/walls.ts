@@ -11,14 +11,16 @@ ratios.set(6, { id: 6, codeWidth: 2.5, width: 16, height: 4, rotated: false });
 ratios.set(7, { id: 7, codeWidth: 2.5, width: 16, height: 4, rotated: false });
 ratios.set(8, { id: 8, codeWidth: 2.5, width: 20, height: 4, rotated: false });
 
-let walls: Marker[] = [];
+let walls: Record<number, Wall> = [];
 
 export const getWalls = () =>
-    walls;
+    Object.values(walls);
 
 export function syncWalls() {
     const markers = getMarkers();
-    walls = markers
+	const currentFrame = frameCount;
+
+    const foundWalls = markers
         .filter(mark => ratios.get(mark.id))
 		.map(mark => checkCache(mark))
         .map(mark => {
@@ -56,7 +58,12 @@ export function syncWalls() {
                     p4
                 ]
             }
-        });
+        })
+		.reduce((acc, cur) => ({ ...acc, [cur.id]: { ...cur, timestamp: currentFrame } }), {} as Record<number, Wall>);
+
+	walls = Object.values({ ...walls, ...foundWalls })
+		.filter(wall => currentFrame - wall.timestamp < settings.preserveWallsFrames)
+		.reduce((acc, wall) => ({ ...acc, [wall.id]: wall }), {} as Record<number, Wall>);
 }
 
 function checkCache(marker: Marker): Marker {

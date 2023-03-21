@@ -4,7 +4,8 @@ const initialConfig: SettingsConfig = {
     cacheHitThreshold: { defaultValue: 3 },
     skewThreshold: { defaultValue: 10 },
     showVirtualMarkers: { defaultValue: true, onChange: (show) => toggleVirtualMarkers(show) },
-    showVideoFeed: { defaultValue: false }
+    showVideoFeed: { defaultValue: false },
+	preserveWallsFrames: { defaultValue: 20 }
 };
 
 const menuContainer = document.getElementById('menu')!;
