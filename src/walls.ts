@@ -5,11 +5,11 @@ import { settings } from "./settings";
 const ratios = new Map<number, WallRatioConfig>();
 const markerCache = new Map<number, Marker>();
 
-ratios.set(4, { id: 4, codeWidth: 2.5, width: 12, height: 4, rotated: false });
-ratios.set(5, { id: 5, codeWidth: 2.5, width: 12, height: 4, rotated: false });
-ratios.set(6, { id: 6, codeWidth: 2.5, width: 16, height: 4, rotated: false });
+ratios.set(4, { id: 4, codeWidth: 3, width: 12, height: 4, rotated: false });
+ratios.set(5, { id: 5, codeWidth: 3, width: 16, height: 4, rotated: false });
+ratios.set(6, { id: 6, codeWidth: 3, width: 16, height: 4, rotated: false });
 ratios.set(7, { id: 7, codeWidth: 3, width: 12, height: 4, rotated: false });
-ratios.set(8, { id: 8, codeWidth: 2.5, width: 20, height: 4, rotated: false });
+ratios.set(8, { id: 8, codeWidth: 3, width: 20, height: 4, rotated: false });
 
 let walls: Record<number, Wall> = [];
 
