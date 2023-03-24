@@ -7,7 +7,8 @@ const initialConfig: SettingsConfig = {
     showVideoFeed: { defaultValue: false },
     preserveWallsFrames: { defaultValue: 20 },
     sampleMarkersDelay: { defaultValue: 3 },
-    doPathFind: { defaultValue: true }
+    doPathFind: { defaultValue: false },
+	gridSize: { defaultValue: 20 }
 };
 
 const menuContainer = document.getElementById('menu')!;

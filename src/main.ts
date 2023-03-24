@@ -4,6 +4,7 @@ import { isReady, setupDetector, setupVideoStream } from "./AR-helper";
 import { calibrationBox, isCalibrationMarker } from "./calibration";
 import { drawCalibrationBox, drawDebugMarker, drawDebugText, drawVideoFeed } from "./debug-draw";
 import { Enemy } from "./enemyClass";
+import { drawEmptyGrid, drawOverlappedCells } from "./grid-builder";
 import { PathFinder } from "./pathfindering";
 import { initSettingsMenu, settings } from "./settings";
 import { getWalls, syncWalls } from "./walls";
@@ -90,7 +91,11 @@ export let canvasHeight = window.innerHeight;
 		if (settings.debug) drawDebugMarker(mark);
 	}
 
-	if (settings.debug) drawDebugText();
+	if (settings.debug) {
+		drawDebugText();
+		drawEmptyGrid();
+		drawOverlappedCells(walls);
+	}
 };
 
 function drawPlayarea() {

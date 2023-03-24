@@ -37,6 +37,7 @@ interface Settings {
 	preserveWallsFrames: number; // How many frames a wall can be missing but the still be there
 	sampleMarkersDelay: number;
 	doPathFind: boolean;
+	gridSize: number;
 }
 
 type Config<T = unknown> = {
