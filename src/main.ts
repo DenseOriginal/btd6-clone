@@ -4,13 +4,12 @@ import { isReady, setupDetector, setupVideoStream } from "./AR-helper";
 import { calibrationBox, isCalibrationMarker } from "./calibration";
 import { drawCalibrationBox, drawDebugMarker, drawDebugText, drawVideoFeed } from "./debug-draw";
 import { Enemy } from "./enemyClass";
-import { drawEmptyGrid, drawOverlappedCells } from "./grid-builder";
-import { PathFinder } from "./pathfindering";
+import { drawEmptyGrid } from "./grid-builder";
 import { initSettingsMenu, settings } from "./settings";
 import { getWalls, syncWalls } from "./walls";
+import { debugDrawFromStartToEnd, syncPathfinderWithWall } from "./pathfindering";
 
 let capture: ReturnType<typeof createCapture>;
-let pathFinder: PathFinder;
 let enemies: Enemy[];
 
 export let canvasWidth = window.innerWidth;
@@ -25,9 +24,6 @@ export let canvasHeight = window.innerHeight;
 	setupVideoStream();
 	setupDetector();
 	frameRate(settings.targetFrameRate);
-
-	pathFinder = new PathFinder(40, false);
-	setInterval(() => { pathFinder.reset(); pathFinder.update(); }, 500);
 };
 
 (window as any).draw = () => {
@@ -38,20 +34,8 @@ export let canvasHeight = window.innerHeight;
 	drawPlayarea();
 	if (frameCount % settings.sampleMarkersDelay == 0) new Promise(() => {
 		syncWalls();
-		// Place here nicolaiiiii
-		pathFinder.setWalls(getWalls());
-
-		let solution = undefined;
-		let counter = 0;
-		const maxCount = 40 * 40;
-		while (!solution && counter < maxCount) {
-			solution = pathFinder.pathFind(false);
-			counter++;
-		}
-		//enemies.push(new Enemy(pathFinder.pathForEnemy, 1, 0.2));
+		syncPathfinderWithWall()
 	});
-	pathFinder.update();
-	pathFinder.debug = settings.doPathFind;
 
 	// If debug, draw transparent video feed on top of canvas
 	if (settings.debug) drawCalibrationBox();
@@ -94,7 +78,7 @@ export let canvasHeight = window.innerHeight;
 	if (settings.debug) {
 		drawDebugText();
 		drawEmptyGrid();
-		drawOverlappedCells(walls);
+		debugDrawFromStartToEnd();
 	}
 };
 

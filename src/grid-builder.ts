@@ -1,3 +1,4 @@
+import { Grid } from "pathfinding";
 import { settings } from "./settings";
 
 export function drawEmptyGrid() {
@@ -14,26 +15,33 @@ export function drawEmptyGrid() {
 	pop();
 }
 
-export function drawOverlappedCells(walls: Wall[]) {
+export function drawOverlappedCells(cells: Point[]) {
 	const size = settings.gridSize
-	const cells = calculateIntersections(walls);
-	push()
-	noStroke();
-	fill(255, 0, 0, 175)
 	cells.forEach((cell) => rect(
 		cell.x * size,
 		cell.y * size,
 		size,
 		size,
 	))
-	pop()
 }
 
-export function calculateIntersections(walls: Wall[]): Point[] {
-	const size = settings.gridSize
-	const rows = Math.ceil(height / size);
-	const cols = Math.ceil(width / size);
+export function createGridFromPoints(points: Point[], rows: number, cols: number): Grid {
+	// Initialize the grid with all zeros
+	const grid = new Grid(cols, rows);
 
+	// Set the value of each cell to 1 if it contains a point
+	points.forEach(point => {
+		const row = Math.floor(point.y);
+		const col = Math.floor(point.x);
+		if (row >= 0 && row < rows && col >= 0 && col < cols) {
+			grid.setWalkableAt(col, row, false);
+		}
+	});
+
+	return grid;
+}
+
+export function calculateIntersections(walls: Wall[], rows: number, cols: number, size: number): Point[] {
 	const intersections: Point[] = [];
 
 	// Loop through each wall
