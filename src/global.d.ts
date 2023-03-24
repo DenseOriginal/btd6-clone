@@ -1,4 +1,4 @@
-type Point = { x: number; y: number }
+type Point = { x: number; y: number; };
 
 interface RawMarker {
 	id: number;
@@ -36,16 +36,17 @@ interface Settings {
 	showVideoFeed: boolean;
 	preserveWallsFrames: number; // How many frames a wall can be missing but the still be there
 	sampleMarkersDelay: number;
+	doPathFind: boolean;
 }
 
 type Config<T = unknown> = {
 	defaultValue: Settings[K];
-	onChange?: (value: Settings[K]) => void
-}
+	onChange?: (value: Settings[K]) => void;
+};
 
 type SettingsConfig = {
 	[K in keyof Settings]: Config<Settings[K]>;
-}
+};
 
 interface WallRatioConfig {
 	id: number;

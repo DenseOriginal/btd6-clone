@@ -26,9 +26,9 @@ class Square {
     }
 }
 
-class PathFinder {
+export class PathFinder {
     debug: boolean;
-    solution: unknown;
+    solution: boolean = false;
     squares: Square[][];
     cols: number;
     rows: number;
@@ -41,10 +41,10 @@ class PathFinder {
     wallsArr: Wall[];
     start: Mure;
     slut: Mure;
+    pathForEnemy: Point[] | undefined = undefined;
 
     constructor(cols: number, debug: boolean) {
         this.debug = debug || false;
-        this.solution = undefined;
         this.squares = []; // array to hold Square objects
         // Hvor mange kolonner og rækker?
         this.cols = cols;
@@ -101,15 +101,15 @@ class PathFinder {
         }
 
         // Start og Slut
-        this.start = this.grid[0][0];
-        this.slut = this.grid[this.cols - 1][this.rows - 1];
+        this.start = this.grid[0][int(this.rows / 2)];
+        this.slut = this.grid[this.cols - 1][int(this.rows / 2)];
         this.start.mur = false;
         this.slut.mur = false;
         // openSet starter kun med begyndelsen
         this.openSet.push(this.start);
     }
     reset() {
-        this.solution = undefined;
+        this.solution = false;
 
         this.openSet = [];
         this.closedSet = [];
@@ -135,14 +135,14 @@ class PathFinder {
         }
 
         // Start og Slut
-        this.start = this.grid[0][0];
-        this.slut = this.grid[this.cols - 1][this.rows - 1];
+        this.start = this.grid[0][int(this.rows / 2)];
+        this.slut = this.grid[this.cols - 1][int(this.rows / 2)];
         this.start.mur = false;
         this.slut.mur = false;
         // openSet starter kun med begyndelsen
         this.openSet.push(this.start);
     }
-    setWalls(...walls: Wall[]) {
+    setWalls(walls: Wall[]) {
 
         this.wallsArr = walls;
 
@@ -175,6 +175,11 @@ class PathFinder {
             // Blev jeg færdig?
             if (nuværende === this.slut) {
                 this.solution = true;
+                let coords = [];
+                for (let i = 0; i < this.path.length; i++) {
+                    coords.push(this.path[i].pos);
+                }
+                this.pathForEnemy = coords;
                 return this.path;
             }
 
@@ -303,7 +308,8 @@ class PathFinder {
                 if (this.debug) {
                     this.squares[x][y].display();
                 }
-                for (let rectangl of this.wallsArr) {
+                this.squares[x][y].deactive();
+                for (let wall of this.wallsArr) {
                     let collisionX = undefined;
                     let collisionY = undefined;
                     for (let j = 0; j < 4; j++) {
@@ -312,20 +318,20 @@ class PathFinder {
                             0,
                             this.squares[x][y].x,
                             height,
-                            rectangl.corners[j].x,
-                            rectangl.corners[j].y,
-                            rectangl.corners[(j + 1) % 4].x,
-                            rectangl.corners[(j + 1) % 4].y
+                            wall.corners[j].x,
+                            wall.corners[j].y,
+                            wall.corners[(j + 1) % 4].x,
+                            wall.corners[(j + 1) % 4].y
                         );
                         collisionY = this.collision(
                             0,
                             this.squares[x][y].y,
                             width,
                             this.squares[x][y].y,
-                            rectangl.corners[j].x,
-                            rectangl.corners[j].y,
-                            rectangl.corners[(j + 1) % 4].x,
-                            rectangl.corners[(j + 1) % 4].y
+                            wall.corners[j].x,
+                            wall.corners[j].y,
+                            wall.corners[(j + 1) % 4].x,
+                            wall.corners[(j + 1) % 4].y
                         );
                         if (collisionX) {
                             try {
@@ -346,8 +352,6 @@ class PathFinder {
                                     floor(collisionY.y / this.h) - 1
                                 ].active();
                             } catch (e) { }
-                        } else {
-                            this.squares[x][y].deactive();
                         }
                     }
                 }
@@ -386,6 +390,7 @@ class Mure {
     // Location
     x: number;
     y: number;
+    pos: Point;
     f: number;
     g: number;
     h: number;
@@ -402,6 +407,7 @@ class Mure {
     ) {
         this.x = this.i * w + w / 2;
         this.y = this.j * he + he / 2;
+        this.pos = { x: this.x, y: this.y };
         // f-, g- og h-værdier for A*
         this.f = 0;
         this.g = 0;

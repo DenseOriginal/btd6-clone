@@ -5,8 +5,9 @@ const initialConfig: SettingsConfig = {
     skewThreshold: { defaultValue: 10 },
     showVirtualMarkers: { defaultValue: true, onChange: (show) => toggleVirtualMarkers(show) },
     showVideoFeed: { defaultValue: false },
-	preserveWallsFrames: { defaultValue: 20 },
-	sampleMarkersDelay: { defaultValue: 3 }
+    preserveWallsFrames: { defaultValue: 20 },
+    sampleMarkersDelay: { defaultValue: 3 },
+    doPathFind: { defaultValue: true }
 };
 
 const menuContainer = document.getElementById('menu')!;
@@ -26,10 +27,10 @@ export function initSettingsMenu() {
             const key = entry[0] as keyof Settings;
             const config = entry[1];
 
-			(window as any)[`set_${key}`] = (val: Settings[typeof key]) => {
-				(settings as any)[key] = val;
-        		config.onChange?.(val);
-			}
+            (window as any)[`set_${key}`] = (val: Settings[typeof key]) => {
+                (settings as any)[key] = val;
+                config.onChange?.(val);
+            };
 
             switch (typeof config.defaultValue) {
                 case 'boolean': return createCheckbox(key, config);

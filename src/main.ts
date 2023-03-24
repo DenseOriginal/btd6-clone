@@ -3,10 +3,14 @@
 import { isReady, setupDetector, setupVideoStream } from "./AR-helper";
 import { calibrationBox, isCalibrationMarker } from "./calibration";
 import { drawCalibrationBox, drawDebugMarker, drawDebugText, drawVideoFeed } from "./debug-draw";
+import { Enemy } from "./enemyClass";
+import { PathFinder } from "./pathfindering";
 import { initSettingsMenu, settings } from "./settings";
 import { getWalls, syncWalls } from "./walls";
 
 let capture: ReturnType<typeof createCapture>;
+let pathFinder: PathFinder;
+let enemies: Enemy[];
 
 export let canvasWidth = window.innerWidth;
 export let canvasHeight = window.innerHeight;
@@ -20,18 +24,33 @@ export let canvasHeight = window.innerHeight;
 	setupVideoStream();
 	setupDetector();
 	frameRate(settings.targetFrameRate);
+
+	pathFinder = new PathFinder(40, false);
+	setInterval(() => { pathFinder.reset(); pathFinder.update(); }, 500);
 };
 
 (window as any).draw = () => {
 	background(255);
 	if (!isReady()) return;
 
-	
+
 	drawPlayarea();
 	if (frameCount % settings.sampleMarkersDelay == 0) new Promise(() => {
 		syncWalls();
 		// Place here nicolaiiiii
+		pathFinder.setWalls(getWalls());
+
+		let solution = undefined;
+		let counter = 0;
+		const maxCount = 40 * 40;
+		while (!solution && counter < maxCount) {
+			solution = pathFinder.pathFind(false);
+			counter++;
+		}
+		//enemies.push(new Enemy(pathFinder.pathForEnemy, 1, 0.2));
 	});
+	pathFinder.update();
+	pathFinder.debug = settings.doPathFind;
 
 	// If debug, draw transparent video feed on top of canvas
 	if (settings.debug) drawCalibrationBox();
@@ -47,6 +66,7 @@ export let canvasHeight = window.innerHeight;
 		};
 
 		const [p1, p2, p3, p4] = mark.corners;
+		push();
 		noStroke();
 		fill(255, 100, 100);
 
@@ -57,14 +77,15 @@ export let canvasHeight = window.innerHeight;
 		vertex(p4.x, p4.y);
 		endShape();
 
-		fill(255, 0, 0)
+		fill(255, 0, 0);
 		circle(p1.x, p1.y, 5);
-		fill(0, 255, 0)
+		fill(0, 255, 0);
 		circle(p2.x, p2.y, 5);
-		fill(0, 0, 255)
+		fill(0, 0, 255);
 		circle(p3.x, p3.y, 5);
-		fill(0, 0, 0)
+		fill(0, 0, 0);
 		circle(p4.x, p4.y, 5);
+		pop();
 
 		if (settings.debug) drawDebugMarker(mark);
 	}
