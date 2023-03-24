@@ -28,7 +28,10 @@ export let canvasHeight = window.innerHeight;
 
 	
 	drawPlayarea();
-	if (frameCount % settings.sampleMarkersDelay == 0) new Promise(() => syncWalls());
+	if (frameCount % settings.sampleMarkersDelay == 0) new Promise(() => {
+		syncWalls();
+		// Place here nicolaiiiii
+	});
 
 	// If debug, draw transparent video feed on top of canvas
 	if (settings.debug) drawCalibrationBox();
