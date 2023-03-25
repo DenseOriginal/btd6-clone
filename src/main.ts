@@ -74,18 +74,22 @@ export let canvasHeight = window.innerHeight;
 		push();
 		noStroke();
 		fill(255, 100, 100);
-		const [p1, p2, p3, p4] = turret.corners;
+		const { x, y } = turret.center;
+		const angle = turret.angle;
 
-		circle(turret.center.x, turret.center.y, turret.diameter);
+		circle(x, y, turret.diameter);
 
-		fill(255, 0, 0);
-		circle(p1.x, p1.y, 5);
-		fill(0, 255, 0);
-		circle(p2.x, p2.y, 5);
-		fill(0, 0, 255);
-		circle(p3.x, p3.y, 5);
-		fill(0, 0, 0);
-		circle(p4.x, p4.y, 5);
+		const rotX = cos(angle) * turret.diameter * 0.75;
+		const rotY = sin(angle) * turret.diameter * 0.75;
+
+		strokeWeight(10);
+		stroke(255, 50, 50);
+		line(
+			x,
+			y,
+			x + rotX,
+			y + rotY
+		);
 		pop();
 	}
 
