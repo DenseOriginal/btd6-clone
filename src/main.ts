@@ -3,14 +3,14 @@
 import { isReady, setupDetector, setupVideoStream } from "./AR-helper";
 import { calibrationBox, initAutoCalibrate, isCalibrationMarker } from "./calibration";
 import { drawCalibrationBox, drawDebugMarker, drawDebugText, drawVideoFeed } from "./debug-draw";
-import { Enemy } from "./enemyClass";
+import { updateEnemies } from "./enemyClass";
 import { drawEmptyGrid } from "./grid-builder";
 import { initSettingsMenu, settings } from "./settings";
 import { getWalls, syncWalls } from "./walls";
 import { debugDrawFromStartToEnd, syncPathfinderWithWall } from "./pathfindering";
 
 let capture: ReturnType<typeof createCapture>;
-let enemies: Enemy[];
+
 
 export let canvasWidth = window.innerWidth;
 export let canvasHeight = window.innerHeight;
@@ -81,6 +81,7 @@ export let canvasHeight = window.innerHeight;
 		drawEmptyGrid();
 		debugDrawFromStartToEnd();
 	}
+	updateEnemies();
 };
 
 function drawPlayarea() {
