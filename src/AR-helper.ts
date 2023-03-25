@@ -74,8 +74,10 @@ export function getRawMarkers(): RawMarker[] {
 	return detector.detect(imageData);
 };
 
-export function getMarkers(): Marker[] {
-	return getRawMarkers()
+let markers: Marker[] = [];
+export const getMarkers = () => markers;
+export function syncMarkers() {
+	markers = getRawMarkers()
 		.map((marker: RawMarker) => translateMarker(marker))
 		.map((marker: RawMarker) => markerMapper(marker))
 }

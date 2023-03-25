@@ -1,6 +1,6 @@
 /// <reference path="../node_modules/@types/p5/global.d.ts"/>
 
-import { isReady, setupDetector, setupVideoStream } from "./AR-helper";
+import { isReady, setupDetector, setupVideoStream, syncMarkers } from "./AR-helper";
 import { calibrationBox, initAutoCalibrate, isCalibrationMarker } from "./calibration";
 import { drawCalibrationBox, drawDebugMarker, drawDebugText, drawVideoFeed } from "./debug-draw";
 import { Enemy } from "./enemyClass";
@@ -8,6 +8,7 @@ import { drawEmptyGrid } from "./grid-builder";
 import { initSettingsMenu, settings } from "./settings";
 import { getWalls, syncWalls } from "./walls";
 import { debugDrawFromStartToEnd, syncPathfinderWithWall } from "./pathfindering";
+import { getTurrets, syncTurrets } from "./turrets";
 
 let capture: ReturnType<typeof createCapture>;
 let enemies: Enemy[];
@@ -34,7 +35,9 @@ export let canvasHeight = window.innerHeight;
 
 	drawPlayarea();
 	if (frameCount % settings.sampleMarkersDelay == 0) new Promise(() => {
+		syncMarkers();
 		syncWalls();
+		syncTurrets();
 		syncPathfinderWithWall()
 	});
 
@@ -74,6 +77,29 @@ export let canvasHeight = window.innerHeight;
 		pop();
 
 		if (settings.debug) drawDebugMarker(mark);
+	}
+
+	const turrets = getTurrets();
+
+	for (const turret of turrets) {
+		push();
+		noStroke();
+		fill(255, 100, 100);
+		const [p1, p2, p3, p4] = turret.corners;
+
+		circle(turret.center.x, turret.center.y, turret.diameter);
+
+		fill(255, 0, 0);
+		circle(p1.x, p1.y, 5);
+		fill(0, 255, 0);
+		circle(p2.x, p2.y, 5);
+		fill(0, 0, 255);
+		circle(p3.x, p3.y, 5);
+		fill(0, 0, 0);
+		circle(p4.x, p4.y, 5);
+		pop();
+
+		if (settings.debug) drawDebugMarker(turret);
 	}
 
 	if (settings.debug) {

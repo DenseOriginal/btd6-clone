@@ -15,6 +15,11 @@ interface Wall extends Marker {
 	timestamp: number; // Timestamp as the current frame
 }
 
+interface TurretPlacement extends Marker {
+	diameter: number;
+	timestamp: number; // Timestamp as the current frame
+}
+
 interface CalibrationBox {
 	x: number;
 	y: number;
@@ -56,4 +61,11 @@ interface WallRatioConfig {
 	width: number;
 	height: number;
 	rotated: boolean; // Redundancy if we fuck up and print/lasercut a rotated code lol
+}
+
+interface TurretRatioConfig {
+	id: number;
+	codeWidth: number;
+	diameter: number;
+	rotationOffset: number;
 }
