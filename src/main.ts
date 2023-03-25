@@ -1,6 +1,6 @@
 /// <reference path="../node_modules/@types/p5/global.d.ts"/>
 
-import { isReady, setupDetector, setupVideoStream, syncMarkers } from "./AR-helper";
+import { getMarkers, isReady, setupDetector, setupVideoStream, syncMarkers } from "./AR-helper";
 import { calibrationBox, initAutoCalibrate, isCalibrationMarker } from "./calibration";
 import { drawCalibrationBox, drawDebugMarker, drawDebugText, drawVideoFeed } from "./debug-draw";
 import { Enemy } from "./enemyClass";
@@ -65,18 +65,7 @@ export let canvasHeight = window.innerHeight;
 		vertex(p3.x, p3.y);
 		vertex(p4.x, p4.y);
 		endShape();
-
-		fill(255, 0, 0);
-		circle(p1.x, p1.y, 5);
-		fill(0, 255, 0);
-		circle(p2.x, p2.y, 5);
-		fill(0, 0, 255);
-		circle(p3.x, p3.y, 5);
-		fill(0, 0, 0);
-		circle(p4.x, p4.y, 5);
 		pop();
-
-		if (settings.debug) drawDebugMarker(mark);
 	}
 
 	const turrets = getTurrets();
@@ -98,14 +87,13 @@ export let canvasHeight = window.innerHeight;
 		fill(0, 0, 0);
 		circle(p4.x, p4.y, 5);
 		pop();
-
-		if (settings.debug) drawDebugMarker(turret);
 	}
 
 	if (settings.debug) {
 		drawDebugText();
 		drawEmptyGrid();
 		debugDrawFromStartToEnd();
+		getMarkers().forEach((marker) => drawDebugMarker(marker))
 	}
 };
 

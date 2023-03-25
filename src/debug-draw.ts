@@ -1,15 +1,17 @@
 import { captureHeight, captureWidth } from "./AR-helper";
-import { calibrationBox } from "./calibration";
+import { calibrationBox, isCalibrationMarker } from "./calibration";
 import { settings } from "./settings";
 
 const captureToCanvasRatioX = window.innerWidth / captureWidth;
 const captureToCanvasRatioY = window.innerHeight / captureHeight;
 
 export function drawDebugMarker(mark: Marker) {
+	if (isCalibrationMarker(mark.id)) return;
 	push();
 	strokeWeight(2);
 	stroke(255, 0, 0);
 
+	const [p1, p2, p3, p4] = mark.corners;
 	const { x, y } = mark.center;
 	circle(x, y, 4);
 
@@ -27,6 +29,16 @@ export function drawDebugMarker(mark: Marker) {
 	noStroke();
 	fill(0, 255, 0);
 	text(mark.id, x, y);
+
+	fill(255, 0, 0);
+	circle(p1.x, p1.y, 5);
+	fill(0, 255, 0);
+	circle(p2.x, p2.y, 5);
+	fill(0, 0, 255);
+	circle(p3.x, p3.y, 5);
+	fill(0, 0, 0);
+	circle(p4.x, p4.y, 5);
+
 	pop();
 }
 
