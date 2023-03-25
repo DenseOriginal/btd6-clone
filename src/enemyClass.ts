@@ -15,9 +15,15 @@ function spawnEnemy() {
 }
 
 export function updateEnemies() {
-    for (let enemy of enemies) {
-        enemy.update();
-    }
+	for (let idx = enemies.length - 1; idx >= 0; idx--) {
+		const enemy = enemies[idx];
+		if (!enemy.isAlive) {
+			enemies.splice(idx, 1);
+			continue;
+		}
+
+		enemy.update();
+	}
 }
 
 export class Enemy {
