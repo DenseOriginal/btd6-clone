@@ -43,15 +43,16 @@ export function initSettingsMenu() {
             const key = entry[0] as keyof Settings;
             const config = entry[1];
 
-            (window as any)[`set_${key}`] = (val: Settings[typeof key]) => {
+			// uhhhhhh ignore this, dont use never as a type, and ignore me doing it :cheeky:
+            (window as any)[`set_${key}`] = (val: never) => {
                 (settings as any)[key] = val;
                 config.onChange?.(val);
             };
 
             switch (typeof config.defaultValue) {
-                case 'boolean': createCheckbox(key, config); break;
-                case 'string': createInput(key, config, 'string'); break;
-                case 'number': createInput(key, config, 'number'); break;
+                case 'boolean': createCheckbox(key, config as Config<boolean>); break;
+                case 'string': createInput(key, config as Config<string | number>, 'string'); break;
+                case 'number': createInput(key, config as Config<string | number>, 'number'); break;
             }
 
 			if (config.header) {
@@ -131,7 +132,7 @@ function toggleVirtualMarkers(toggle: boolean) {
 
 // Register settings for the console
 (window as any).settings = settings;
-(window as any).setSetting = <K extends keyof Settings>(key: K, value: Settings[K]) => {
+(window as any).setSetting = <K extends keyof Settings>(key: K, value: never) => {
     const config = initialConfig[key];
     settings[key] = value;
     config.onChange?.(value);
