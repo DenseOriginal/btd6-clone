@@ -1,3 +1,5 @@
+import { updateAutoCalibrateInterval } from "./calibration";
+
 const initialConfig: SettingsConfig = {
     debug: { defaultValue: true },
     targetFrameRate: { defaultValue: 30, onChange: (fps) => frameRate(fps) },
@@ -8,7 +10,8 @@ const initialConfig: SettingsConfig = {
     preserveWallsFrames: { defaultValue: 20 },
     sampleMarkersDelay: { defaultValue: 3 },
     doPathFind: { defaultValue: false },
-	gridSize: { defaultValue: 20 }
+	gridSize: { defaultValue: 20 },
+	autoCalibrateInterval: { defaultValue: 2000, onChange: (interval) => updateAutoCalibrateInterval(interval) },
 };
 
 const menuContainer = document.getElementById('menu')!;

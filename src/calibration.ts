@@ -1,4 +1,4 @@
-import { getRawMarkers, markerMapper } from "./AR-helper";
+import { getRawMarkers, isReady, markerMapper } from "./AR-helper";
 import { canvasHeight, canvasWidth } from "./main";
 import { settings } from "./settings";
 
@@ -23,6 +23,11 @@ export let calibrationBox: CalibrationBox = {
 };
 
 export function calibrate() {
+	if (!isReady()) {
+		console.warn('Camera not ready, cant calibrate');
+		return;
+	}
+
 	const calibrationMarkers = getRawMarkers()
 		// Only grab the markers that are used for calibration
 		.filter((marker) => calibrationIds.includes(marker.id))
@@ -91,3 +96,23 @@ export function calibrate() {
 
 (window as any).calibrate = calibrate;
 calibrationButton.addEventListener('click', calibrate);
+
+let autoCalibrateIntervalHook: number;
+export function initAutoCalibrate() {
+	try {
+		autoCalibrateIntervalHook = setInterval(calibrate, settings.autoCalibrateInterval);
+		calibrate();
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+export function updateAutoCalibrateInterval(interval: number) {
+	try {
+		clearInterval(autoCalibrateIntervalHook);
+		autoCalibrateIntervalHook = setInterval(calibrate, interval);
+		calibrate();
+	} catch (error) {
+		console.log(error);
+	}
+}

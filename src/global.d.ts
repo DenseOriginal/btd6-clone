@@ -38,6 +38,7 @@ interface Settings {
 	sampleMarkersDelay: number;
 	doPathFind: boolean;
 	gridSize: number;
+	autoCalibrateInterval: number; // Time in miliseconds
 }
 
 type Config<T = unknown> = {
