@@ -14,7 +14,7 @@ export function syncPathfinderWithWall() {
 
 	const occupiedCells = calculateIntersections(walls, rows, cols, size);
 	gridMatrix = createGridFromPoints(occupiedCells, rows, cols);
-	finder = new PF.DijkstraFinder();
+	finder = new PF.DijkstraFinder({diagonalMovement: PF.DiagonalMovement.OnlyWhenNoObstacles});
 }
 
 export function getPath(start: Point, end: Point): Point[] {

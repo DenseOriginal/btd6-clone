@@ -22,7 +22,7 @@ export let calibrationBox: CalibrationBox = {
 	corners: [],
 };
 
-function calibrate() {
+export function calibrate() {
 	const calibrationMarkers = getRawMarkers()
 		// Only grab the markers that are used for calibration
 		.filter((marker) => calibrationIds.includes(marker.id))

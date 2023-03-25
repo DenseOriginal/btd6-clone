@@ -1,7 +1,7 @@
 /// <reference path="../node_modules/@types/p5/global.d.ts"/>
 
 import { isReady, setupDetector, setupVideoStream } from "./AR-helper";
-import { calibrationBox, isCalibrationMarker } from "./calibration";
+import { calibrate, calibrationBox, isCalibrationMarker } from "./calibration";
 import { drawCalibrationBox, drawDebugMarker, drawDebugText, drawVideoFeed } from "./debug-draw";
 import { Enemy } from "./enemyClass";
 import { drawEmptyGrid } from "./grid-builder";
@@ -24,6 +24,7 @@ export let canvasHeight = window.innerHeight;
 	setupVideoStream();
 	setupDetector();
 	frameRate(settings.targetFrameRate);
+	setInterval(calibrate, 2000);
 };
 
 (window as any).draw = () => {
