@@ -1,5 +1,4 @@
 import { getMarkers } from "./AR-helper";
-import { isCalibrationMarker } from "./calibration";
 import { settings } from "./settings";
 
 const ratios = new Map<number, TurretRatioConfig>();
