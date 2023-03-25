@@ -44,6 +44,7 @@ interface Settings {
 	doPathFind: boolean;
 	gridSize: number;
 	autoCalibrateInterval: number; // Time in miliseconds
+	spawnEnemies: boolean;
 }
 
 type Config<T = unknown> = {

@@ -1,4 +1,5 @@
 import { updateAutoCalibrateInterval } from "./calibration";
+import { spawnEnemyInterval } from "./enemyClass";
 
 const initialConfig: SettingsConfig = {
     debug: { defaultValue: true },
@@ -12,6 +13,7 @@ const initialConfig: SettingsConfig = {
     doPathFind: { defaultValue: false },
 	gridSize: { defaultValue: 20 },
 	autoCalibrateInterval: { defaultValue: 2000, onChange: (interval) => updateAutoCalibrateInterval(interval) },
+	spawnEnemies: { defaultValue: false, onChange: (spawn) => spawnEnemyInterval(spawn) },
 };
 
 const menuContainer = document.getElementById('menu')!;
