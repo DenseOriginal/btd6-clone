@@ -41,7 +41,6 @@ interface Settings {
 	showVideoFeed: boolean;
 	preserveWallsFrames: number; // How many frames a wall can be missing but the still be there
 	sampleMarkersDelay: number;
-	doPathFind: boolean;
 	gridSize: number;
 	autoCalibrateInterval: number; // Time in miliseconds
 	spawnEnemies: boolean;

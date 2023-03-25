@@ -16,8 +16,7 @@ const initialConfig: SettingsConfig = {
 	autoCalibrateInterval: { defaultValue: 2000, onChange: (interval) => updateAutoCalibrateInterval(interval) },
 
     // Pathfinding settings
-	doPathFind: { defaultValue: false, header: 'Pathfinding' },
-	gridSize: { defaultValue: 20 },
+	gridSize: { defaultValue: 20, header: 'Pathfinding' },
 
 	// Enemias settings
 	spawnEnemies: { defaultValue: false, header: 'Enemies' },
