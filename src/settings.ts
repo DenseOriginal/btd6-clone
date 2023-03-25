@@ -2,18 +2,25 @@ import { updateAutoCalibrateInterval } from "./calibration";
 import { spawnEnemyInterval } from "./enemyClass";
 
 const initialConfig: SettingsConfig = {
-    debug: { defaultValue: true },
+	// General settings
+    debug: { defaultValue: true, header: 'General' },
     targetFrameRate: { defaultValue: 30, onChange: (fps) => frameRate(fps) },
     cacheHitThreshold: { defaultValue: 3 },
-    skewThreshold: { defaultValue: 10 },
     showVirtualMarkers: { defaultValue: true, onChange: (show) => toggleVirtualMarkers(show) },
     showVideoFeed: { defaultValue: false },
     preserveWallsFrames: { defaultValue: 20 },
     sampleMarkersDelay: { defaultValue: 3 },
-    doPathFind: { defaultValue: false },
-	gridSize: { defaultValue: 20 },
+	
+	// Calibrations settings
+    skewThreshold: { defaultValue: 10, header: 'Calibrations' },
 	autoCalibrateInterval: { defaultValue: 2000, onChange: (interval) => updateAutoCalibrateInterval(interval) },
-	spawnEnemies: { defaultValue: false, onChange: (spawn) => spawnEnemyInterval(spawn) },
+
+    // Pathfinding settings
+	doPathFind: { defaultValue: false, header: 'Pathfinding' },
+	gridSize: { defaultValue: 20 },
+
+	// Enemias settings
+	spawnEnemies: { defaultValue: false, onChange: (spawn) => spawnEnemyInterval(spawn), header: 'Enemies' },
 };
 
 const menuContainer = document.getElementById('menu')!;
@@ -29,6 +36,7 @@ export const settings: Settings = Object.entries(initialConfig)
 export function initSettingsMenu() {
     Object
         .entries(initialConfig)
+		.reverse()
         .forEach((entry) => {
             const key = entry[0] as keyof Settings;
             const config = entry[1];
@@ -39,11 +47,15 @@ export function initSettingsMenu() {
             };
 
             switch (typeof config.defaultValue) {
-                case 'boolean': return createCheckbox(key, config);
-                case 'string': return createInput(key, config, 'string');
-                case 'number': return createInput(key, config, 'number');
+                case 'boolean': createCheckbox(key, config); break;
+                case 'string': createInput(key, config, 'string'); break;
+                case 'number': createInput(key, config, 'number'); break;
             }
-        });
+
+			if (config.header) {
+				createHeader(config.header)
+			}
+		});
 
     closeButton.addEventListener('click', closeMenu);
     openConfigButton.addEventListener('click', openMenu);
@@ -67,6 +79,13 @@ function createCheckbox(id: keyof Settings, config: Config<boolean>) {
         (settings as any)[id] = target.checked;
         config.onChange?.(target.checked);
     });
+}
+
+function createHeader(header: string) {
+    const template = `
+    <h3>${header}</h3>
+    `;
+    menuInner.insertAdjacentHTML('afterbegin', template);
 }
 
 function createInput(id: keyof Settings, config: Config<string | number>, type: 'string' | 'number') {

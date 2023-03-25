@@ -50,6 +50,7 @@ interface Settings {
 type Config<T = unknown> = {
 	defaultValue: Settings[K];
 	onChange?: (value: Settings[K]) => void;
+	header?: string;
 };
 
 type SettingsConfig = {
