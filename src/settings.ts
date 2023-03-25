@@ -1,5 +1,5 @@
 import { updateAutoCalibrateInterval } from "./calibration";
-import { spawnEnemyInterval } from "./enemyClass";
+import { updateEnemySpawnInterval } from "./enemyClass";
 
 const initialConfig: SettingsConfig = {
 	// General settings
@@ -20,7 +20,9 @@ const initialConfig: SettingsConfig = {
 	gridSize: { defaultValue: 20 },
 
 	// Enemias settings
-	spawnEnemies: { defaultValue: false, onChange: (spawn) => spawnEnemyInterval(spawn), header: 'Enemies' },
+	spawnEnemies: { defaultValue: false, header: 'Enemies' },
+	enemySpawnRate: { defaultValue: 2500, onChange: (spawnRate) => updateEnemySpawnInterval(spawnRate) },
+	enemyBaseSpeed: { defaultValue: 0.3 },
 };
 
 const menuContainer = document.getElementById('menu')!;

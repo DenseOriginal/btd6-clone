@@ -45,6 +45,8 @@ interface Settings {
 	gridSize: number;
 	autoCalibrateInterval: number; // Time in miliseconds
 	spawnEnemies: boolean;
+	enemySpawnRate: number;
+	enemyBaseSpeed: number;
 }
 
 type Config<T = unknown> = {

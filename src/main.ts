@@ -3,7 +3,7 @@
 import { getMarkers, isReady, setupDetector, setupVideoStream, syncMarkers } from "./AR-helper";
 import { calibrationBox, initAutoCalibrate, isCalibrationMarker } from "./calibration";
 import { drawCalibrationBox, drawDebugMarker, drawDebugText, drawVideoFeed } from "./debug-draw";
-import { updateEnemies } from "./enemyClass";
+import { initEnemySpawner, updateEnemies } from "./enemyClass";
 import { drawEmptyGrid } from "./grid-builder";
 import { initSettingsMenu, settings } from "./settings";
 import { getWalls, syncWalls } from "./walls";
@@ -26,6 +26,7 @@ export let canvasHeight = window.innerHeight;
 	setupDetector();
 	frameRate(settings.targetFrameRate);
 	initAutoCalibrate();
+	initEnemySpawner();
 };
 
 (window as any).draw = () => {

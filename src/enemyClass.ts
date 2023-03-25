@@ -5,13 +5,21 @@ import { getPath } from "./pathfindering"
 let enemies: Enemy[] = [];
 let enemiesSpawnIntervalHook: number;
 
-export function spawnEnemyInterval(spawn: boolean) {
-    clearInterval(enemiesSpawnIntervalHook)
-	if(spawn){enemiesSpawnIntervalHook=setInterval(spawnEnemy, 2500)};
+export function initEnemySpawner() {
+	updateEnemySpawnInterval(settings.enemySpawnRate)
+}
+
+export function updateEnemySpawnInterval(spawnRate: number) {
+	clearInterval(enemiesSpawnIntervalHook)
+	enemiesSpawnIntervalHook = setInterval(() => {
+		if (settings.spawnEnemies) {
+			spawnEnemy();
+		}
+	}, spawnRate);
 }
 
 function spawnEnemy() {
-    enemies.push(new Enemy(0.3));
+    enemies.push(new Enemy(settings.enemyBaseSpeed));
 }
 
 export function updateEnemies() {
