@@ -39,8 +39,8 @@ export function debugDrawFromStartToEnd() {
 	const cols = Math.ceil(width / size);
 
 	const startEndPath = getPath(
-		{ x: 0, y: rows / 2 },
-		{ x: cols - 1, y: rows / 2 }
+		{ x: 0, y: Math.floor(rows / 2) },
+		{ x: cols - 1, y: Math.floor(rows / 2) }
 	);
 
 	push();
