@@ -4,7 +4,7 @@ import { updateEnemySpawnInterval } from "./enemyClass";
 const initialConfig: SettingsConfig = {
 	// General settings
     debug: { defaultValue: true, header: 'General' },
-	drawGridLines: { defaultValue: false },
+	drawGridLines: { defaultValue: false, label: 'drawGridLines (Slow!)' },
     targetFrameRate: { defaultValue: 30, onChange: (fps) => frameRate(fps) },
     cacheHitThreshold: { defaultValue: 3 },
     showVirtualMarkers: { defaultValue: true, onChange: (show) => toggleVirtualMarkers(show) },
@@ -68,7 +68,7 @@ export function initSettingsMenu() {
 function createCheckbox(id: keyof Settings, config: Config<boolean>) {
     const template = `
     <div class="row">
-        <label for="${id}">${id}</label>
+        <label for="${id}">${config.label || id}</label>
         <input type="checkbox" id="${id}">
     </div>
     `;
@@ -94,7 +94,7 @@ function createHeader(header: string) {
 function createInput(id: keyof Settings, config: Config<string | number>, type: 'string' | 'number') {
     const template = `
     <div class="row">
-        <label for="${id}">${id}</label>
+        <label for="${id}">${config.label || id}</label>
         <input type="${type}" id="${id}">
     </div>
     `;

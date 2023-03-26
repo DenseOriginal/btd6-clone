@@ -57,6 +57,7 @@ type Config<T = unknown> = {
 	defaultValue: T;
 	onChange?: (value: T) => void;
 	header?: string;
+	label?: string;
 };
 
 type SettingsConfig = {
