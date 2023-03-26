@@ -3,7 +3,7 @@
 import { getMarkers, isReady, setupDetector, setupVideoStream, syncMarkers } from "./AR-helper";
 import { calibrationBox, initAutoCalibrate, isCalibrationMarker } from "./calibration";
 import { drawCalibrationBox, drawDebugMarker, drawDebugText, drawVideoFeed } from "./debug-draw";
-import { initEnemySpawner, updateEnemies } from "./enemyClass";
+import { initEnemySpawner, updateEnemies, validateAllEnemyPaths } from "./enemyClass";
 import { drawEmptyGrid } from "./grid-builder";
 import { initSettingsMenu, settings } from "./settings";
 import { getWalls, syncWalls } from "./walls";
@@ -39,7 +39,8 @@ export let canvasHeight = window.innerHeight;
 		syncMarkers();
 		syncWalls();
 		syncTurrets();
-		syncPathfinderWithWall()
+		syncPathfinderWithWall();
+		validateAllEnemyPaths();
 	});
 
 	// If debug, draw transparent video feed on top of canvas
@@ -97,7 +98,7 @@ export let canvasHeight = window.innerHeight;
 	if (settings.debug) {
 		drawDebugText();
 		drawEmptyGrid();
-		debugDrawFromStartToEnd();
+		// debugDrawFromStartToEnd();
 		getMarkers().forEach((marker) => drawDebugMarker(marker))
 	}
 	updateEnemies();

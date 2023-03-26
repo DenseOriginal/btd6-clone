@@ -33,7 +33,7 @@ export function createGridFromPoints(points: Point[], rows: number, cols: number
 	points.forEach(point => {
 		const row = Math.floor(point.y);
 		const col = Math.floor(point.x);
-		if (row >= 0 && row < rows && col >= 0 && col < cols) {
+		if (row >= 1 && row < rows - 1 && col >= 1 && col < cols - 1) {
 			grid.setWalkableAt(col - 1, row - 1, false);
 			grid.setWalkableAt(col - 1, row, false);
 			grid.setWalkableAt(col - 1, row + 1, false);

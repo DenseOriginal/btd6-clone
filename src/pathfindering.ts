@@ -7,6 +7,8 @@ import { getTurrets } from "./turrets";
 let finder: PF.Finder;
 let gridMatrix: PF.Grid;
 
+export const getCurrentGridMatrix = () => gridMatrix; 
+
 export function syncPathfinderWithWall() {
 	const allObjects = [
 		...getWalls(),
