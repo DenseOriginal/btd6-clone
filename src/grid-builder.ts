@@ -62,13 +62,8 @@ export function calculateIntersections(objects: CollisionObject[], rows: number,
 					y: row * size + size / 2
 				};
 
-				const isTurret = isTurretObject(object);
-
 				// Check if the cell intersects the wall
-				if (
-					(!isTurret && doesIntersectWithWall(cellCenter, object)) ||
-					(isTurret && doesIntersectWithTurret(cellCenter, object, size))
-				) {
+				if (doesIntersectWithGeneric(cellCenter, object, size)) {
 					intersections.push({ x: col, y: row });
 				}
 			}
@@ -85,6 +80,16 @@ export function calculateIntersections(objects: CollisionObject[], rows: number,
 
 
 	return intersections;
+}
+
+function doesIntersectWithGeneric(point: Point, object: CollisionObject, bufferSize: number): boolean {
+	switch (object.type) {
+		case 'turret': return doesIntersectWithTurret(point, object, bufferSize);
+		case 'wall': return doesIntersectWithWall(point, object);
+		default:
+			const assertNever: never = object;
+			return assertNever;
+	}
 }
 
 function doesIntersectWithWall(point: Point, wall: Wall): boolean {
@@ -112,8 +117,4 @@ function doesIntersectWithWall(point: Point, wall: Wall): boolean {
 
 function doesIntersectWithTurret(point: Point, turret: TurretPlacement, bufferSize: number): boolean {
 	return dist(point.x, point.y, turret.center.x, turret.center.y) < ((turret.diameter + bufferSize) / 2)
-}
-
-function isTurretObject(obj: CollisionObject): obj is TurretPlacement {
-	return "diameter" in obj; 
 }
