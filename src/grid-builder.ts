@@ -49,11 +49,11 @@ export function createGridFromPoints(points: Point[], rows: number, cols: number
 	return grid;
 }
 
-export function calculateIntersections(walls: Wall[], rows: number, cols: number, size: number): Point[] {
+export function calculateIntersections(objects: CollisionObject[], rows: number, cols: number, size: number): Point[] {
 	const intersections: Point[] = [];
 
-	// Loop through each wall
-	walls.forEach(wall => {
+	// Loop through each object
+	objects.forEach(object => {
 		// Loop through each cell in the grid
 		for (let row = 0; row < rows; row++) {
 			for (let col = 0; col < cols; col++) {
@@ -62,8 +62,13 @@ export function calculateIntersections(walls: Wall[], rows: number, cols: number
 					y: row * size + size / 2
 				};
 
+				const isTurret = isTurretObject(object);
+
 				// Check if the cell intersects the wall
-				if (doesIntersect(cellCenter, wall)) {
+				if (
+					(!isTurret && doesIntersectWithWall(cellCenter, object)) ||
+					(isTurret && doesIntersectWithTurret(cellCenter, object, size))
+				) {
 					intersections.push({ x: col, y: row });
 				}
 			}
@@ -82,7 +87,7 @@ export function calculateIntersections(walls: Wall[], rows: number, cols: number
 	return intersections;
 }
 
-function doesIntersect(point: Point, wall: Wall): boolean {
+function doesIntersectWithWall(point: Point, wall: Wall): boolean {
 	const corners = wall.corners;
 	let intersectionCount = 0;
 
@@ -103,4 +108,12 @@ function doesIntersect(point: Point, wall: Wall): boolean {
 	}
 
 	return intersectionCount % 2 !== 0;
+}
+
+function doesIntersectWithTurret(point: Point, turret: TurretPlacement, bufferSize: number): boolean {
+	return dist(point.x, point.y, turret.center.x, turret.center.y) < ((turret.diameter + bufferSize) / 2)
+}
+
+function isTurretObject(obj: CollisionObject): obj is TurretPlacement {
+	return "diameter" in obj; 
 }

@@ -20,6 +20,8 @@ interface TurretPlacement extends Marker {
 	timestamp: number; // Timestamp as the current frame
 }
 
+type CollisionObject = Wall | TurretPlacement;
+
 interface CalibrationBox {
 	x: number;
 	y: number;

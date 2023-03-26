@@ -2,17 +2,21 @@ import { calculateIntersections, createGridFromPoints, drawOverlappedCells } fro
 import { settings } from "./settings";
 import { getWalls } from "./walls";
 import * as PF from "pathfinding"
+import { getTurrets } from "./turrets";
 
 let finder: PF.Finder;
 let gridMatrix: PF.Grid;
 
 export function syncPathfinderWithWall() {
-	const walls = getWalls();
+	const allObjects = [
+		...getWalls(),
+		...getTurrets()
+	]
 	const size = settings.gridSize
 	const rows = Math.ceil(height / size);
 	const cols = Math.ceil(width / size);
 
-	const occupiedCells = calculateIntersections(walls, rows, cols, size);
+	const occupiedCells = calculateIntersections(allObjects, rows, cols, size);
 	gridMatrix = createGridFromPoints(occupiedCells, rows, cols);
 	finder = new PF.DijkstraFinder({diagonalMovement: PF.DiagonalMovement.OnlyWhenNoObstacles});
 }
