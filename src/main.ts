@@ -97,10 +97,10 @@ export let canvasHeight = window.innerHeight;
 
 	if (settings.debug) {
 		drawDebugText();
-		drawEmptyGrid();
 		// debugDrawFromStartToEnd();
 		getMarkers().forEach((marker) => drawDebugMarker(marker))
 	}
+	if (settings.drawGridLines) drawEmptyGrid();
 	updateEnemies();
 };
 

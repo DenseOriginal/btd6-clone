@@ -4,6 +4,7 @@ import { updateEnemySpawnInterval } from "./enemyClass";
 const initialConfig: SettingsConfig = {
 	// General settings
     debug: { defaultValue: true, header: 'General' },
+	drawGridLines: { defaultValue: false },
     targetFrameRate: { defaultValue: 30, onChange: (fps) => frameRate(fps) },
     cacheHitThreshold: { defaultValue: 3 },
     showVirtualMarkers: { defaultValue: true, onChange: (show) => toggleVirtualMarkers(show) },

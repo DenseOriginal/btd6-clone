@@ -38,6 +38,7 @@ interface CalibrationBox {
 
 interface Settings {
 	debug: boolean;
+	drawGridLines: boolean;
 	targetFrameRate: number;
 	cacheHitThreshold: number;
 	skewThreshold: number;
