@@ -12,10 +12,12 @@ interface Marker extends RawMarker {
 }
 
 interface Wall extends Marker {
+	type: 'wall';
 	timestamp: number; // Timestamp as the current frame
 }
 
 interface TurretPlacement extends Marker {
+	type: 'turret';
 	diameter: number;
 	timestamp: number; // Timestamp as the current frame
 }

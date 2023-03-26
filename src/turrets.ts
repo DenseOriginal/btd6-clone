@@ -34,6 +34,7 @@ export function syncTurrets() {
 				...mark,
 				angle: mark.angle - ratio.rotationOffset,
 				diameter,
+				type: 'turret' as const
             }
         })
 		.reduce((acc, cur) => ({ ...acc, [cur.id]: { ...cur, timestamp: currentFrame } }), {} as Record<number, TurretPlacement>);
