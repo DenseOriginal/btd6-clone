@@ -25,14 +25,21 @@ export function drawOverlappedCells(cells: Point[]) {
 	))
 }
 
-export function createGridFromPoints(points: Point[], rows: number, cols: number): Grid {
+export function createGridFromPoints(points: Point[], rows: number, cols: number): { grid: Grid, gridHash: number } {
 	// Initialize the grid with all zeros
 	const grid = new Grid(cols, rows);
+
+	// Key used to check if grid has changed
+	let gridHash = 0;
 
 	// Set the value of each cell to 1 if it contains a point
 	points.forEach(point => {
 		const row = Math.floor(point.y);
 		const col = Math.floor(point.x);
+
+		// Prooooobably not the best way to avoid collions, but eh :shrug:
+		gridHash = ((gridHash << 5) - gridHash + (row + col)) | 0;
+
 		if (row >= 1 && row < rows - 1 && col >= 1 && col < cols - 1) {
 			grid.setWalkableAt(col - 1, row - 1, false);
 			grid.setWalkableAt(col - 1, row, false);
@@ -46,7 +53,7 @@ export function createGridFromPoints(points: Point[], rows: number, cols: number
 		}
 	});
 
-	return grid;
+	return { grid, gridHash };
 }
 
 export function calculateIntersections(objects: CollisionObject[], rows: number, cols: number, size: number): Point[] {

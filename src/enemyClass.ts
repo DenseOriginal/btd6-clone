@@ -35,6 +35,8 @@ export function updateEnemies() {
 }
 
 export function validateAllEnemyPaths() {
+	console.log('Re-validating enemy paths');
+	
 	for (const enemy of enemies) {
 		enemy.isPathStillValid();
 	}

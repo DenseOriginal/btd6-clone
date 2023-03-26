@@ -6,6 +6,7 @@ import { getTurrets } from "./turrets";
 
 let finder: PF.Finder;
 let gridMatrix: PF.Grid;
+let gridHash: number = 0;
 
 export const getCurrentGridMatrix = () => gridMatrix; 
 
@@ -19,8 +20,15 @@ export function syncPathfinderWithWall() {
 	const cols = Math.ceil(width / size);
 
 	const occupiedCells = calculateIntersections(allObjects, rows, cols, size);
-	gridMatrix = createGridFromPoints(occupiedCells, rows, cols);
+
+	const gridAndHash = createGridFromPoints(occupiedCells, rows, cols);
+	const hasChanged = gridHash != gridAndHash.gridHash; 
+	
+	gridMatrix = gridAndHash.grid;
+	gridHash = gridAndHash.gridHash
 	finder = new PF.DijkstraFinder({diagonalMovement: PF.DiagonalMovement.OnlyWhenNoObstacles});
+
+	return hasChanged;
 }
 
 export function getPath(start: Point, end: Point): Point[] {

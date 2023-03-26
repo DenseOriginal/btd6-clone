@@ -39,8 +39,8 @@ export let canvasHeight = window.innerHeight;
 		syncMarkers();
 		syncWalls();
 		syncTurrets();
-		syncPathfinderWithWall();
-		validateAllEnemyPaths();
+		const hasPathfindingGridChanged = syncPathfinderWithWall();
+		if (hasPathfindingGridChanged) validateAllEnemyPaths();
 	});
 
 	// If debug, draw transparent video feed on top of canvas
