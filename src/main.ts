@@ -95,8 +95,8 @@ export let canvasHeight = window.innerHeight;
 		pop();
 	}
 
+	drawDebugText();
 	if (settings.debug) {
-		drawDebugText();
 		// debugDrawFromStartToEnd();
 		getMarkers().forEach((marker) => drawDebugMarker(marker))
 	}

@@ -44,9 +44,9 @@ export function drawDebugMarker(mark: Marker) {
 
 export function drawDebugText() {
 	const messages = [
-		`Frame rate: ${frameRate().toFixed(2)}`,
-		`Target frame rate: ${settings.targetFrameRate}`,
-		`Calibration box angle: ${calibrationBox.angle.toFixed(4)}`,
+		settings.showFPS || settings.debug ? `Frame rate: ${frameRate().toFixed(2)}` : '',
+		settings.debug ? `Target frame rate: ${settings.targetFrameRate}` : '',
+		settings.debug ? `Calibration box angle: ${calibrationBox.angle.toFixed(4)}` : '',
 	];
 
 	fill(0);
