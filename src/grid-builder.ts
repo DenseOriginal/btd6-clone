@@ -34,7 +34,15 @@ export function createGridFromPoints(points: Point[], rows: number, cols: number
 		const row = Math.floor(point.y);
 		const col = Math.floor(point.x);
 		if (row >= 0 && row < rows && col >= 0 && col < cols) {
+			grid.setWalkableAt(col - 1, row - 1, false);
+			grid.setWalkableAt(col - 1, row, false);
+			grid.setWalkableAt(col - 1, row + 1, false);
+			grid.setWalkableAt(col, row - 1, false);
 			grid.setWalkableAt(col, row, false);
+			grid.setWalkableAt(col, row + 1, false);
+			grid.setWalkableAt(col + 1, row - 1, false);
+			grid.setWalkableAt(col + 1, row, false);
+			grid.setWalkableAt(col + 1, row + 1, false);
 		}
 	});
 
@@ -61,6 +69,15 @@ export function calculateIntersections(walls: Wall[], rows: number, cols: number
 			}
 		}
 	});
+
+	if (settings.debug) {
+		push();
+		noStroke();
+		fill(255, 0, 0, 175);
+		drawOverlappedCells(intersections)
+		pop();
+	}
+
 
 	return intersections;
 }
