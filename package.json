@@ -19,6 +19,8 @@
     "webpack-cli": "^4.9.1"
   },
   "dependencies": {
-    "p5": "^1.1.9"
+    "@types/pathfinding": "0.0.6",
+    "p5": "^1.1.9",
+    "pathfinding": "^0.4.18"
   }
 }

@@ -1,12 +1,29 @@
+import { updateAutoCalibrateInterval } from "./calibration";
+import { updateEnemySpawnInterval } from "./enemyClass";
+
 const initialConfig: SettingsConfig = {
-    debug: { defaultValue: true },
+	// General settings
+    debug: { defaultValue: true, header: 'General' },
+	showFPS: { defaultValue: true },
+	drawGridLines: { defaultValue: false, label: 'drawGridLines (Slow!)' },
     targetFrameRate: { defaultValue: 30, onChange: (fps) => frameRate(fps) },
     cacheHitThreshold: { defaultValue: 3 },
-    skewThreshold: { defaultValue: 10 },
     showVirtualMarkers: { defaultValue: true, onChange: (show) => toggleVirtualMarkers(show) },
     showVideoFeed: { defaultValue: false },
-	preserveWallsFrames: { defaultValue: 20 },
-	sampleMarkersDelay: { defaultValue: 3 }
+    preserveWallsFrames: { defaultValue: 20 },
+    sampleMarkersDelay: { defaultValue: 3 },
+	
+	// Calibrations settings
+    skewThreshold: { defaultValue: 10, header: 'Calibrations' },
+	autoCalibrateInterval: { defaultValue: 2000, onChange: (interval) => updateAutoCalibrateInterval(interval) },
+
+    // Pathfinding settings
+	gridSize: { defaultValue: 20, header: 'Pathfinding' },
+
+	// Enemias settings
+	spawnEnemies: { defaultValue: false, header: 'Enemies' },
+	enemySpawnRate: { defaultValue: 2500, onChange: (spawnRate) => updateEnemySpawnInterval(spawnRate) },
+	enemyBaseSpeed: { defaultValue: 0.3 },
 };
 
 const menuContainer = document.getElementById('menu')!;
@@ -22,21 +39,27 @@ export const settings: Settings = Object.entries(initialConfig)
 export function initSettingsMenu() {
     Object
         .entries(initialConfig)
+		.reverse()
         .forEach((entry) => {
             const key = entry[0] as keyof Settings;
             const config = entry[1];
 
-			(window as any)[`set_${key}`] = (val: Settings[typeof key]) => {
-				(settings as any)[key] = val;
-        		config.onChange?.(val);
-			}
+			// uhhhhhh ignore this, dont use never as a type, and ignore me doing it :cheeky:
+            (window as any)[`set_${key}`] = (val: never) => {
+                (settings as any)[key] = val;
+                config.onChange?.(val);
+            };
 
             switch (typeof config.defaultValue) {
-                case 'boolean': return createCheckbox(key, config);
-                case 'string': return createInput(key, config, 'string');
-                case 'number': return createInput(key, config, 'number');
+                case 'boolean': createCheckbox(key, config as Config<boolean>); break;
+                case 'string': createInput(key, config as Config<string | number>, 'string'); break;
+                case 'number': createInput(key, config as Config<string | number>, 'number'); break;
             }
-        });
+
+			if (config.header) {
+				createHeader(config.header)
+			}
+		});
 
     closeButton.addEventListener('click', closeMenu);
     openConfigButton.addEventListener('click', openMenu);
@@ -46,7 +69,7 @@ export function initSettingsMenu() {
 function createCheckbox(id: keyof Settings, config: Config<boolean>) {
     const template = `
     <div class="row">
-        <label for="${id}">${id}</label>
+        <label for="${id}">${config.label || id}</label>
         <input type="checkbox" id="${id}">
     </div>
     `;
@@ -62,10 +85,17 @@ function createCheckbox(id: keyof Settings, config: Config<boolean>) {
     });
 }
 
+function createHeader(header: string) {
+    const template = `
+    <h3>${header}</h3>
+    `;
+    menuInner.insertAdjacentHTML('afterbegin', template);
+}
+
 function createInput(id: keyof Settings, config: Config<string | number>, type: 'string' | 'number') {
     const template = `
     <div class="row">
-        <label for="${id}">${id}</label>
+        <label for="${id}">${config.label || id}</label>
         <input type="${type}" id="${id}">
     </div>
     `;
@@ -103,7 +133,7 @@ function toggleVirtualMarkers(toggle: boolean) {
 
 // Register settings for the console
 (window as any).settings = settings;
-(window as any).setSetting = <K extends keyof Settings>(key: K, value: Settings[K]) => {
+(window as any).setSetting = <K extends keyof Settings>(key: K, value: never) => {
     const config = initialConfig[key];
     settings[key] = value;
     config.onChange?.(value);

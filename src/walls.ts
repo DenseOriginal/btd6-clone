@@ -24,8 +24,6 @@ export function syncWalls() {
         .filter(mark => ratios.get(mark.id))
 		.map(mark => checkCache(mark))
         .map(mark => {
-            if (isCalibrationMarker(mark.id)) return mark;
-
             const ratio = ratios.get(mark.id)!;
 
             const center = mark.center;
@@ -51,6 +49,7 @@ export function syncWalls() {
 
             return {
                 ...mark,
+				type: 'wall' as const,
                 corners: [
                     p1,
                     p3,

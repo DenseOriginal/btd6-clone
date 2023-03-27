@@ -1,4 +1,4 @@
-type Point = { x: number; y: number }
+type Point = { x: number; y: number; };
 
 interface RawMarker {
 	id: number;
@@ -12,8 +12,17 @@ interface Marker extends RawMarker {
 }
 
 interface Wall extends Marker {
+	type: 'wall';
 	timestamp: number; // Timestamp as the current frame
 }
+
+interface TurretPlacement extends Marker {
+	type: 'turret';
+	diameter: number;
+	timestamp: number; // Timestamp as the current frame
+}
+
+type CollisionObject = Wall | TurretPlacement;
 
 interface CalibrationBox {
 	x: number;
@@ -29,6 +38,8 @@ interface CalibrationBox {
 
 interface Settings {
 	debug: boolean;
+	drawGridLines: boolean;
+	showFPS: boolean;
 	targetFrameRate: number;
 	cacheHitThreshold: number;
 	skewThreshold: number;
@@ -36,16 +47,23 @@ interface Settings {
 	showVideoFeed: boolean;
 	preserveWallsFrames: number; // How many frames a wall can be missing but the still be there
 	sampleMarkersDelay: number;
+	gridSize: number;
+	autoCalibrateInterval: number; // Time in miliseconds
+	spawnEnemies: boolean;
+	enemySpawnRate: number;
+	enemyBaseSpeed: number;
 }
 
 type Config<T = unknown> = {
-	defaultValue: Settings[K];
-	onChange?: (value: Settings[K]) => void
-}
+	defaultValue: T;
+	onChange?: (value: T) => void;
+	header?: string;
+	label?: string;
+};
 
 type SettingsConfig = {
 	[K in keyof Settings]: Config<Settings[K]>;
-}
+};
 
 interface WallRatioConfig {
 	id: number;
@@ -53,4 +71,11 @@ interface WallRatioConfig {
 	width: number;
 	height: number;
 	rotated: boolean; // Redundancy if we fuck up and print/lasercut a rotated code lol
+}
+
+interface TurretRatioConfig {
+	id: number;
+	codeWidth: number;
+	diameter: number;
+	rotationOffset: number;
 }
