@@ -103,7 +103,6 @@ export function syncTurretObj() {
 			turrets.delete(id);
 		}
 	});
-	console.log(activeTurrets);
 }
 export function updateTurretObj() {
 	activeTurrets.forEach((markerTurret) => {
