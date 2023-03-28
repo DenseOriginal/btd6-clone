@@ -3,7 +3,7 @@ export abstract class TurretParent {
 	public angle: number = 0;
 
 	constructor(
-		public size: number,
+		public diameter: number,
 		public positionX: number,
 		public positionY: number,
 		public rateOfFire: number,

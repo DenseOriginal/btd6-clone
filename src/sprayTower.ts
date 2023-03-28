@@ -14,14 +14,14 @@ export class SprayTower extends TurretParent {
 		noStroke();
 		fill(255, 100, 100);
 
-		circle(this.positionX, this.positionY, this.size);
+		circle(this.positionX, this.positionY, this.diameter);
 
 		strokeWeight(10);
 		stroke(255, 50, 50);
 
 		for (let i = 0; i < 8; i++) {
-			const rotX = cos(this.angle + (i * QUARTER_PI)) * this.size * 0.75;
-			const rotY = sin(this.angle + (i * QUARTER_PI)) * this.size * 0.75;
+			const rotX = cos(this.angle + (i * QUARTER_PI)) * this.diameter * 0.75;
+			const rotY = sin(this.angle + (i * QUARTER_PI)) * this.diameter * 0.75;
 
 			line(
 				this.positionX,
@@ -35,7 +35,7 @@ export class SprayTower extends TurretParent {
 	}
 
 	hitBoxHitCheck() {
-		if (dist(this.positionX, this.positionY, mouseX, mouseY) <= this.size * 2.5 / 2) {
+		if (dist(this.positionX, this.positionY, mouseX, mouseY) <= this.diameter * 2.5 / 2) {
 			print('hit');
 			return true;
 		} else {
@@ -48,7 +48,7 @@ export class SprayTower extends TurretParent {
 			if (this.sprayTimeOut != this.sprayTime) {
 				push();
 				fill(0, 200, 0, 100);
-				circle(this.positionX, this.positionY, this.size * 2);
+				circle(this.positionX, this.positionY, this.diameter * 2);
 				pop();
 				this.hitBoxHitCheck();
 				this.sprayTimeOut++;

@@ -93,7 +93,7 @@ export function syncTurretObj() {
 			}
 		} else if (activeTurrets.has(x.id)) {
 			let tur = activeTurrets.get(x.id)!;
-			tur.size = x.diameter;
+			tur.diameter = x.diameter;
 			tur.angle = x.angle;
 			tur.positionX = x.center.x;
 			tur.positionY = x.center.y;
