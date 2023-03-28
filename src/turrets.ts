@@ -1,5 +1,5 @@
 import { getMarkers } from "./AR-helper";
-import { GatlingTower } from "./gatlingTowerClass";
+import { GatlingTower } from "./gatlingTower";
 import { settings } from "./settings";
 import { SprayTower } from "./sprayTower";
 
@@ -126,7 +126,7 @@ export function syncTurretObj() {
 		if (!activeTurrets.has(x.id)) {
 			switch (x.turretType) {
 				case "gatling": {
-					activeTurrets.set(x.id, new GatlingTower(x.diameter, x.center.y, x.center.y, 25, 25));
+					activeTurrets.set(x.id, new GatlingTower(x.diameter, x.center.y, x.center.y, 25, 25, 0));
 					break;
 				}
 				case "spray": {
@@ -137,6 +137,8 @@ export function syncTurretObj() {
 			}
 		} else if (activeTurrets.has(x.id)) {
 			let tur = activeTurrets.get(x.id);
+			tur.size = x.diameter;
+			tur.angle = x.angle;
 			tur.positionX = x.center.x;
 			tur.positionY = x.center.y;
 		}

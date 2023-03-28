@@ -1,15 +1,14 @@
 import { GatlingProjectile } from "./gatlingProjectile";
 import { TurretParent } from "./turretParentClass";
 
-export class GatlingTower extends TurretParent{
+export class GatlingTower extends TurretParent {
   public barrelTipX: number = 0;
-  public barrelTipY: number = 0; 
+  public barrelTipY: number = 0;
   public shots: GatlingProjectile[] = [];
   public shootTimeOut: number = 0;
   public angle: number = 0;
 
-  update(directionDegree: number) {
-    this.angle = directionDegree
+  update() {
     const directionX = cos(this.angle);
     const directionY = sin(this.angle);
     this.barrelTipX = this.size * 1.5 * directionX + this.positionX;
@@ -18,9 +17,9 @@ export class GatlingTower extends TurretParent{
     circle(this.positionX, this.positionY, this.size);
     this.shoot();
   }
-  
+
   shoot() {
-    if(this.shootTimeOut === this.rateOfFire) {
+    if (this.shootTimeOut === this.rateOfFire) {
       this.shots.push(new GatlingProjectile(this.size * 0.5, this.projectileSpeed, this.barrelTipX, this.barrelTipY, this.angle));
       this.shootTimeOut = 0;
     } else {

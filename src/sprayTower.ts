@@ -29,7 +29,7 @@ export class SprayTower {
       if (this.sprayTimeOut != this.sprayTime) {
         push();
         fill(0, 200, 0);
-        circle(this.positionX, this.positionY, this.size * 2.5);
+        circle(this.positionX, this.positionY, this.size * 2);
         pop();
         this.hitBoxHitCheck();
         this.sprayTimeOut++;
