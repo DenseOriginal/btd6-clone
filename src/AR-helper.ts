@@ -78,6 +78,7 @@ let markers: Marker[] = [];
 export const getMarkers = () => markers;
 export function syncMarkers() {
 	markers = getRawMarkers()
+		.map((marker: RawMarker) => shiftTowardsCenter(marker))
 		.map((marker: RawMarker) => translateMarker(marker))
 		.map((marker: RawMarker) => markerMapper(marker))
 }
@@ -178,6 +179,50 @@ function translateMarker(marker: RawMarker): RawMarker {
 			return {
 				x: (mappedX - originX) * scaleX,
 				y: (mappedY - originY) * scaleY
+			}
+		});
+
+	// Return the transformed marker
+	return {
+		...marker,
+		corners: [p1, p2, p3, p4]
+	}
+}
+
+
+const videoFeedCenterX = captureWidth / 2;
+const videoFeedCenterY = captureHeight / 2;
+function shiftTowardsCenter(marker: RawMarker): RawMarker {
+	if (isCalibrationMarker(marker.id)) return marker;
+
+	const [
+		p1,
+		p2,
+		p3,
+		p4
+	] = marker
+		.corners
+		.map(({ x, y }) => {
+			// This first part here converts the cartesian corner cordinates, into polar cordinates
+			// Relative to the center of the video feed
+			const dx = x - videoFeedCenterX;
+			const dy = y - videoFeedCenterY;
+			const lenToCenter = Math.sqrt(dx ** 2 + dy ** 2);
+			const newLen = lenToCenter * -1 * settings.objectOffsetMultiplier;
+			const angleToCenter = dx < 0 ?
+				Math.atan(dy / dx) :
+				Math.atan(dy / dx) + PI;
+
+			// This uses the mapped angle to convert the corners polar cordinates back into cartesian cordinates
+			// This means the corner has been rotated relative to the origin
+			const mappedX = videoFeedCenterX + Math.cos(angleToCenter) * newLen;
+			const mappedY = videoFeedCenterY + Math.sin(angleToCenter) * newLen;
+
+			// Step 5: Success
+			// Yaaayyy :)
+			return {
+				x: mappedX,
+				y: mappedY
 			}
 		});
 
