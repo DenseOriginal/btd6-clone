@@ -1,19 +1,12 @@
-import { GatlingProjectile } from "./gatlingProjectileClass";
+import { GatlingProjectile } from "./gatlingProjectile";
+import { TurretParent } from "./turretParentClass";
 
-class GatlingTower {
+export class GatlingTower extends TurretParent{
   public barrelTipX: number = 0;
-  public barrelTipY: number = 0;  
+  public barrelTipY: number = 0; 
   public shots: GatlingProjectile[] = [];
   public shootTimeOut: number = 0;
   public angle: number = 0;
-
-  constructor(
-    public size: number,
-    public positionX: number,
-    public positionY: number,
-    public rateOfFire: number,
-    public projectileSpeed: number
-  ) { }
 
   update(directionDegree: number) {
     this.angle = directionDegree
