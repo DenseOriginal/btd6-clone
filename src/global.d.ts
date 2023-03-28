@@ -52,6 +52,7 @@ interface Settings {
 	spawnEnemies: boolean;
 	enemySpawnRate: number;
 	enemyBaseSpeed: number;
+	spawnBoxSize: number;
 }
 
 type Config<T = unknown> = {
