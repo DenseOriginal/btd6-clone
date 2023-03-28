@@ -53,6 +53,7 @@ interface Settings {
 	enemySpawnRate: number;
 	enemyBaseSpeed: number;
 	objectOffsetMultiplier: number; 
+	spawnBoxSize: number;
 }
 
 type Config<T = unknown> = {

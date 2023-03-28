@@ -2,10 +2,10 @@ import { updateAutoCalibrateInterval } from "./calibration";
 import { updateEnemySpawnInterval } from "./enemyClass";
 
 const initialConfig: SettingsConfig = {
-	// General settings
+    // General settings
     debug: { defaultValue: true, header: 'General' },
-	showFPS: { defaultValue: true },
-	drawGridLines: { defaultValue: false, label: 'drawGridLines (Slow!)' },
+    showFPS: { defaultValue: true },
+    drawGridLines: { defaultValue: false, label: 'drawGridLines (Slow!)' },
     targetFrameRate: { defaultValue: 30, onChange: (fps) => frameRate(fps) },
     cacheHitThreshold: { defaultValue: 3 },
     showVirtualMarkers: { defaultValue: true, onChange: (show) => toggleVirtualMarkers(show) },
@@ -16,15 +16,16 @@ const initialConfig: SettingsConfig = {
 	
 	// Calibrations settings
     skewThreshold: { defaultValue: 10, header: 'Calibrations' },
-	autoCalibrateInterval: { defaultValue: 2000, onChange: (interval) => updateAutoCalibrateInterval(interval) },
+    autoCalibrateInterval: { defaultValue: 2000, onChange: (interval) => updateAutoCalibrateInterval(interval) },
 
     // Pathfinding settings
-	gridSize: { defaultValue: 20, header: 'Pathfinding' },
+    gridSize: { defaultValue: 20, header: 'Pathfinding' },
 
-	// Enemias settings
-	spawnEnemies: { defaultValue: false, header: 'Enemies' },
-	enemySpawnRate: { defaultValue: 2500, onChange: (spawnRate) => updateEnemySpawnInterval(spawnRate) },
-	enemyBaseSpeed: { defaultValue: 0.3 },
+    // Enemias settings
+    spawnEnemies: { defaultValue: false, header: 'Enemies' },
+    enemySpawnRate: { defaultValue: 2500, onChange: (spawnRate) => updateEnemySpawnInterval(spawnRate) },
+    enemyBaseSpeed: { defaultValue: 0.3 },
+    spawnBoxSize: { defaultValue: 0.3 },
 };
 
 const menuContainer = document.getElementById('menu')!;
@@ -40,12 +41,12 @@ export const settings: Settings = Object.entries(initialConfig)
 export function initSettingsMenu() {
     Object
         .entries(initialConfig)
-		.reverse()
+        .reverse()
         .forEach((entry) => {
             const key = entry[0] as keyof Settings;
             const config = entry[1];
 
-			// uhhhhhh ignore this, dont use never as a type, and ignore me doing it :cheeky:
+            // uhhhhhh ignore this, dont use never as a type, and ignore me doing it :cheeky:
             (window as any)[`set_${key}`] = (val: never) => {
                 (settings as any)[key] = val;
                 config.onChange?.(val);
@@ -57,10 +58,10 @@ export function initSettingsMenu() {
                 case 'number': createInput(key, config as Config<string | number>, 'number'); break;
             }
 
-			if (config.header) {
-				createHeader(config.header)
-			}
-		});
+            if (config.header) {
+                createHeader(config.header);
+            }
+        });
 
     closeButton.addEventListener('click', closeMenu);
     openConfigButton.addEventListener('click', openMenu);
