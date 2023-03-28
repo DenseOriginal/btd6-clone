@@ -32,7 +32,7 @@ export function calibrate() {
 		// Only grab the markers that are used for calibration
 		.filter((marker) => calibrationIds.includes(marker.id))
 		.map((marker) => markerMapper(marker));
-	
+
 	const topLeftMarker = calibrationMarkers.find((marker) => marker.id == calibrationIds[0]);
 	const topRightMarker = calibrationMarkers.find((marker) => marker.id == calibrationIds[1]);
 	const bottomLeftMarker = calibrationMarkers.find((marker) => marker.id == calibrationIds[2]);
@@ -88,9 +88,9 @@ export function calibrate() {
 			Math.atan(angleDy / angleDx) :
 			Math.atan(angleDy / angleDx) + PI,
 		center: {
-            x: (topLeftPoint.x + topRightPoint.x + bottomLeftPoint.x + bottomRightPoint.x) / 4,
-            y: (topLeftPoint.y + topRightPoint.y + bottomLeftPoint.y + bottomRightPoint.y) / 4
-        },
+			x: (topLeftPoint.x + topRightPoint.x + bottomLeftPoint.x + bottomRightPoint.x) / 4,
+			y: (topLeftPoint.y + topRightPoint.y + bottomLeftPoint.y + bottomRightPoint.y) / 4
+		},
 	};
 }
 

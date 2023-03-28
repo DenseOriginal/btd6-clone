@@ -8,7 +8,7 @@ let finder: PF.Finder;
 let gridMatrix: PF.Grid;
 let gridHash: number = 0;
 
-export const getCurrentGridMatrix = () => gridMatrix; 
+export const getCurrentGridMatrix = () => gridMatrix;
 
 export function syncPathfinderWithWall() {
 	const allObjects = [
@@ -22,11 +22,11 @@ export function syncPathfinderWithWall() {
 	const occupiedCells = calculateIntersections(allObjects, rows, cols, size);
 
 	const gridAndHash = createGridFromPoints(occupiedCells, rows, cols);
-	const hasChanged = gridHash != gridAndHash.gridHash; 
-	
+	const hasChanged = gridHash != gridAndHash.gridHash;
+
 	gridMatrix = gridAndHash.grid;
 	gridHash = gridAndHash.gridHash
-	finder = new PF.DijkstraFinder({diagonalMovement: PF.DiagonalMovement.OnlyWhenNoObstacles});
+	finder = new PF.DijkstraFinder({ diagonalMovement: PF.DiagonalMovement.OnlyWhenNoObstacles });
 
 	return hasChanged;
 }
