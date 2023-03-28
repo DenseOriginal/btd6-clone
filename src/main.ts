@@ -88,7 +88,15 @@ export let canvasHeight = window.innerHeight;
 		push();
 		fill(color(255, 0, 0, 200));
 		noStroke();
-		rect(0, 0.5 * height - size * rows * settings.spawnBoxSize, settings.gridSize, size * rows * settings.spawnBoxSize * 2);
+
+		const yOffset = (height - (height * settings.spawnBoxSize)) / 2;
+
+		rect(
+			0, 
+			yOffset,
+			settings.gridSize * 3,
+			height * settings.spawnBoxSize
+		);
 		pop();
 	}
 	updateEnemies();

@@ -54,7 +54,14 @@ export class Enemy {
 	) {
 		const size = settings.gridSize;
 		const rows = Math.ceil(height / size);
-		const start = { x: 0, y: Math.floor(random(0.5 - settings.spawnBoxSize, 0.5 + settings.spawnBoxSize) * rows) };
+
+		const spawnSize = rows * settings.spawnBoxSize;
+		const yOffset = (rows - spawnSize) / 2;
+
+		const start = {
+			x: 0,
+			y: Math.floor(random(yOffset, yOffset + spawnSize))
+		};
 		this.calculateNewPath(start);
 	}
 
