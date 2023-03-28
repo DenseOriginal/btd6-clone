@@ -77,8 +77,10 @@ function checkCache(marker: Marker): Marker {
 
 export function syncTurretObj() {
 	const markerTurrets = getTurrets();
+	const markerIds: number[] = [];
 
 	markerTurrets.forEach((markerTurret) => {
+		markerIds.push(markerTurret.id);
 		if (!activeTurrets.has(markerTurret.id)) {
 			switch (markerTurret.turretType) {
 				case "gatling": {
@@ -96,6 +98,12 @@ export function syncTurretObj() {
 			tur.updateFromPlacement(markerTurret);
 		}
 	});
+	activeTurrets.forEach((turret, id, turrets) => {
+		if (!markerIds.includes(id)) {
+			turrets.delete(id);
+		}
+	});
+	console.log(activeTurrets);
 }
 export function updateTurretObj() {
 	activeTurrets.forEach((markerTurret) => {
