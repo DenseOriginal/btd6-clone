@@ -18,6 +18,7 @@ interface Wall extends Marker {
 
 interface TurretPlacement extends Marker {
 	type: 'turret';
+	turretType: TurretRatioConfig['type']
 	diameter: number;
 	timestamp: number; // Timestamp as the current frame
 }
@@ -77,6 +78,7 @@ interface WallRatioConfig {
 
 interface TurretRatioConfig {
 	id: number;
+	type: 'gatling' | 'spray'
 	codeWidth: number;
 	diameter: number;
 	rotationOffset: number;

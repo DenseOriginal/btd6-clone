@@ -8,7 +8,7 @@ import { drawEmptyGrid } from "./grid-builder";
 import { initSettingsMenu, settings } from "./settings";
 import { getWalls, syncWalls } from "./walls";
 import { debugDrawFromStartToEnd, syncPathfinderWithWall } from "./pathfindering";
-import { getTurrets, syncTurrets } from "./turrets";
+import { drawTurretBox, getTurrets, syncTurrets } from "./turrets";
 
 let capture: ReturnType<typeof createCapture>;
 
@@ -73,26 +73,7 @@ export let canvasHeight = window.innerHeight;
 	const turrets = getTurrets();
 
 	for (const turret of turrets) {
-		push();
-		noStroke();
-		fill(255, 100, 100);
-		const { x, y } = turret.center;
-		const angle = turret.angle;
-
-		circle(x, y, turret.diameter);
-
-		const rotX = cos(angle) * turret.diameter * 0.75;
-		const rotY = sin(angle) * turret.diameter * 0.75;
-
-		strokeWeight(10);
-		stroke(255, 50, 50);
-		line(
-			x,
-			y,
-			x + rotX,
-			y + rotY
-		);
-		pop();
+		drawTurretBox(turret);
 	}
 
 	drawDebugText();
