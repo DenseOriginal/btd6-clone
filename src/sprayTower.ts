@@ -1,6 +1,7 @@
 export class SprayTower {
   public shootTimeOut: number = 0;
   public sprayTimeOut: number = 0;
+  angle: number = 0; // Unused but fixes type errors
 
   constructor(
     public size: number,
