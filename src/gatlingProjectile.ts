@@ -18,11 +18,14 @@ export class GatlingProjectile {
 	}
 
 	update() {
-		this.hitBoxHitCheck()
+		this.hitBoxHitCheck();
 		if (this.beenHit < 1) {
 			this.positionX += this.directionX * this.speed;
 			this.positionY += this.directionY * this.speed;
+			push();
+			fill(120);
 			circle(this.positionX, this.positionY, this.size);
+			pop();
 		}
 	}
 
