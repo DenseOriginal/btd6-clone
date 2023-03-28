@@ -101,6 +101,15 @@ export let canvasHeight = window.innerHeight;
 		getMarkers().forEach((marker) => drawDebugMarker(marker));
 	}
 	if (settings.drawGridLines) drawEmptyGrid();
+	if (settings.spawnEnemies) {
+		const size = settings.gridSize;
+		const rows = Math.ceil(height / size);
+		push();
+		fill(color(255, 0, 0, 200));
+		noStroke();
+		rect(0, 0.5 * height - size * rows * settings.spawnBoxSize, 20, size * rows * settings.spawnBoxSize * 2);
+		pop();
+	}
 	updateEnemies();
 };
 
