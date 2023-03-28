@@ -39,7 +39,7 @@ export class GatlingTower extends TurretParent {
 
 	shoot() {
 		if (this.shootTimeOut === this.rateOfFire) {
-			this.shots.push(new GatlingProjectile(this.diameter * 0.2, this.projectileSpeed, this.barrelTipX, this.barrelTipY, this.angle));
+			this.shots.push(new GatlingProjectile(8, this.projectileSpeed, this.barrelTipX, this.barrelTipY, this.angle));
 			this.shootTimeOut = 0;
 		} else {
 			this.shootTimeOut++;

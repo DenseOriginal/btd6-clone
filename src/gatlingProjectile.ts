@@ -5,7 +5,7 @@ export class GatlingProjectile {
 	public directionY: number;
 
 	constructor(
-		public size: number,
+		public diameter: number,
 		public speed: number,
 		public positionX: number,
 		public positionY: number,
@@ -23,8 +23,9 @@ export class GatlingProjectile {
 			this.positionX += this.directionX * this.speed;
 			this.positionY += this.directionY * this.speed;
 			push();
-			fill(120);
-			circle(this.positionX, this.positionY, this.size);
+			fill(255);
+			noStroke()
+			circle(this.positionX, this.positionY, this.diameter);
 			pop();
 		}
 	}
@@ -32,7 +33,7 @@ export class GatlingProjectile {
 	hitBoxHitCheck() {
 		if (
 			//sæt en anden criteria plz
-			dist(this.positionX, this.positionY, mouseX, mouseY) < this.size / 2
+			dist(this.positionX, this.positionY, mouseX, mouseY) < this.diameter / 2
 		) {
 			this.beenHit++;
 			return true;
