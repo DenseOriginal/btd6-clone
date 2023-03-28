@@ -15,7 +15,7 @@ class GatlingTower {
     public projectileSpeed: number
   ) { }
 
-  update(directionDegree) {
+  update(directionDegree: number) {
     this.angle = directionDegree
     const directionX = cos(this.angle);
     const directionY = sin(this.angle);
