@@ -14,4 +14,11 @@ export abstract class TurretParent {
 	abstract update(directionDegree: number): void
 	abstract draw(): void
 	abstract shoot(): void
+
+	updateFromPlacement(update: TurretPlacement) {
+		this.diameter = update.diameter;
+		this.angle = update.angle;
+		this.positionX = update.center.x;
+		this.positionY = update.center.y;
+	}
 }

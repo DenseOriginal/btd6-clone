@@ -93,10 +93,7 @@ export function syncTurretObj() {
 			}
 		} else if (activeTurrets.has(markerTurret.id)) {
 			let tur = activeTurrets.get(markerTurret.id)!;
-			tur.diameter = markerTurret.diameter;
-			tur.angle = markerTurret.angle;
-			tur.positionX = markerTurret.center.x;
-			tur.positionY = markerTurret.center.y;
+			tur.updateFromPlacement(markerTurret);
 		}
 	});
 }
