@@ -1,4 +1,4 @@
-class SprayTower {
+export class SprayTower {
   public shootTimeOut: number = 0;
   public sprayTimeOut: number = 0;
 

@@ -1,8 +1,10 @@
 import { getMarkers } from "./AR-helper";
 import { settings } from "./settings";
+import { SprayTower } from "./sprayTower";
 
 const ratios = new Map<number, TurretRatioConfig>();
 const markerCache = new Map<number, Marker>();
+const activeTurrets = new Map<number, SprayTower>();
 
 ratios.set(40, { id: 40, codeWidth: 2.5, diameter: 4, rotationOffset: Math.PI / 2, type: 'gatling' });
 ratios.set(41, { id: 41, codeWidth: 2.5, diameter: 4, rotationOffset: Math.PI / 2, type: 'gatling' });
@@ -38,7 +40,7 @@ export function syncTurrets() {
 				diameter,
 				type: 'turret' as const,
 				turretType: ratio.type
-			}
+			};
 		})
 		.reduce((acc, cur) => ({ ...acc, [cur.id]: { ...cur, timestamp: currentFrame } }), {} as Record<number, TurretPlacement>);
 
@@ -79,7 +81,7 @@ export function drawTurretBox(turret: TurretPlacement) {
 	const angle = turret.angle;
 
 	circle(x, y, turret.diameter);
-	
+
 	strokeWeight(10);
 	stroke(255, 50, 50);
 
@@ -97,7 +99,7 @@ export function drawTurretBox(turret: TurretPlacement) {
 			break;
 		}
 		case 'spray': {
-			
+
 			for (let i = 0; i < 8; i++) {
 				const rotX = cos(angle + (i * QUARTER_PI)) * turret.diameter * 0.75;
 				const rotY = sin(angle + (i * QUARTER_PI)) * turret.diameter * 0.75;
@@ -114,4 +116,23 @@ export function drawTurretBox(turret: TurretPlacement) {
 		}
 	}
 	pop();
+}
+
+export function syncTurretObj() {
+	const markerTurrets = getTurrets();
+
+	markerTurrets.forEach((x) => {
+		if (!activeTurrets.has(x.id)) {
+			activeTurrets.set(x.id, new SprayTower(x.diameter, x.center.y, x.center.y, 25, 25));
+		} else if (activeTurrets.has(x.id)) {
+			let tur = activeTurrets.get(x.id);
+			tur.positionX = x.center.x;
+			tur.positionY = x.center.y;
+		}
+	});
+}
+export function updateTurretObj() {
+	activeTurrets.forEach((x) => {
+		x.update();
+	});
 }
