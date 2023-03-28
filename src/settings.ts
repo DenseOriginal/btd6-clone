@@ -12,6 +12,7 @@ const initialConfig: SettingsConfig = {
     showVideoFeed: { defaultValue: false },
     preserveWallsFrames: { defaultValue: 20 },
     sampleMarkersDelay: { defaultValue: 3 },
+	objectOffsetMultiplier: { defaultValue: 0.95 },
 	
 	// Calibrations settings
     skewThreshold: { defaultValue: 10, header: 'Calibrations' },
