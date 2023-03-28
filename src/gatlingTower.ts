@@ -10,11 +10,30 @@ export class GatlingTower extends TurretParent {
 	update() {
 		const directionX = cos(this.angle);
 		const directionY = sin(this.angle);
-		this.barrelTipX = this.size * 1.5 * directionX + this.positionX;
-		this.barrelTipY = this.size * 1.5 * directionY + this.positionY;
-		line(this.positionX, this.positionY, this.barrelTipX, this.barrelTipY);
-		circle(this.positionX, this.positionY, this.size);
+		this.barrelTipX = this.size * 1 * directionX + this.positionX;
+		this.barrelTipY = this.size * 1 * directionY + this.positionY;
+		
+		this.draw();
 		this.shoot();
+	}
+
+	draw() {
+		push();
+		noStroke();
+		fill(255, 100, 100);
+
+		circle(this.positionX, this.positionY, this.size);
+
+		strokeWeight(10);
+		stroke(255, 50, 50);
+
+		line(
+			this.positionX,
+			this.positionY,
+			this.barrelTipX,
+			this.barrelTipY
+		);
+		pop();
 	}
 
 	shoot() {

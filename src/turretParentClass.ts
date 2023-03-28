@@ -12,5 +12,6 @@ export abstract class TurretParent {
 	) { }
 
 	abstract update(directionDegree: number): void
+	abstract draw(): void
 	abstract shoot(): void
 }

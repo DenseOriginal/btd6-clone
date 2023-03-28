@@ -75,51 +75,6 @@ function checkCache(marker: Marker): Marker {
 	return marker;
 }
 
-export function drawTurretBox(turret: TurretPlacement) {
-	push();
-	noStroke();
-	fill(255, 100, 100);
-	const { x, y } = turret.center;
-	const angle = turret.angle;
-
-	circle(x, y, turret.diameter);
-
-	strokeWeight(10);
-	stroke(255, 50, 50);
-
-	switch (turret.turretType) {
-		case 'gatling': {
-			const rotX = cos(angle) * turret.diameter * 0.75;
-			const rotY = sin(angle) * turret.diameter * 0.75;
-
-			line(
-				x,
-				y,
-				x + rotX,
-				y + rotY
-			);
-			break;
-		}
-		case 'spray': {
-
-			for (let i = 0; i < 8; i++) {
-				const rotX = cos(angle + (i * QUARTER_PI)) * turret.diameter * 0.75;
-				const rotY = sin(angle + (i * QUARTER_PI)) * turret.diameter * 0.75;
-
-				line(
-					x,
-					y,
-					x + rotX,
-					y + rotY
-				);
-			}
-
-			break;
-		}
-	}
-	pop();
-}
-
 export function syncTurretObj() {
 	const markerTurrets = getTurrets();
 

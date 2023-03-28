@@ -5,8 +5,33 @@ export class SprayTower extends TurretParent {
 	public sprayTimeOut: number = 0;
 
 	update() {
+		this.draw();
 		this.shoot();
+	}
+
+	draw() {
+		push();
+		noStroke();
+		fill(255, 100, 100);
+
 		circle(this.positionX, this.positionY, this.size);
+
+		strokeWeight(10);
+		stroke(255, 50, 50);
+
+		for (let i = 0; i < 8; i++) {
+			const rotX = cos(this.angle + (i * QUARTER_PI)) * this.size * 0.75;
+			const rotY = sin(this.angle + (i * QUARTER_PI)) * this.size * 0.75;
+
+			line(
+				this.positionX,
+				this.positionY,
+				this.positionX + rotX,
+				this.positionY + rotY
+			);
+		}
+
+		pop();
 	}
 
 	hitBoxHitCheck() {

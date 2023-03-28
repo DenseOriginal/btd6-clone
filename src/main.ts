@@ -8,7 +8,7 @@ import { drawEmptyGrid } from "./grid-builder";
 import { initSettingsMenu, settings } from "./settings";
 import { getWalls, syncWalls } from "./walls";
 import { debugDrawFromStartToEnd, syncPathfinderWithWall } from "./pathfindering";
-import { drawTurretBox, getTurrets, syncTurretObj, syncTurrets, updateTurretObj } from "./turrets";
+import { getTurrets, syncTurretObj, syncTurrets, updateTurretObj } from "./turrets";
 
 let capture: ReturnType<typeof createCapture>;
 
@@ -69,12 +69,6 @@ export let canvasHeight = window.innerHeight;
 		vertex(p4.x, p4.y);
 		endShape();
 		pop();
-	}
-
-	const turrets = getTurrets();
-
-	for (const turret of turrets) {
-		drawTurretBox(turret);
 	}
 
 	drawDebugText();
