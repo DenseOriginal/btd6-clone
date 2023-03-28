@@ -48,6 +48,7 @@ export class Enemy {
 	currentTargetIndex: number = 0;
 	position: Point = { x: 0, y: 0 };
 	isAlive: boolean = true;
+	color: number = random(0, 360);
 
 	constructor(
 		public speed: number
@@ -160,7 +161,8 @@ export class Enemy {
 
 		push();
 		// Draw the enemies path
-		stroke(0, 175);
+		colorMode(HSB, 360);
+		stroke(this.color, 360, 360);
 		noFill();
 		beginShape();
 		for (let i = this.currentTargetIndex; i < this.path.length; i++) {
@@ -170,7 +172,7 @@ export class Enemy {
 		endShape();
 
 		noStroke();
-		fill(0);
+		fill(this.color, 360, 360);
 		translate(this.position.x, this.position.y);
 		rotate(angle);
 		rect(0 - 10, 0 - 5, 20, 10);

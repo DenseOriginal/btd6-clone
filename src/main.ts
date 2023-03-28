@@ -106,7 +106,7 @@ function drawPlayarea() {
 	push();
 
 	noStroke();
-	fill(100, 255, 100);
+	fill(0);
 
 	rect(
 		0,
