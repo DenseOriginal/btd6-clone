@@ -8,7 +8,7 @@ import { drawEmptyGrid } from "./grid-builder";
 import { initSettingsMenu, settings } from "./settings";
 import { getWalls, syncWalls } from "./walls";
 import { debugDrawFromStartToEnd, syncPathfinderWithWall } from "./pathfindering";
-import { drawTurretBox, getTurrets, syncTurrets } from "./turrets";
+import { drawTurretBox, getTurrets, syncTurretObj, syncTurrets, updateTurretObj } from "./turrets";
 
 let capture: ReturnType<typeof createCapture>;
 
@@ -39,6 +39,7 @@ export let canvasHeight = window.innerHeight;
 		syncMarkers();
 		syncWalls();
 		syncTurrets();
+		syncTurretObj();
 		const hasPathfindingGridChanged = syncPathfinderWithWall();
 		if (hasPathfindingGridChanged) validateAllEnemyPaths();
 	});
@@ -92,7 +93,7 @@ export let canvasHeight = window.innerHeight;
 		const yOffset = (height - (height * settings.spawnBoxSize)) / 2;
 
 		rect(
-			0, 
+			0,
 			yOffset,
 			settings.gridSize * 3,
 			height * settings.spawnBoxSize
@@ -100,13 +101,14 @@ export let canvasHeight = window.innerHeight;
 		pop();
 	}
 	updateEnemies();
+	updateTurretObj();
 };
 
 function drawPlayarea() {
 	push();
 
 	noStroke();
-	fill(100, 255, 100);
+	fill(0);
 
 	rect(
 		0,
