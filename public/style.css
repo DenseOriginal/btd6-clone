@@ -86,12 +86,12 @@ body {
     pointer-events: none;
     display: flex;
     justify-content: space-between;
-    padding-left: 10px;
+    padding-left: 20px;
 }
 
 #virtual-markers img {
     touch-action: none;
     pointer-events: none;
-    width: 150px;
-    padding: 20px 30px;
+    width: 200px;
+    padding: 30px 50px;
 }
