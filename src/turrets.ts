@@ -1,10 +1,11 @@
 import { getMarkers } from "./AR-helper";
+import { GatlingTower } from "./gatlingTowerClass";
 import { settings } from "./settings";
 import { SprayTower } from "./sprayTower";
 
 const ratios = new Map<number, TurretRatioConfig>();
 const markerCache = new Map<number, Marker>();
-const activeTurrets = new Map<number, SprayTower>();
+const activeTurrets = new Map<number, SprayTower | GatlingTower>();
 
 ratios.set(40, { id: 40, codeWidth: 2.5, diameter: 4, rotationOffset: Math.PI / 2, type: 'gatling' });
 ratios.set(41, { id: 41, codeWidth: 2.5, diameter: 4, rotationOffset: Math.PI / 2, type: 'gatling' });
@@ -123,7 +124,17 @@ export function syncTurretObj() {
 
 	markerTurrets.forEach((x) => {
 		if (!activeTurrets.has(x.id)) {
-			activeTurrets.set(x.id, new SprayTower(x.diameter, x.center.y, x.center.y, 25, 25));
+			switch (x.turretType) {
+				case "gatling": {
+					activeTurrets.set(x.id, new GatlingTower(x.diameter, x.center.y, x.center.y, 25, 25));
+					break;
+				}
+				case "spray": {
+					activeTurrets.set(x.id, new SprayTower(x.diameter, x.center.y, x.center.y, 25, 25));
+					break;
+
+				}
+			}
 		} else if (activeTurrets.has(x.id)) {
 			let tur = activeTurrets.get(x.id);
 			tur.positionX = x.center.x;
