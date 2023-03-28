@@ -2,10 +2,11 @@ import { getMarkers } from "./AR-helper";
 import { GatlingTower } from "./gatlingTower";
 import { settings } from "./settings";
 import { SprayTower } from "./sprayTower";
+import { TurretParent } from "./turretParentClass";
 
 const ratios = new Map<number, TurretRatioConfig>();
 const markerCache = new Map<number, Marker>();
-const activeTurrets = new Map<number, SprayTower | GatlingTower>();
+const activeTurrets = new Map<number, TurretParent>();
 
 ratios.set(40, { id: 40, codeWidth: 2.5, diameter: 4, rotationOffset: Math.PI / 2, type: 'gatling' });
 ratios.set(41, { id: 41, codeWidth: 2.5, diameter: 4, rotationOffset: Math.PI / 2, type: 'gatling' });
@@ -130,7 +131,7 @@ export function syncTurretObj() {
 					break;
 				}
 				case "spray": {
-					activeTurrets.set(x.id, new SprayTower(x.diameter, x.center.y, x.center.y, 25, 25));
+					activeTurrets.set(x.id, new SprayTower(x.diameter, x.center.y, x.center.y, 25, 0, 25));
 					break;
 
 				}
@@ -146,6 +147,6 @@ export function syncTurretObj() {
 }
 export function updateTurretObj() {
 	activeTurrets.forEach((x) => {
-		x.update();
+		x.update(x.angle);
 	});
 }

@@ -1,15 +1,8 @@
-export class SprayTower {
+import { TurretParent } from "./turretParentClass";
+
+export class SprayTower extends TurretParent {
   public shootTimeOut: number = 0;
   public sprayTimeOut: number = 0;
-  angle: number = 0; // Unused but fixes type errors
-
-  constructor(
-    public size: number,
-    public positionX: number,
-    public positionY: number,
-    public rateOfFire: number,
-    public sprayTime: number
-  ) { }
 
   update() {
     this.shoot();

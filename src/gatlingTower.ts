@@ -6,7 +6,6 @@ export class GatlingTower extends TurretParent {
   public barrelTipY: number = 0;
   public shots: GatlingProjectile[] = [];
   public shootTimeOut: number = 0;
-  public angle: number = 0;
 
   update() {
     const directionX = cos(this.angle);

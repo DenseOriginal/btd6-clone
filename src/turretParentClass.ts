@@ -1,5 +1,6 @@
 export abstract class TurretParent {
   public shootTimeOut: number = 0;
+  public angle: number = 0;
   
   constructor(
     public size: number,
