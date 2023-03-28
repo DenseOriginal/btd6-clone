@@ -78,27 +78,27 @@ function checkCache(marker: Marker): Marker {
 export function syncTurretObj() {
 	const markerTurrets = getTurrets();
 
-	markerTurrets.forEach((x) => {
-		if (!activeTurrets.has(x.id)) {
-			switch (x.turretType) {
+	markerTurrets.forEach((markerTurret) => {
+		if (!activeTurrets.has(markerTurret.id)) {
+			switch (markerTurret.turretType) {
 				case "gatling": {
-					activeTurrets.set(x.id, new GatlingTower(x.diameter, x.center.y, x.center.y, 25, 25, 0));
+					activeTurrets.set(markerTurret.id, new GatlingTower(markerTurret.diameter, markerTurret.center.y, markerTurret.center.y, 25, 25, 0));
 					break;
 				}
 				case "spray": {
-					activeTurrets.set(x.id, new SprayTower(x.diameter, x.center.y, x.center.y, 25, 0, 25));
+					activeTurrets.set(markerTurret.id, new SprayTower(markerTurret.diameter, markerTurret.center.y, markerTurret.center.y, 25, 0, 25));
 					break;
 
 				}
 			}
-		} else if (activeTurrets.has(x.id)) {
-			let tur = activeTurrets.get(x.id)!;
-			tur.updateFromPlacement(x);
+		} else if (activeTurrets.has(markerTurret.id)) {
+			let tur = activeTurrets.get(markerTurret.id)!;
+			tur.updateFromPlacement(markerTurret);
 		}
 	});
 }
 export function updateTurretObj() {
-	activeTurrets.forEach((x) => {
-		x.update(x.angle);
+	activeTurrets.forEach((markerTurret) => {
+		markerTurret.update(markerTurret.angle);
 	});
 }
