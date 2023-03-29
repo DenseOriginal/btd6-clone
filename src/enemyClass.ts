@@ -50,8 +50,8 @@ export function validateAllEnemyPaths() {
 }
 
 export class Enemy {
-	width: number = 20;
-	height: number = 10;
+	width: number = 60;
+	height: number = 20;
 	path: Point[] = [];
 	rawPath: Point[] = []; // This is only to check if the path has been obstructed by objects, since this.path is being mapped to pixels, instead of rows and cols
 	currentTargetIndex: number = 0;
@@ -235,7 +235,7 @@ export function bulletsCollide() {
 					object.height,
 					projectile.positionX,
 					projectile.positionY,
-					10,
+					projectile.diameter,
 				)
 			) {
 				console.log('Hit!', object);
