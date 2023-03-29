@@ -37,7 +37,7 @@ export class Quadtree {
         this.objects = [];
         for (let i = 0; i < this.nodes.length; i++) {
             if (this.nodes[i]) {
-                this.nodes[i].clear();
+                this.nodes[i]?.clear();
                 this.nodes[i] = null;
             }
         }
@@ -121,8 +121,8 @@ export class Quadtree {
     insert(object: Enemy) {
         if (this.nodes.length > 0) {
             let index = this.getIndex(object);
-            if (index !== -1) {
-                this.nodes[index].insert(object);
+            if (index !== -1 && index) {
+                this.nodes[index]?.insert(object);
                 return;
             }
         }
@@ -134,8 +134,8 @@ export class Quadtree {
             let i = 0;
             while (i < this.objects.length) {
                 let index = this.getIndex(this.objects[i]);
-                if (index !== -1) {
-                    this.nodes[index].insert(this.objects.splice(i, 1)[0]);
+                if (index !== -1 && index) {
+                    this.nodes[index]?.insert(this.objects.splice(i, 1)[0]);
                 } else {
                     i++;
                 }
@@ -147,13 +147,13 @@ export class Quadtree {
             let index = this.getIndex(object);
             let returnObjects = this.objects;
             if (this.nodes.length > 0) {
-                if (index !== -1) {
-                    returnObjects = returnObjects.concat(
-                        this.nodes[index].retrieve(object)
-                    );
+                if (index !== -1 && index) {
+					const foundObject = this.nodes[index]?.retrieve(object);
+					if (foundObject) returnObjects = returnObjects.concat(foundObject);
                 } else {
                     for (let i = 0; i < this.nodes.length; i++) {
-                        returnObjects = returnObjects.concat(this.nodes[i].retrieve(object));
+						const foundObject = this.nodes[i]?.retrieve(object);
+                        if (foundObject) returnObjects = returnObjects.concat(foundObject);
                     }
                 }
             }
@@ -169,13 +169,13 @@ export class Quadtree {
         rect(this.x, this.y, this.width, this.height);
         pop();
         for (let i = 0; i < this.nodes.length; i++) {
-            this.nodes[i].draw();
+            this.nodes[i]?.draw();
         }
     }
     remove(object: Enemy) {
         let index = this.getIndex(object);
-        if (index !== -1 && this.nodes.length > 0) {
-            this.nodes[index].remove(object);
+        if (index !== -1 && index && this.nodes.length > 0) {
+            this.nodes[index]?.remove(object);
             return;
         }
         let i = this.objects.indexOf(object);
