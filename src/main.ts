@@ -69,7 +69,7 @@ export const canvasHeight = window.innerHeight;
 		push();
 		noStroke();
 		fill(255, 100, 100);
-
+		
 		beginShape();
 		vertex(p1.x, p1.y);
 		vertex(p2.x, p2.y);
@@ -78,11 +78,12 @@ export const canvasHeight = window.innerHeight;
 		endShape();
 		pop();
 	}
-
+	
 	drawDebugText();
 	if (settings.debug) {
 		// debugDrawFromStartToEnd();
 		getMarkers().forEach((marker) => drawDebugMarker(marker));
+		quadtree.draw();
 	}
 	if (settings.drawGridLines) drawEmptyGrid();
 	if (settings.spawnEnemies) {
@@ -97,15 +98,13 @@ export const canvasHeight = window.innerHeight;
 			yOffset,
 			settings.gridSize * 3,
 			height * settings.spawnBoxSize,
-		);
-		pop();
+			);
+			pop();
 	}
 	updateEnemies();
 	updateTurretObj();
 	updateAllShots();
 	if (settings.spawnEnemies) {	bulletsCollide(); }
-
-	quadtree.draw();
 	quadtree.clear();
 };
 
