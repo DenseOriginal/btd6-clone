@@ -1,8 +1,14 @@
 //Nothing in here
 import { settings } from "./settings";
 import { getCurrentGridMatrix, getPath } from "./pathfindering";
+import { collideRectCircle, Quadtree } from "./quadtree";
+import { allShots, GatlingTower } from "./gatlingTower";
 
 let enemies: Enemy[] = [];
+export let quadtree: Quadtree;
+export function initQuadtree() {
+	quadtree = new Quadtree(0, 0, width, height, 4, 10, 0);
+}
 let enemiesSpawnIntervalHook: number;
 
 export function initEnemySpawner() {
@@ -19,13 +25,14 @@ export function updateEnemySpawnInterval(spawnRate: number) {
 }
 
 function spawnEnemy() {
-	enemies.push(new Enemy(settings.enemyBaseSpeed));
+	enemies.push(new Enemy(settings.enemyBaseSpeed, quadtree));
 }
 
 export function updateEnemies() {
 	for (let idx = enemies.length - 1; idx >= 0; idx--) {
 		const enemy = enemies[idx];
 		if (!enemy.isAlive) {
+			quadtree.remove(enemies[idx]);
 			enemies.splice(idx, 1);
 			continue;
 		}
@@ -43,6 +50,8 @@ export function validateAllEnemyPaths() {
 }
 
 export class Enemy {
+	width: number = 20;
+	height: number = 10;
 	path: Point[] = [];
 	rawPath: Point[] = []; // This is only to check if the path has been obstructed by objects, since this.path is being mapped to pixels, instead of rows and cols
 	currentTargetIndex: number = 0;
@@ -51,7 +60,8 @@ export class Enemy {
 	color: number = random(0, 360);
 
 	constructor(
-		public speed: number
+		public speed: number,
+		public quadtree: Quadtree
 	) {
 		const size = settings.gridSize;
 		const rows = Math.ceil(height / size);
@@ -91,6 +101,7 @@ export class Enemy {
 			}
 		}
 		this.render();
+		this.quadtree.insert(this)
 	}
 
 	isPathStillValid() {
@@ -175,7 +186,7 @@ export class Enemy {
 		fill(this.color, 360, 360);
 		translate(this.position.x, this.position.y);
 		rotate(angle);
-		rect(0 - 10, 0 - 5, 20, 10);
+		rect(0 - this.width / 2, 0 - this.height / 2, this.width, this.height);
 		pop();
 	}
 
@@ -184,3 +195,31 @@ export class Enemy {
 	}
 }
 
+
+export function bulletsCollide() {
+	for (let i = allShots.length - 1; i >= 0; i--) {
+		let projectile = allShots[i];
+
+		// Retrieve objects in the quadtree that overlap with the projectile
+		let objects = quadtree.retrieve(projectile);
+		for (let j = 0; j < objects.length; j++) {
+			let object = objects[j];
+			if (
+				object instanceof Enemy &&
+				collideRectCircle(
+					object.position.x,
+					object.position.y,
+					object.width,
+					object.height,
+					projectile.positionX,
+					projectile.positionY,
+					10
+				)
+			) {
+				console.log("Hit!", object);
+				allShots.splice(i,1)
+				object.isAlive=false;
+			}
+		}
+	}
+}
