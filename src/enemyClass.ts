@@ -181,8 +181,35 @@ export class Enemy {
 		noStroke();
 		fill(this.color, 360, 360);
 		translate(this.position.x, this.position.y);
-		rotate(angle);
-		rect(0 - this.width / 2, 0 - this.height / 2, this.width, this.height);
+		rotate(angle + PI);
+
+		// This are relative to the current origin, and we have already translated to the enemy position
+		const xPos = 0;
+		const yPos = 0;
+		const scale = 0.2;
+
+		// Enemy Ship Design
+		noStroke();
+		fill(this.color % 360, 360, 300);
+		ellipse(xPos, yPos, 100 * scale, 100 * scale);
+		triangle(xPos + (60 * scale), yPos + (75 * scale), xPos + (120 * scale), yPos + (100 * scale), xPos + (250 * scale), yPos + (20 * scale));
+		triangle(xPos + (60 * scale), yPos - (75 * scale), xPos + (120 * scale), yPos - (100 * scale), xPos + (250 * scale), yPos - (20 * scale));
+		quad(xPos - (350 * scale), yPos + (30 * scale), xPos - (220 * scale), yPos + (30 * scale), xPos + (70 * scale), yPos + (75 * scale), xPos + (170 * scale), yPos + (120 * scale));
+		quad(xPos - (350 * scale), yPos - (30 * scale), xPos - (220 * scale), yPos - (30 * scale), xPos + (70 * scale), yPos - (75 * scale), xPos + (170 * scale), yPos - (120 * scale));
+
+		fill((this.color + 100) % 360, 360, 300);
+		ellipse(xPos - (32 * scale), yPos, 30 * scale, 30 * scale);
+		quad(xPos + (15 * scale), yPos + (50 * scale), xPos - (10 * scale), yPos + (50 * scale), xPos + (5 * scale), yPos + (65 * scale), xPos + (80 * scale), yPos + (80 * scale));
+		quad(xPos + (15 * scale), yPos - (50 * scale), xPos - (10 * scale), yPos - (50 * scale), xPos + (5 * scale), yPos - (65 * scale), xPos + (80 * scale), yPos - (80 * scale));
+
+		colorMode(RGB, 255);
+
+		// Thruster Flame
+		fill(255, 255, 0);
+		triangle(xPos + (60 * scale), yPos + (20 * scale), xPos + (60 * scale), yPos - (20 * scale), xPos + (400 * scale), yPos);
+		fill(240, 200, 60);
+		triangle(xPos + (60 * scale), yPos + (10 * scale), xPos + (60 * scale), yPos - (10 * scale), xPos + (300 * scale), yPos);
+
 		pop();
 	}
 
