@@ -6,7 +6,7 @@ import { TurretParent } from "./turretParentClass";
 
 const ratios = new Map<number, TurretRatioConfig>();
 const markerCache = new Map<number, Marker>();
-const activeTurrets = new Map<number, TurretParent>();
+export const activeTurrets = new Map<number, TurretParent>();
 
 ratios.set(40, { id: 40, codeWidth: 2.5, diameter: 4, rotationOffset: Math.PI / 2, type: 'gatling' });
 ratios.set(41, { id: 41, codeWidth: 2.5, diameter: 4, rotationOffset: Math.PI / 2, type: 'gatling' });
@@ -84,7 +84,7 @@ export function syncTurretObj() {
 		if (!activeTurrets.has(markerTurret.id)) {
 			switch (markerTurret.turretType) {
 				case "gatling": {
-					activeTurrets.set(markerTurret.id, new GatlingTower(markerTurret.diameter, markerTurret.center.y, markerTurret.center.y, 25, 25, 0));
+					activeTurrets.set(markerTurret.id, new GatlingTower(markerTurret.diameter, markerTurret.center.y, markerTurret.center.y, 2, 25, 2));
 					break;
 				}
 				case "spray": {

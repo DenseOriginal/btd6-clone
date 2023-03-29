@@ -3,12 +3,12 @@
 import { getMarkers, isReady, setupDetector, setupVideoStream, syncMarkers } from "./AR-helper";
 import { calibrationBox, initAutoCalibrate, isCalibrationMarker } from "./calibration";
 import { drawCalibrationBox, drawDebugMarker, drawDebugText, drawVideoFeed } from "./debug-draw";
-import { initEnemySpawner, updateEnemies, validateAllEnemyPaths } from "./enemyClass";
+import { bulletsCollide, initEnemySpawner, initQuadtree, quadtree, updateEnemies, validateAllEnemyPaths } from "./enemyClass";
 import { drawEmptyGrid } from "./grid-builder";
 import { initSettingsMenu, settings } from "./settings";
 import { getWalls, syncWalls } from "./walls";
 import { debugDrawFromStartToEnd, syncPathfinderWithWall } from "./pathfindering";
-import { getTurrets, syncTurretObj, syncTurrets, updateTurretObj } from "./turrets";
+import { syncTurretObj, syncTurrets, updateTurretObj } from "./turrets";
 
 let capture: ReturnType<typeof createCapture>;
 
@@ -27,6 +27,7 @@ export let canvasHeight = window.innerHeight;
 	frameRate(settings.targetFrameRate);
 	initAutoCalibrate();
 	initEnemySpawner();
+	initQuadtree();
 };
 
 (window as any).draw = () => {
@@ -96,6 +97,10 @@ export let canvasHeight = window.innerHeight;
 	}
 	updateEnemies();
 	updateTurretObj();
+	if(settings.spawnEnemies){	bulletsCollide();}
+
+	quadtree.draw();
+	quadtree.clear();
 };
 
 function drawPlayarea() {
