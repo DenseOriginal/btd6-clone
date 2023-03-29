@@ -1,7 +1,7 @@
 import { GatlingProjectile } from './gatlingProjectile';
 import { TurretParent } from './turretParentClass';
 
-export const allShots:GatlingProjectile[] = [];
+export const allShots: GatlingProjectile[] = [];
 
 export class GatlingTower extends TurretParent {
 	public barrelTipX: number = 0;
