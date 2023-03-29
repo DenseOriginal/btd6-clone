@@ -3,6 +3,9 @@ export class GatlingProjectile {
 	public directionDegreeScaled: number;
 	public directionX: number;
 	public directionY: number;
+	public position: Point = {x:0,y:0};
+	public width: number = 0;
+	public height: number = 0;
 
 	constructor(
 		public diameter: number,
@@ -15,6 +18,8 @@ export class GatlingProjectile {
 		this.directionDegree = round(randomGaussian(this.directionDegreeScaled, 180)) / 1000;
 		this.directionX = cos(this.directionDegree);
 		this.directionY = sin(this.directionDegree);
+		this.width = diameter
+		this.height = diameter
 	}
 
 	update() {
@@ -27,6 +32,7 @@ export class GatlingProjectile {
 			noStroke()
 			circle(this.positionX, this.positionY, this.diameter);
 			pop();
+			this.position = {x: this.positionX, y: this.positionY}
 		}
 	}
 
