@@ -2,7 +2,17 @@ import { GatlingProjectile } from './gatlingProjectile';
 import { TurretParent } from './turretParentClass';
 
 export const allShots: GatlingProjectile[] = [];
-
+export function updateAllShots() {
+	for (let i = allShots.length - 1; i > 0; i--) {
+		allShots[i].update();
+		if (allShots[i].positionX > width
+			|| allShots[i].positionX < 0
+			|| allShots[i].positionY > height
+			|| allShots[i].positionY < 0) {
+			allShots.splice(i, 1);
+		}
+	}
+}
 export class GatlingTower extends TurretParent {
 	public barrelTipX: number = 0;
 	public barrelTipY: number = 0;
@@ -17,7 +27,7 @@ export class GatlingTower extends TurretParent {
 
 		this.draw();
 		this.shoot();
-		this.updateShots();
+		//this.updateShots(); 
 	}
 
 	draw() {
@@ -41,7 +51,7 @@ export class GatlingTower extends TurretParent {
 
 	shoot() {
 		if (this.shootTimeOut == this.rateOfFire) {
-			allShots.push(new GatlingProjectile(8, this.projectileSpeed, this.barrelTipX, this.barrelTipY, this.angle));
+			allShots.push(new GatlingProjectile(this.diameter/8, this.projectileSpeed, this.barrelTipX, this.barrelTipY, this.angle));
 			this.shootTimeOut = 0;
 		} else {
 			this.shootTimeOut++;
