@@ -2,7 +2,7 @@ import { settings } from './settings';
 import { getCurrentGridMatrix, getPath } from './pathfindering';
 import { Quadtree } from './quadtree';
 import { allShots } from './gatlingTower';
-import { collisionDetection } from './collision-helpers';
+import { collideCirclePoly } from './collision-helpers';
 
 const enemies: Enemy[] = [];
 export let quadtree: Quadtree;
@@ -251,7 +251,7 @@ export function bulletsCollide() {
 			const object = objects[j];
 			if (
 				object instanceof Enemy
-				&& collisionDetection.collideCirclePoly(
+				&& collideCirclePoly(
 					projectile.positionX,
 					projectile.positionY,
 					projectile.diameter,
