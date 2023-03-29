@@ -49,7 +49,7 @@ export function drawDebugText() {
 		settings.debug ? `Calibration box angle: ${calibrationBox.angle.toFixed(4)}` : '',
 	];
 
-	fill(0);
+	fill(255);
 	messages.forEach((message, idx) => {
 		text(message, 10, 20 + idx * 10);
 	});
