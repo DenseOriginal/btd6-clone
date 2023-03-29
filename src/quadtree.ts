@@ -1,8 +1,6 @@
 import { Enemy } from './enemyClass';
 import { GatlingProjectile } from './gatlingProjectile';
 
-
-
 export class Quadtree {
 	public objects: Enemy[] = [];
 	public nodes: Quadtree[] | null[] = [];

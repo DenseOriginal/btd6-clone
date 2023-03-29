@@ -193,7 +193,7 @@ export class Enemy {
 			[-this.width / 2, -this.height / 2],
 			[this.width / 2, -this.height / 2],
 			[this.width / 2, this.height / 2],
-			[-this.width / 2, this.height / 2]
+			[-this.width / 2, this.height / 2],
 		].map(([x, y]) => {
 			const rotatedX = x * cosAngle - y * sinAngle;
 			const rotatedY = x * sinAngle + y * cosAngle;
@@ -227,7 +227,7 @@ export class Enemy {
 		triangle(xPos + (60 * scale), yPos + (10 * scale), xPos + (60 * scale), yPos - (10 * scale), xPos + (300 * scale), yPos);
 
 		pop();
-		
+
 		// Debug draw hitbox detection
 		// beginShape();
 		// for (const corner of this.corners) {
@@ -256,7 +256,7 @@ export function bulletsCollide() {
 					projectile.positionY,
 					projectile.diameter,
 					object.corners,
-					true
+					true,
 				)
 			) {
 				console.log('Hit!', object);
