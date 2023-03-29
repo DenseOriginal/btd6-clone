@@ -1,8 +1,8 @@
-import { Grid } from "pathfinding";
-import { settings } from "./settings";
+import { Grid } from 'pathfinding';
+import { settings } from './settings';
 
 export function drawEmptyGrid() {
-	push()
+	push();
 	stroke(0, 175);
 	strokeWeight(1);
 	for (let x = 0; x < width; x += settings.gridSize) {
@@ -16,13 +16,13 @@ export function drawEmptyGrid() {
 }
 
 export function drawOverlappedCells(cells: Point[]) {
-	const size = settings.gridSize
+	const size = settings.gridSize;
 	cells.forEach((cell) => rect(
 		cell.x * size,
 		cell.y * size,
 		size,
 		size,
-	))
+	));
 }
 
 export function createGridFromPoints(points: Point[], rows: number, cols: number): { grid: Grid, gridHash: number } {
@@ -33,7 +33,7 @@ export function createGridFromPoints(points: Point[], rows: number, cols: number
 	let gridHash = 0;
 
 	// Set the value of each cell to 1 if it contains a point
-	points.forEach(point => {
+	points.forEach((point) => {
 		const row = Math.floor(point.y);
 		const col = Math.floor(point.x);
 
@@ -60,13 +60,13 @@ export function calculateIntersections(objects: CollisionObject[], rows: number,
 	const intersections: Point[] = [];
 
 	// Loop through each object
-	objects.forEach(object => {
+	objects.forEach((object) => {
 		// Loop through each cell in the grid
 		for (let row = 0; row < rows; row++) {
 			for (let col = 0; col < cols; col++) {
 				const cellCenter: Point = {
 					x: col * size + size / 2,
-					y: row * size + size / 2
+					y: row * size + size / 2,
 				};
 
 				// Check if the cell intersects the wall
@@ -81,10 +81,9 @@ export function calculateIntersections(objects: CollisionObject[], rows: number,
 		push();
 		noStroke();
 		fill(255, 0, 0, 175);
-		drawOverlappedCells(intersections)
+		drawOverlappedCells(intersections);
 		pop();
 	}
-
 
 	return intersections;
 }
@@ -100,7 +99,7 @@ function doesIntersectWithGeneric(point: Point, object: CollisionObject, bufferS
 }
 
 function doesIntersectWithWall(point: Point, wall: Wall): boolean {
-	const corners = wall.corners;
+	const { corners } = wall;
 	let intersectionCount = 0;
 
 	for (let i = 0; i < corners.length; i++) {
@@ -123,5 +122,5 @@ function doesIntersectWithWall(point: Point, wall: Wall): boolean {
 }
 
 function doesIntersectWithTurret(point: Point, turret: TurretPlacement, bufferSize: number): boolean {
-	return dist(point.x, point.y, turret.center.x, turret.center.y) < ((turret.diameter + bufferSize) / 2)
+	return dist(point.x, point.y, turret.center.x, turret.center.y) < ((turret.diameter + bufferSize) / 2);
 }

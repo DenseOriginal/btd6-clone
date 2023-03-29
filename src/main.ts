@@ -1,20 +1,25 @@
 /// <reference path="../node_modules/@types/p5/global.d.ts"/>
 
-import { getMarkers, isReady, setupDetector, setupVideoStream, syncMarkers } from "./AR-helper";
-import { calibrationBox, initAutoCalibrate, isCalibrationMarker } from "./calibration";
-import { drawCalibrationBox, drawDebugMarker, drawDebugText, drawVideoFeed } from "./debug-draw";
-import { bulletsCollide, initEnemySpawner, initQuadtree, quadtree, updateEnemies, validateAllEnemyPaths } from "./enemyClass";
-import { drawEmptyGrid } from "./grid-builder";
-import { initSettingsMenu, settings } from "./settings";
-import { getWalls, syncWalls } from "./walls";
-import { debugDrawFromStartToEnd, syncPathfinderWithWall } from "./pathfindering";
-import { syncTurretObj, syncTurrets, updateTurretObj } from "./turrets";
+import {
+	getMarkers, isReady, setupDetector, setupVideoStream, syncMarkers,
+} from './AR-helper';
+import { calibrationBox, initAutoCalibrate, isCalibrationMarker } from './calibration';
+import {
+	drawCalibrationBox, drawDebugMarker, drawDebugText, drawVideoFeed,
+} from './debug-draw';
+import {
+	bulletsCollide, initEnemySpawner, initQuadtree, quadtree, updateEnemies, validateAllEnemyPaths,
+} from './enemyClass';
+import { drawEmptyGrid } from './grid-builder';
+import { initSettingsMenu, settings } from './settings';
+import { getWalls, syncWalls } from './walls';
+import { syncPathfinderWithWall } from './pathfindering';
+import { syncTurretObj, syncTurrets, updateTurretObj } from './turrets';
 
 let capture: ReturnType<typeof createCapture>;
 
-
-export let canvasWidth = window.innerWidth;
-export let canvasHeight = window.innerHeight;
+export const canvasWidth = window.innerWidth;
+export const canvasHeight = window.innerHeight;
 
 (window as any).setup = () => {
 	initSettingsMenu();
@@ -34,16 +39,17 @@ export let canvasHeight = window.innerHeight;
 	background(255);
 	if (!isReady()) return;
 
-
 	drawPlayarea();
-	if (frameCount % settings.sampleMarkersDelay == 0) new Promise(() => {
-		syncMarkers();
-		syncWalls();
-		syncTurrets();
-		syncTurretObj();
-		const hasPathfindingGridChanged = syncPathfinderWithWall();
-		if (hasPathfindingGridChanged) validateAllEnemyPaths();
-	});
+	if (frameCount % settings.sampleMarkersDelay == 0) {
+		new Promise(() => {
+			syncMarkers();
+			syncWalls();
+			syncTurrets();
+			syncTurretObj();
+			const hasPathfindingGridChanged = syncPathfinderWithWall();
+			if (hasPathfindingGridChanged) validateAllEnemyPaths();
+		});
+	}
 
 	// If debug, draw transparent video feed on top of canvas
 	if (settings.debug) drawCalibrationBox();
@@ -56,7 +62,7 @@ export let canvasHeight = window.innerHeight;
 		if (isCalibrationMarker(mark.id)) {
 			if (settings.debug) drawDebugMarker(mark);
 			continue;
-		};
+		}
 
 		const [p1, p2, p3, p4] = mark.corners;
 		push();
@@ -79,8 +85,6 @@ export let canvasHeight = window.innerHeight;
 	}
 	if (settings.drawGridLines) drawEmptyGrid();
 	if (settings.spawnEnemies) {
-		const size = settings.gridSize;
-		const rows = Math.ceil(height / size);
 		push();
 		fill(color(255, 0, 0, 200));
 		noStroke();
@@ -91,13 +95,13 @@ export let canvasHeight = window.innerHeight;
 			0,
 			yOffset,
 			settings.gridSize * 3,
-			height * settings.spawnBoxSize
+			height * settings.spawnBoxSize,
 		);
 		pop();
 	}
 	updateEnemies();
 	updateTurretObj();
-	if(settings.spawnEnemies){	bulletsCollide();}
+	if (settings.spawnEnemies) {	bulletsCollide(); }
 
 	quadtree.draw();
 	quadtree.clear();
@@ -113,7 +117,7 @@ function drawPlayarea() {
 		0,
 		0,
 		calibrationBox.width * calibrationBox.scaleX,
-		calibrationBox.height * calibrationBox.scaleY
+		calibrationBox.height * calibrationBox.scaleY,
 	);
 
 	pop();

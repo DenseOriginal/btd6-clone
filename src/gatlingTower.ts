@@ -1,7 +1,7 @@
-import { GatlingProjectile } from "./gatlingProjectile";
-import { TurretParent } from "./turretParentClass";
+import { GatlingProjectile } from './gatlingProjectile';
+import { TurretParent } from './turretParentClass';
 
-export const allShots:GatlingProjectile[] = []
+export const allShots:GatlingProjectile[] = [];
 
 export class GatlingTower extends TurretParent {
 	public barrelTipX: number = 0;
@@ -34,7 +34,7 @@ export class GatlingTower extends TurretParent {
 			this.positionX,
 			this.positionY,
 			this.barrelTipX,
-			this.barrelTipY
+			this.barrelTipY,
 		);
 		pop();
 	}

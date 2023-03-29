@@ -1,10 +1,10 @@
-//Nothing in here
-import { settings } from "./settings";
-import { getCurrentGridMatrix, getPath } from "./pathfindering";
-import { collideRectCircle, Quadtree } from "./quadtree";
-import { allShots, GatlingTower } from "./gatlingTower";
+// Nothing in here
+import { settings } from './settings';
+import { getCurrentGridMatrix, getPath } from './pathfindering';
+import { collideRectCircle, Quadtree } from './quadtree';
+import { allShots } from './gatlingTower';
 
-let enemies: Enemy[] = [];
+const enemies: Enemy[] = [];
 export let quadtree: Quadtree;
 export function initQuadtree() {
 	quadtree = new Quadtree(0, 0, width, height, 4, 10, 0);
@@ -61,7 +61,7 @@ export class Enemy {
 
 	constructor(
 		public speed: number,
-		public quadtree: Quadtree
+		public quadtree: Quadtree,
 	) {
 		const size = settings.gridSize;
 		const rows = Math.ceil(height / size);
@@ -71,7 +71,7 @@ export class Enemy {
 
 		const start = {
 			x: 0,
-			y: Math.floor(random(yOffset, yOffset + spawnSize))
+			y: Math.floor(random(yOffset, yOffset + spawnSize)),
 		};
 		this.calculateNewPath(start);
 	}
@@ -83,11 +83,11 @@ export class Enemy {
 		// Move towards the current target point
 		const targetPoint = this.path[this.currentTargetIndex];
 		const distanceToTarget = Math.sqrt(
-			(targetPoint.x - this.position.x) ** 2 + (targetPoint.y - this.position.y) ** 2
+			(targetPoint.x - this.position.x) ** 2 + (targetPoint.y - this.position.y) ** 2,
 		);
 		const direction = {
 			x: (targetPoint.x - this.position.x) / distanceToTarget,
-			y: (targetPoint.y - this.position.y) / distanceToTarget
+			y: (targetPoint.y - this.position.y) / distanceToTarget,
 		};
 		this.position.x += direction.x * this.speed * deltaTime;
 		this.position.y += direction.y * this.speed * deltaTime;
@@ -101,7 +101,7 @@ export class Enemy {
 			}
 		}
 		this.render();
-		this.quadtree.insert(this)
+		this.quadtree.insert(this);
 	}
 
 	isPathStillValid() {
@@ -130,17 +130,15 @@ export class Enemy {
 		const cols = Math.ceil(width / size);
 		this.rawPath = getPath(
 			start,
-			{ x: cols - 1, y: Math.floor(rows / 2) }
+			{ x: cols - 1, y: Math.floor(rows / 2) },
 		);
 
 		if (this.rawPath.length < 2) return this.die();
 
-		this.path = this.rawPath.map((point) => {
-			return {
-				x: point.x * settings.gridSize,
-				y: point.y * settings.gridSize + settings.gridSize / 2,
-			};
-		});
+		this.path = this.rawPath.map((point) => ({
+			x: point.x * settings.gridSize,
+			y: point.y * settings.gridSize + settings.gridSize / 2,
+		}));
 		this.currentTargetIndex = 1;
 		this.position = this.path[0];
 		try {
@@ -154,17 +152,15 @@ export class Enemy {
 		} catch (error) {
 			console.log(error);
 			console.log({ raw: this.rawPath, path: this.path });
-
 		}
 	}
 
-	//Some goofy looking enemies
+	// Some goofy looking enemies
 	render() {
 		const nextPoint = this.path[this.currentTargetIndex + 1];
 		if (!nextPoint) {
 			return;
 		}
-
 
 		const dx = nextPoint.x - this.position.x;
 		const dy = nextPoint.y - this.position.y;
@@ -195,30 +191,29 @@ export class Enemy {
 	}
 }
 
-
 export function bulletsCollide() {
 	for (let i = allShots.length - 1; i >= 0; i--) {
-		let projectile = allShots[i];
+		const projectile = allShots[i];
 
 		// Retrieve objects in the quadtree that overlap with the projectile
-		let objects = quadtree.retrieve(projectile);
+		const objects = quadtree.retrieve(projectile) || [];
 		for (let j = 0; j < objects.length; j++) {
-			let object = objects[j];
+			const object = objects[j];
 			if (
-				object instanceof Enemy &&
-				collideRectCircle(
+				object instanceof Enemy
+				&& collideRectCircle(
 					object.position.x,
 					object.position.y,
 					object.width,
 					object.height,
 					projectile.positionX,
 					projectile.positionY,
-					10
+					10,
 				)
 			) {
-				console.log("Hit!", object);
-				allShots.splice(i,1)
-				object.isAlive=false;
+				console.log('Hit!', object);
+				allShots.splice(i, 1);
+				object.isAlive = false;
 			}
 		}
 	}

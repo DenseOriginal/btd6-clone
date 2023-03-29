@@ -1,6 +1,6 @@
-import { captureHeight, captureWidth } from "./AR-helper";
-import { calibrationBox, isCalibrationMarker } from "./calibration";
-import { settings } from "./settings";
+import { captureHeight, captureWidth } from './AR-helper';
+import { calibrationBox, isCalibrationMarker } from './calibration';
+import { settings } from './settings';
 
 const captureToCanvasRatioX = window.innerWidth / captureWidth;
 const captureToCanvasRatioY = window.innerHeight / captureHeight;
@@ -15,7 +15,7 @@ export function drawDebugMarker(mark: Marker) {
 	const { x, y } = mark.center;
 	circle(x, y, 4);
 
-	const angle = mark.angle;
+	const { angle } = mark;
 	const rotX = cos(angle) * 20;
 	const rotY = sin(angle) * 20;
 
@@ -23,7 +23,7 @@ export function drawDebugMarker(mark: Marker) {
 		x,
 		y,
 		x + rotX,
-		y + rotY
+		y + rotY,
 	);
 
 	noStroke();
@@ -74,7 +74,7 @@ export function drawCalibrationBox() {
 	calibrationBox.corners.forEach((point) => vertex(point.x * captureToCanvasRatioX, point.y * captureToCanvasRatioY));
 	endShape('close');
 
-	const angle = calibrationBox.angle;
+	const { angle } = calibrationBox;
 	const rotX = cos(angle) * 30;
 	const rotY = sin(angle) * 30;
 
@@ -82,7 +82,7 @@ export function drawCalibrationBox() {
 		calibrationBox.center.x * captureToCanvasRatioX,
 		calibrationBox.center.y * captureToCanvasRatioY,
 		calibrationBox.center.x * captureToCanvasRatioX + rotX,
-		calibrationBox.center.y * captureToCanvasRatioY + rotY
+		calibrationBox.center.y * captureToCanvasRatioY + rotY,
 	);
 
 	pop();

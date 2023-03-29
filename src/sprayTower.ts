@@ -1,4 +1,4 @@
-import { TurretParent } from "./turretParentClass";
+import { TurretParent } from './turretParentClass';
 
 export class SprayTower extends TurretParent {
 	public shootTimeOut: number = 0;
@@ -27,7 +27,7 @@ export class SprayTower extends TurretParent {
 				this.positionX,
 				this.positionY,
 				this.positionX + rotX,
-				this.positionY + rotY
+				this.positionY + rotY,
 			);
 		}
 
@@ -36,11 +36,10 @@ export class SprayTower extends TurretParent {
 
 	hitBoxHitCheck() {
 		if (dist(this.positionX, this.positionY, mouseX, mouseY) <= this.diameter * 2.5 / 2) {
-			print('hit');
+			console.log('hit');
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	shoot() {

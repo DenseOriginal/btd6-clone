@@ -1,6 +1,5 @@
-import { calibrationBox, isCalibrationMarker } from "./calibration";
-import { canvasHeight, canvasWidth } from "./main";
-import { settings } from "./settings";
+import { calibrationBox, isCalibrationMarker } from './calibration';
+import { settings } from './settings';
 
 let video: HTMLVideoElement;
 let detector: any;
@@ -24,10 +23,9 @@ export function setupDetector() {
 
 export function setupVideoStream() {
 	// Get the html video element and set the correct width and height
-	video = document.getElementById("video") as HTMLVideoElement;
+	video = document.getElementById('video') as HTMLVideoElement;
 	video.width = captureWidth;
 	video.height = captureHeight;
-
 
 	// Error if there's no mediaDevices
 	if (!navigator.mediaDevices) {
@@ -36,8 +34,8 @@ export function setupVideoStream() {
 
 	navigator.mediaDevices
 		.getUserMedia({ video: true })
-		.then(function (stream) {
-			if ("srcObject" in video) {
+		.then((stream) => {
+			if ('srcObject' in video) {
 				// Idk what this is, but it's from the js-aruco examples
 				video.srcObject = stream;
 			} else {
@@ -45,21 +43,20 @@ export function setupVideoStream() {
 				(video as any).src = window.URL.createObjectURL(stream as any);
 			}
 		})
-		.catch(function (err) {
-			console.log(err.name + ": " + err.message);
-			throw new Error('Uuuhhh stuff happened during media device setup :(')
-		}
-		);
+		.catch((err) => {
+			console.log(`${err.name}: ${err.message}`);
+			throw new Error('Uuuhhh stuff happened during media device setup :(');
+		});
 }
 
 export function getRawMarkers(): RawMarker[] {
 	// Idk why we create a canvas element, but this code is mostly from the js-aruco examples
-	let canvas = document.createElement('canvas');
+	const canvas = document.createElement('canvas');
 	canvas.width = captureWidth;
 	canvas.height = captureHeight;
 
 	// Get the context to the canvas, this is kinda similar to p5js
-	let ctx = canvas.getContext('2d');
+	const ctx = canvas.getContext('2d');
 
 	// Draw the current frame from the webcam onto the canvas
 	ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -72,7 +69,7 @@ export function getRawMarkers(): RawMarker[] {
 	// Step 21: Sprinkle in some magic from js-aruco library and boom
 	// Code detection
 	return detector.detect(imageData);
-};
+}
 
 let markers: Marker[] = [];
 export const getMarkers = () => markers;
@@ -80,7 +77,7 @@ export function syncMarkers() {
 	markers = getRawMarkers()
 		.map((marker: RawMarker) => shiftTowardsCenter(marker))
 		.map((marker: RawMarker) => translateMarker(marker))
-		.map((marker: RawMarker) => markerMapper(marker))
+		.map((marker: RawMarker) => markerMapper(marker));
 }
 
 export function isReady() {
@@ -95,7 +92,7 @@ export function markerMapper(marker: RawMarker): Marker {
 		p1,
 		p2,
 		p3,
-		p4
+		p4,
 	] = marker.corners;
 
 	const dx = p2.x - p1.x;
@@ -106,23 +103,25 @@ export function markerMapper(marker: RawMarker): Marker {
 		corners: [p1, p2, p3, p4],
 		center: {
 			x: (p1.x + p2.x + p3.x + p4.x) / 4,
-			y: (p1.y + p2.y + p3.y + p4.y) / 4
+			y: (p1.y + p2.y + p3.y + p4.y) / 4,
 		},
-		angle: dx < 0 ?
-			Math.atan(dy / dx) :
-			Math.atan(dy / dx) + PI
-	}
+		angle: dx < 0
+			? Math.atan(dy / dx)
+			: Math.atan(dy / dx) + PI,
+	};
 }
 
 function translateMarker(marker: RawMarker): RawMarker {
-	const { x: originX, y: originY, center: originCenter, scaleX, scaleY, angle: originAngle } = calibrationBox;
+	const {
+		x: originX, y: originY, scaleX, scaleY, angle: originAngle,
+	} = calibrationBox;
 
 	// Allooooooooooot of mart stuff, basicly translation and rotaion every corner relative to the top left calibration corner
 	const [
 		p1,
 		p2,
 		p3,
-		p4
+		p4,
 	] = marker
 		.corners
 		.map(({ x, y }) => {
@@ -131,9 +130,9 @@ function translateMarker(marker: RawMarker): RawMarker {
 			const dx = x - originX;
 			const dy = y - originY;
 			const len = Math.sqrt(dx ** 2 + dy ** 2) * -1;
-			const cornerAngle = dx < 0 ?
-				Math.atan(dy / dx) :
-				Math.atan(dy / dx) + PI;
+			const cornerAngle = dx < 0
+				? Math.atan(dy / dx)
+				: Math.atan(dy / dx) + PI;
 
 			// Offset the polar angle by the angle of the calibration box
 			// This means that we can use a calibration box, even though its angled relative to the camera
@@ -151,16 +150,15 @@ function translateMarker(marker: RawMarker): RawMarker {
 			if (!isCalibrationMarker(marker.id) && settings.debug) {
 				push();
 
-
 				// Draw a blue line representing the absolute positioning of the corner
-				strokeWeight(1)
+				strokeWeight(1);
 				stroke(0, 0, 255, 200);
 				line(
 					originX * captureToCanvasRatioX,
 					originY * captureToCanvasRatioY,
 					x * captureToCanvasRatioX,
-					y * captureToCanvasRatioY
-				)
+					y * captureToCanvasRatioY,
+				);
 
 				// Draw a red line representing the relative and rotated position of the corner
 				stroke(255, 0, 0, 200);
@@ -168,27 +166,25 @@ function translateMarker(marker: RawMarker): RawMarker {
 					originX * captureToCanvasRatioX,
 					originY * captureToCanvasRatioY,
 					mappedX * captureToCanvasRatioX,
-					mappedY * captureToCanvasRatioY
-				)
-				pop()
+					mappedY * captureToCanvasRatioY,
+				);
+				pop();
 			}
-
 
 			// Step 5: Success
 			// Yaaayyy :)
 			return {
 				x: (mappedX - originX) * scaleX,
-				y: (mappedY - originY) * scaleY
-			}
+				y: (mappedY - originY) * scaleY,
+			};
 		});
 
 	// Return the transformed marker
 	return {
 		...marker,
-		corners: [p1, p2, p3, p4]
-	}
+		corners: [p1, p2, p3, p4],
+	};
 }
-
 
 const videoFeedCenterX = captureWidth / 2;
 const videoFeedCenterY = captureHeight / 2;
@@ -199,7 +195,7 @@ function shiftTowardsCenter(marker: RawMarker): RawMarker {
 		p1,
 		p2,
 		p3,
-		p4
+		p4,
 	] = marker
 		.corners
 		.map(({ x, y }) => {
@@ -209,9 +205,9 @@ function shiftTowardsCenter(marker: RawMarker): RawMarker {
 			const dy = y - videoFeedCenterY;
 			const lenToCenter = Math.sqrt(dx ** 2 + dy ** 2);
 			const newLen = lenToCenter * -1 * settings.objectOffsetMultiplier;
-			const angleToCenter = dx < 0 ?
-				Math.atan(dy / dx) :
-				Math.atan(dy / dx) + PI;
+			const angleToCenter = dx < 0
+				? Math.atan(dy / dx)
+				: Math.atan(dy / dx) + PI;
 
 			// This uses the mapped angle to convert the corners polar cordinates back into cartesian cordinates
 			// This means the corner has been rotated relative to the origin
@@ -222,13 +218,13 @@ function shiftTowardsCenter(marker: RawMarker): RawMarker {
 			// Yaaayyy :)
 			return {
 				x: mappedX,
-				y: mappedY
-			}
+				y: mappedY,
+			};
 		});
 
 	// Return the transformed marker
 	return {
 		...marker,
-		corners: [p1, p2, p3, p4]
-	}
+		corners: [p1, p2, p3, p4],
+	};
 }

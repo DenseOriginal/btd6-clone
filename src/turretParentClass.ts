@@ -2,13 +2,15 @@ export abstract class TurretParent {
 	public shootTimeOut: number = 0;
 	public angle: number = 0;
 
+	// eslint-disable-next-line no-useless-constructor
 	constructor(
 		public diameter: number,
 		public positionX: number,
 		public positionY: number,
 		public rateOfFire: number,
 		public projectileSpeed: number,
-		public sprayTime: number
+		public sprayTime: number,
+	// eslint-disable-next-line no-empty-function
 	) { }
 
 	abstract update(directionDegree: number): void

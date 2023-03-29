@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 type Point = { x: number; y: number; };
 
 interface RawMarker {

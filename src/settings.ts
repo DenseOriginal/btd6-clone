@@ -1,5 +1,5 @@
-import { updateAutoCalibrateInterval } from "./calibration";
-import { updateEnemySpawnInterval } from "./enemyClass";
+import { updateAutoCalibrateInterval } from './calibration';
+import { updateEnemySpawnInterval } from './enemyClass';
 
 const initialConfig: SettingsConfig = {
 	// General settings
@@ -108,9 +108,9 @@ function createInput(id: keyof Settings, config: Config<string | number>, type: 
 	inputElement.addEventListener('change', (e) => {
 		const target = e.target as HTMLInputElement;
 		inputElement.value = target.value;
-		const newVal = type == 'string' ?
-			target.value :
-			Number(target.value);
+		const newVal = type == 'string'
+			? target.value
+			: Number(target.value);
 
 		(settings as any)[id] = newVal;
 		config.onChange?.(newVal);

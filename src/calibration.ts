@@ -1,6 +1,6 @@
-import { getRawMarkers, isReady, markerMapper } from "./AR-helper";
-import { canvasHeight, canvasWidth } from "./main";
-import { settings } from "./settings";
+import { getRawMarkers, isReady, markerMapper } from './AR-helper';
+import { canvasHeight, canvasWidth } from './main';
+import { settings } from './settings';
 
 const calibrationButton = document.getElementById('calibrationButton');
 if (!calibrationButton) throw new Error('Can\'t find calibration box');
@@ -40,10 +40,10 @@ export function calibrate() {
 
 	// Make sure we have all markers;
 	if (
-		!topLeftMarker ||
-		!topRightMarker ||
-		!bottomLeftMarker ||
-		!bottomRightMarker
+		!topLeftMarker
+		|| !topRightMarker
+		|| !bottomLeftMarker
+		|| !bottomRightMarker
 	) {
 		console.log('Found calibration markers: ', calibrationMarkers);
 		throw new Error('Missing calibration markers: ');
@@ -84,12 +84,12 @@ export function calibrate() {
 			bottomRightPoint,
 			bottomLeftPoint,
 		],
-		angle: angleDx < 0 ?
-			Math.atan(angleDy / angleDx) :
-			Math.atan(angleDy / angleDx) + PI,
+		angle: angleDx < 0
+			? Math.atan(angleDy / angleDx)
+			: Math.atan(angleDy / angleDx) + PI,
 		center: {
 			x: (topLeftPoint.x + topRightPoint.x + bottomLeftPoint.x + bottomRightPoint.x) / 4,
-			y: (topLeftPoint.y + topRightPoint.y + bottomLeftPoint.y + bottomRightPoint.y) / 4
+			y: (topLeftPoint.y + topRightPoint.y + bottomLeftPoint.y + bottomRightPoint.y) / 4,
 		},
 	};
 }

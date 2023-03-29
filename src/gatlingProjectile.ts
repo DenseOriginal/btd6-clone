@@ -3,7 +3,7 @@ export class GatlingProjectile {
 	public directionDegreeScaled: number;
 	public directionX: number;
 	public directionY: number;
-	public position: Point = {x:0,y:0};
+	public position: Point = { x: 0, y: 0 };
 	public width: number = 0;
 	public height: number = 0;
 
@@ -18,8 +18,8 @@ export class GatlingProjectile {
 		this.directionDegree = round(randomGaussian(this.directionDegreeScaled, 180)) / 1000;
 		this.directionX = cos(this.directionDegree);
 		this.directionY = sin(this.directionDegree);
-		this.width = diameter
-		this.height = diameter
+		this.width = diameter;
+		this.height = diameter;
 	}
 
 	update() {
@@ -29,22 +29,21 @@ export class GatlingProjectile {
 			this.positionY += this.directionY * this.speed;
 			push();
 			fill(255);
-			noStroke()
+			noStroke();
 			circle(this.positionX, this.positionY, this.diameter);
 			pop();
-			this.position = {x: this.positionX, y: this.positionY}
+			this.position = { x: this.positionX, y: this.positionY };
 		}
 	}
 
 	hitBoxHitCheck() {
 		if (
-			//sæt en anden criteria plz
+			// sæt en anden criteria plz
 			dist(this.positionX, this.positionY, mouseX, mouseY) < this.diameter / 2
 		) {
 			this.beenHit++;
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 }
