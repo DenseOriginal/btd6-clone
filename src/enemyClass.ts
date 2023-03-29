@@ -1,8 +1,9 @@
 // Nothing in here
 import { settings } from './settings';
 import { getCurrentGridMatrix, getPath } from './pathfindering';
-import { collideRectCircle, Quadtree } from './quadtree';
+import { Quadtree } from './quadtree';
 import { allShots } from './gatlingTower';
+import { collisionDetection } from './collision-helpers';
 
 const enemies: Enemy[] = [];
 export let quadtree: Quadtree;
@@ -58,6 +59,7 @@ export class Enemy {
 	position: Point = { x: 0, y: 0 };
 	isAlive: boolean = true;
 	color: number = random(0, 360);
+	corners: Point[] = [];
 
 	constructor(
 		public speed: number,
@@ -183,6 +185,21 @@ export class Enemy {
 		translate(this.position.x, this.position.y);
 		rotate(angle + PI);
 
+		this.corners = [];
+
+		const cosAngle = Math.cos(angle);
+		const sinAngle = Math.sin(angle);
+
+		this.corners = [
+			[-this.width / 2, -this.height / 2],
+			[this.width / 2, -this.height / 2],
+			[this.width / 2, this.height / 2],
+			[-this.width / 2, this.height / 2]
+		].map(([x, y]) => {
+			const rotatedX = x * cosAngle - y * sinAngle;
+			const rotatedY = x * sinAngle + y * cosAngle;
+			return { x: rotatedX + this.position.x, y: rotatedY + this.position.y };
+		});
 		// This are relative to the current origin, and we have already translated to the enemy position
 		const xPos = 0;
 		const yPos = 0;
@@ -211,6 +228,13 @@ export class Enemy {
 		triangle(xPos + (60 * scale), yPos + (10 * scale), xPos + (60 * scale), yPos - (10 * scale), xPos + (300 * scale), yPos);
 
 		pop();
+		
+		// Debug draw hitbox detection
+		// beginShape();
+		// for (const corner of this.corners) {
+		// 	vertex(corner.x, corner.y);
+		// }
+		// endShape(CLOSE);
 	}
 
 	die() {
@@ -228,14 +252,12 @@ export function bulletsCollide() {
 			const object = objects[j];
 			if (
 				object instanceof Enemy
-				&& collideRectCircle(
-					object.position.x,
-					object.position.y,
-					object.width,
-					object.height,
+				&& collisionDetection.collideCirclePoly(
 					projectile.positionX,
 					projectile.positionY,
 					projectile.diameter,
+					object.corners,
+					true
 				)
 			) {
 				console.log('Hit!', object);
