@@ -1,4 +1,3 @@
-// Nothing in here
 import { settings } from './settings';
 import { getCurrentGridMatrix, getPath } from './pathfindering';
 import { Quadtree } from './quadtree';
