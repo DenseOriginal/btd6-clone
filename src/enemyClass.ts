@@ -252,8 +252,7 @@ export function bulletsCollide() {
 			if (
 				object instanceof Enemy
 				&& collideCirclePoly(
-					projectile.positionX,
-					projectile.positionY,
+					{ x: projectile.positionX, y: projectile.positionY },
 					projectile.diameter,
 					object.corners,
 					true,

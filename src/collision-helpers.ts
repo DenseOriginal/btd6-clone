@@ -1,18 +1,18 @@
-export function collidePointCircle(x: number, y: number, cx: number, cy: number, d: number) {
+export function collidePointCircle(point: Point, center: Point, d: number) {
 	// 2d
-	if (dist(x, y, cx, cy) <= d / 2) {
+	if (dist(point.x, point.y, center.x, center.y) <= d / 2) {
 		return true;
 	}
 	return false;
 }
 
-export function collidePointLine(px: number, py: number, x1: number, y1: number, x2: number, y2: number, buffer: number = 0.1) {
+export function collidePointLine(point: Point, start: Point, end: Point, buffer: number = 0.1) {
 	// get distance from the point to the two ends of the line
-	const d1 = dist(px, py, x1, y1);
-	const d2 = dist(px, py, x2, y2);
+	const d1 = dist(point.x, point.y, start.x, start.y);
+	const d2 = dist(point.x, point.y, end.x, end.y);
 
 	// get the length of the line
-	const lineLen = dist(x1, y1, x2, y2);
+	const lineLen = dist(start.x, start.y, end.x, end.y);
 
 	// if the two distances are equal to the line's length, the point is on the line!
 	// note we use the buffer here to give a range, rather than one #
@@ -22,33 +22,33 @@ export function collidePointLine(px: number, py: number, x1: number, y1: number,
 	return false;
 }
 
-export function collideLineCircle(x1: number, y1: number, x2: number, y2: number, cx: number, cy: number, diameter: number) {
+export function collideLineCircle(start: Point, end: Point, center: Point, diameter: number) {
 	// is either end INSIDE the circle?
 	// if so, return true immediately
-	const inside1 = collidePointCircle(x1, y1, cx, cy, diameter);
-	const inside2 = collidePointCircle(x2, y2, cx, cy, diameter);
+	const inside1 = collidePointCircle(start, center, diameter);
+	const inside2 = collidePointCircle(end, center, diameter);
 	if (inside1 || inside2) return true;
 
 	// get length of the line
-	let distX = x1 - x2;
-	let distY = y1 - y2;
+	let distX = start.x - end.x;
+	let distY = start.y - end.y;
 	const len = Math.sqrt((distX * distX) + (distY * distY));
 
 	// get dot product of the line and circle
-	const dot = (((cx - x1) * (x2 - x1)) + ((cy - y1) * (y2 - y1))) / len ** 2;
+	const dot = (((center.x - start.x) * (end.x - start.x)) + ((center.y - start.y) * (end.y - start.y))) / len ** 2;
 
 	// find the closest point on the line
-	const closestX = x1 + (dot * (x2 - x1));
-	const closestY = y1 + (dot * (y2 - y1));
+	const closestX = start.x + (dot * (end.x - start.x));
+	const closestY = start.y + (dot * (end.y - start.y));
 
 	// is this point actually on the line segment?
 	// if so keep going, but if not, return false
-	const onSegment = collidePointLine(closestX, closestY, x1, y1, x2, y2, undefined);
+	const onSegment = collidePointLine({ x: closestX, y: closestY }, start, end);
 	if (!onSegment) return false;
 
 	// get distance to closest point
-	distX = closestX - cx;
-	distY = closestY - cy;
+	distX = closestX - center.x;
+	distY = closestY - center.y;
 	const distance = Math.sqrt((distX * distX) + (distY * distY));
 
 	if (distance <= diameter / 2) {
@@ -57,7 +57,7 @@ export function collideLineCircle(x1: number, y1: number, x2: number, y2: number
 	return false;
 }
 
-export function collidePointPoly(px: number, py: number, vertices: Point[]) {
+export function collidePointPoly(point: Point, vertices: Point[]) {
 	let collision = false;
 
 	// go through each of the vertices, plus the next vertex in the list
@@ -72,8 +72,8 @@ export function collidePointPoly(px: number, py: number, vertices: Point[]) {
 		const vn = vertices[next]; // n for "next"
 
 		// compare position, flip 'collision' variable back and forth
-		if (((vc.y >= py && vn.y < py) || (vc.y < py && vn.y >= py))
-			&& (px < (vn.x - vc.x) * (py - vc.y) / (vn.y - vc.y) + vc.x)) {
+		if (((vc.y >= point.y && vn.y < point.y) || (vc.y < point.y && vn.y >= point.y))
+			&& (point.x < (vn.x - vc.x) * (point.y - vc.y) / (vn.y - vc.y) + vc.x)) {
 			collision = !collision;
 		}
 	}
@@ -81,7 +81,7 @@ export function collidePointPoly(px: number, py: number, vertices: Point[]) {
 }
 
 // POLYGON/CIRCLE
-export function collideCirclePoly(cx: number, cy: number, diameter: number, vertices: Point[], interior: boolean = false) {
+export function collideCirclePoly(center: Point, diameter: number, vertices: Point[], interior: boolean = false) {
 	// go through each of the vertices, plus the next vertex in the list
 	let next = 0;
 	for (let current = 0; current < vertices.length; current++) {
@@ -94,13 +94,13 @@ export function collideCirclePoly(cx: number, cy: number, diameter: number, vert
 		const vn = vertices[next]; // n for "next"
 
 		// check for collision between the circle and a line formed between the two vertices
-		const collision = collideLineCircle(vc.x, vc.y, vn.x, vn.y, cx, cy, diameter);
+		const collision = collideLineCircle({ x: vc.x, y: vc.y }, { x: vn.x, y: vn.y }, center, diameter);
 		if (collision) return true;
 	}
 
 	// test if the center of the circle is inside the polygon
 	if (interior === true) {
-		const centerInside = collidePointPoly(cx, cy, vertices);
+		const centerInside = collidePointPoly(center, vertices);
 		if (centerInside) return true;
 	}
 
