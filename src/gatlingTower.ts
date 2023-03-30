@@ -3,7 +3,7 @@ import { TurretParent } from './turretParentClass';
 
 export const allShots: GatlingProjectile[] = [];
 export function updateAllShots() {
-	for (let i = allShots.length - 1; i > 0; i--) {
+	for (let i = allShots.length - 1; i >= 0; i--) {
 		allShots[i].update();
 		if (allShots[i].positionX > width
 			|| allShots[i].positionX < 0
