@@ -124,12 +124,7 @@ export class Quadtree {
 			if (this.nodes.length > 0) {
 				if (index !== -1 && index) {
 					const foundObject = this.nodes[index]?.retrieve(object);
-					if (foundObject) returnObjects = returnObjects.concat(foundObject);
-				} else {
-					for (let i = 0; i < this.nodes.length; i++) {
-						const foundObject = this.nodes[i]?.retrieve(object);
-						if (foundObject) returnObjects = returnObjects.concat(foundObject);
-					}
+					if (foundObject) returnObjects = foundObject;
 				}
 			}
 			return returnObjects;

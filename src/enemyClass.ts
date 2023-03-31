@@ -282,6 +282,12 @@ export function bulletsCollide() {
 		const objects = quadtree.retrieve(projectile) || [];
 		for (let j = 0; j < objects.length; j++) {
 			const object = objects[j];
+			if (settings.debug) {
+				push();
+				stroke(255, 0, 0);
+				line(projectile.position.x, projectile.position.y, object.position.x, object.position.y);
+				pop();
+			}
 			if (
 				object instanceof Enemy
 				&& collideCirclePoly(
@@ -293,6 +299,7 @@ export function bulletsCollide() {
 			) {
 				allShots.splice(i, 1);
 				object.isAlive = false;
+				continue outer;
 			}
 		}
 	}
