@@ -14,9 +14,6 @@ export abstract class TurretParent {
 	abstract update(): void;
 	abstract draw(): void;
 	abstract shoot(): void;
-	setAngle(angle: number) {
-		this.angle = angle;
-	}
 
 	updateFromPlacement(update: TurretPlacement) {
 		this.diameter = update.diameter;
