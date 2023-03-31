@@ -81,11 +81,11 @@ export function syncTurretObj() {
 		if (!activeTurrets.has(markerTurret.id)) {
 			switch (markerTurret.turretType) {
 				case 'gatling': {
-					activeTurrets.set(markerTurret.id, new GatlingTower(markerTurret.diameter, markerTurret.center.y, markerTurret.center.y, 15, 25, 0));
+					activeTurrets.set(markerTurret.id, new GatlingTower(markerTurret.diameter, markerTurret.center.y, markerTurret.center.y, 15, 25));
 					break;
 				}
 				case 'spray': {
-					activeTurrets.set(markerTurret.id, new SprayTower(markerTurret.diameter, markerTurret.center.y, markerTurret.center.y, 25, 0, 25));
+					activeTurrets.set(markerTurret.id, new SprayTower(markerTurret.diameter, markerTurret.center.y, markerTurret.center.y, 25, 25));
 					break;
 				}
 			}
