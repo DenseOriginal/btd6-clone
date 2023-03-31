@@ -103,7 +103,7 @@ export const canvasHeight = window.innerHeight;
 	updateEnemies();
 	updateTurretObj();
 	updateAllShots();
-	if (settings.spawnEnemies) { bulletsCollide(); }
+	bulletsCollide();
 	if (settings.debug) { quadtree.draw(); }
 	quadtree.clear();
 };

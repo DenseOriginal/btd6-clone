@@ -3,6 +3,7 @@ import { getCurrentGridMatrix, getPath } from './pathfindering';
 import { Quadtree } from './quadtree';
 import { allShots } from './gatlingTower';
 import { collideCirclePoly } from './collision-helpers';
+import { getWalls } from './walls';
 
 const enemies: Enemy[] = [];
 export let quadtree: Quadtree;
@@ -242,9 +243,24 @@ export class Enemy {
 }
 
 export function bulletsCollide() {
+	outer:
 	for (let i = allShots.length - 1; i >= 0; i--) {
 		const projectile = allShots[i];
 
+		const allWalls = getWalls();
+		for (const wall of allWalls) {
+			if (
+				collideCirclePoly(
+					{ x: projectile.position.x, y: projectile.position.y },
+					projectile.diameter,
+					wall.corners,
+					true,
+				)
+			) {
+				allShots.splice(i, 1);
+				break outer;
+			}
+		}
 		// Retrieve objects in the quadtree that overlap with the projectile
 		const objects = quadtree.retrieve(projectile) || [];
 		for (let j = 0; j < objects.length; j++) {
