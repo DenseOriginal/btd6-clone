@@ -4,6 +4,16 @@ export class SprayTower extends TurretParent {
 	public shootTimeOut: number = 0;
 	public sprayTimeOut: number = 0;
 
+	constructor(
+		public diameter: number,
+		public positionX: number,
+		public positionY: number,
+		public rateOfFire: number,
+		public sprayTime: number
+		) {
+		super(diameter, positionX, positionY, rateOfFire);
+	}
+
 	update() {
 		this.draw();
 		this.shoot();

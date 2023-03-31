@@ -19,6 +19,16 @@ export class GatlingTower extends TurretParent {
 	public shots: GatlingProjectile[] = [];
 	public shootTimeOut: number = 0;
 
+	constructor(
+		public diameter: number,
+		public positionX: number,
+		public positionY: number,
+		public rateOfFire: number,
+		public projectileSpeed: number
+		) {
+		super(diameter, positionX, positionY, rateOfFire);
+	}
+
 	update() {
 		const directionX = cos(this.angle);
 		const directionY = sin(this.angle);
