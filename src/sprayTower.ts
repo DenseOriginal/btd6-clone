@@ -9,8 +9,8 @@ export class SprayTower extends TurretParent {
 		public positionX: number,
 		public positionY: number,
 		public rateOfFire: number,
-		public sprayTime: number
-		) {
+		public sprayTime: number,
+	) {
 		super(diameter, positionX, positionY, rateOfFire);
 	}
 

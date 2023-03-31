@@ -8,8 +8,6 @@ export abstract class TurretParent {
 		public positionX: number,
 		public positionY: number,
 		public rateOfFire: number,
-		//public projectileSpeed: number,
-		//public sprayTime: number,
 	// eslint-disable-next-line no-empty-function
 	) { }
 

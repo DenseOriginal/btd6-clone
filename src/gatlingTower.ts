@@ -24,8 +24,8 @@ export class GatlingTower extends TurretParent {
 		public positionX: number,
 		public positionY: number,
 		public rateOfFire: number,
-		public projectileSpeed: number
-		) {
+		public projectileSpeed: number,
+	) {
 		super(diameter, positionX, positionY, rateOfFire);
 	}
 

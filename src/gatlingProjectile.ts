@@ -23,7 +23,6 @@ export class GatlingProjectile {
 	}
 
 	update() {
-		//this.hitBoxHitCheck();
 		if (this.beenHit < 1) {
 			this.positionX += this.directionX * this.speed / 100 * deltaTime;
 			this.positionY += this.directionY * this.speed / 100 * deltaTime;
