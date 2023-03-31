@@ -47,7 +47,6 @@ export const canvasHeight = window.innerHeight;
 			syncWalls();
 			syncTurrets();
 			syncTurretObj();
-			updateTurretObj();
 			const hasPathfindingGridChanged = syncPathfinderWithWall();
 			if (hasPathfindingGridChanged) validateAllEnemyPaths();
 		});
@@ -67,6 +66,7 @@ export const canvasHeight = window.innerHeight;
 		drawEnemySpawn();
 		updateEnemies();
 	}
+	updateTurretObj();
 	updateAllShots();
 	bulletsCollide();
 	if (settings.debug) { quadtree.draw(); }

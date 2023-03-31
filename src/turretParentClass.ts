@@ -8,12 +8,15 @@ export abstract class TurretParent {
 		public positionX: number,
 		public positionY: number,
 		public rateOfFire: number,
-	// eslint-disable-next-line no-empty-function
+		// eslint-disable-next-line no-empty-function
 	) { }
 
-	abstract update(directionDegree: number): void
-	abstract draw(): void
-	abstract shoot(): void
+	abstract update(): void;
+	abstract draw(): void;
+	abstract shoot(): void;
+	setAngle(angle: number) {
+		this.angle = angle;
+	}
 
 	updateFromPlacement(update: TurretPlacement) {
 		this.diameter = update.diameter;

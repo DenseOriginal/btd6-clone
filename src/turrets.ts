@@ -102,6 +102,6 @@ export function syncTurretObj() {
 }
 export function updateTurretObj() {
 	activeTurrets.forEach((markerTurret) => {
-		markerTurret.update(markerTurret.angle);
+		markerTurret.update();
 	});
 }
