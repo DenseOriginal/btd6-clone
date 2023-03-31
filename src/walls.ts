@@ -1,4 +1,6 @@
 import { getMarkers } from './AR-helper';
+import { isCalibrationMarker } from './calibration';
+import { drawDebugMarker } from './debug-draw';
 import { settings } from './settings';
 
 const ratios = new Map<number, WallRatioConfig>();
@@ -83,4 +85,29 @@ function checkCache(marker: Marker): Marker {
 
 	markerCache.set(marker.id, marker);
 	return marker;
+}
+
+export function drawWalls() {
+	const walls = getWalls();
+
+	for (const mark of walls) {
+		// If this is a calibration id, drawing it
+		if (isCalibrationMarker(mark.id)) {
+			if (settings.debug) drawDebugMarker(mark);
+			continue;
+		}
+
+		const [p1, p2, p3, p4] = mark.corners;
+		push();
+		noStroke();
+		fill(255, 100, 100);
+
+		beginShape();
+		vertex(p1.x, p1.y);
+		vertex(p2.x, p2.y);
+		vertex(p3.x, p3.y);
+		vertex(p4.x, p4.y);
+		endShape();
+		pop();
+	}
 }

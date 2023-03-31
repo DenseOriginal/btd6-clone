@@ -3,16 +3,16 @@
 import {
 	getMarkers, isReady, setupDetector, setupVideoStream, syncMarkers,
 } from './AR-helper';
-import { calibrationBox, initAutoCalibrate, isCalibrationMarker } from './calibration';
+import { calibrationBox, initAutoCalibrate } from './calibration';
 import {
 	drawCalibrationBox, drawDebugMarker, drawDebugText, drawVideoFeed,
 } from './debug-draw';
 import {
-	bulletsCollide, initEnemySpawner, initQuadtree, quadtree, updateEnemies, validateAllEnemyPaths,
+	bulletsCollide, drawEnemySpawn, initEnemySpawner, initQuadtree, quadtree, updateEnemies, validateAllEnemyPaths,
 } from './enemyClass';
 import { drawEmptyGrid } from './grid-builder';
 import { initSettingsMenu, settings } from './settings';
-import { getWalls, syncWalls } from './walls';
+import { drawWalls, syncWalls } from './walls';
 import { syncPathfinderWithWall } from './pathfindering';
 import { syncTurretObj, syncTurrets, updateTurretObj } from './turrets';
 import { updateAllShots } from './gatlingTower';
@@ -47,6 +47,7 @@ export const canvasHeight = window.innerHeight;
 			syncWalls();
 			syncTurrets();
 			syncTurretObj();
+			updateTurretObj();
 			const hasPathfindingGridChanged = syncPathfinderWithWall();
 			if (hasPathfindingGridChanged) validateAllEnemyPaths();
 		});
@@ -55,30 +56,7 @@ export const canvasHeight = window.innerHeight;
 	// If debug, draw transparent video feed on top of canvas
 	if (settings.debug) drawCalibrationBox();
 	if (settings.showVideoFeed) drawVideoFeed(capture);
-
-	const walls = getWalls();
-
-	for (const mark of walls) {
-		// If this is a calibration id, drawing it
-		if (isCalibrationMarker(mark.id)) {
-			if (settings.debug) drawDebugMarker(mark);
-			continue;
-		}
-
-		const [p1, p2, p3, p4] = mark.corners;
-		push();
-		noStroke();
-		fill(255, 100, 100);
-
-		beginShape();
-		vertex(p1.x, p1.y);
-		vertex(p2.x, p2.y);
-		vertex(p3.x, p3.y);
-		vertex(p4.x, p4.y);
-		endShape();
-		pop();
-	}
-
+	drawWalls();
 	drawDebugText();
 	if (settings.debug) {
 		// debugDrawFromStartToEnd();
@@ -86,22 +64,9 @@ export const canvasHeight = window.innerHeight;
 	}
 	if (settings.drawGridLines) drawEmptyGrid();
 	if (settings.spawnEnemies) {
-		push();
-		fill(color(255, 0, 0, 200));
-		noStroke();
-
-		const yOffset = (height - (height * settings.spawnBoxSize)) / 2;
-
-		rect(
-			0,
-			yOffset,
-			settings.gridSize * 3,
-			height * settings.spawnBoxSize,
-		);
-		pop();
+		drawEnemySpawn();
+		updateEnemies();
 	}
-	updateEnemies();
-	updateTurretObj();
 	updateAllShots();
 	bulletsCollide();
 	if (settings.debug) { quadtree.draw(); }

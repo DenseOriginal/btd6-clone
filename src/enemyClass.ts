@@ -16,6 +16,22 @@ export function initEnemySpawner() {
 	updateEnemySpawnInterval(settings.enemySpawnRate);
 }
 
+export function drawEnemySpawn() {
+	push();
+	fill(color(255, 0, 0, 200));
+	noStroke();
+
+	const yOffset = (height - (height * settings.spawnBoxSize)) / 2;
+
+	rect(
+		0,
+		yOffset,
+		settings.gridSize * 3,
+		height * settings.spawnBoxSize,
+	);
+	pop();
+}
+
 export function updateEnemySpawnInterval(spawnRate: number) {
 	clearInterval(enemiesSpawnIntervalHook);
 	enemiesSpawnIntervalHook = setInterval(() => {
