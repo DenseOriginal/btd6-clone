@@ -59,5 +59,8 @@ module.exports = {
 				args: 'none',
 			},
 		],
+		'no-labels': ['error',
+			{ allowLoop: true },
+		],
 	},
 };
