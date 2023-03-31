@@ -260,11 +260,11 @@ export class Enemy {
 }
 
 export function bulletsCollide() {
+	const allWalls = getWalls();
 	outer:
 	for (let i = allShots.length - 1; i >= 0; i--) {
 		const projectile = allShots[i];
 
-		const allWalls = getWalls();
 		for (const wall of allWalls) {
 			if (
 				collideCirclePoly(
@@ -291,7 +291,6 @@ export function bulletsCollide() {
 					true,
 				)
 			) {
-				console.log('Hit!', object);
 				allShots.splice(i, 1);
 				object.isAlive = false;
 			}
