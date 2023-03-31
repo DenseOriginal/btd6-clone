@@ -1,3 +1,4 @@
+import { sprayAOE } from './enemyClass';
 import { TurretParent } from './turretParentClass';
 
 export class SprayTower extends TurretParent {
@@ -60,6 +61,7 @@ export class SprayTower extends TurretParent {
 				circle(this.positionX, this.positionY, this.diameter * 2);
 				pop();
 				this.hitBoxHitCheck();
+				sprayAOE(this);
 				this.sprayTimeOut++;
 			} else {
 				this.sprayTimeOut = 0;
