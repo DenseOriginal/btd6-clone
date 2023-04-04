@@ -1,5 +1,6 @@
 import { updateAutoCalibrateInterval } from './calibration';
 import { updateEnemySpawnInterval } from './enemyClass';
+import { updateSyncAllInterval } from './main';
 
 const initialConfig: SettingsConfig = {
 	// General settings
@@ -11,7 +12,7 @@ const initialConfig: SettingsConfig = {
 	showVirtualMarkers: { defaultValue: true, onChange: (show) => toggleVirtualMarkers(show) },
 	showVideoFeed: { defaultValue: false },
 	preserveWallsFrames: { defaultValue: 20 },
-	sampleMarkersDelay: { defaultValue: 3 },
+	sampleMarkersDelay: { defaultValue: 225, onChange: (interval) => updateSyncAllInterval(interval) },
 	objectOffsetMultiplier: { defaultValue: 0.95 },
 
 	// Calibrations settings

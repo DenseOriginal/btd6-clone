@@ -34,6 +34,7 @@ export const canvasHeight = window.innerHeight;
 	initAutoCalibrate();
 	initEnemySpawner();
 	initQuadtree();
+	initSyncAll();
 };
 
 (window as any).draw = () => {
@@ -41,16 +42,6 @@ export const canvasHeight = window.innerHeight;
 	if (!isReady()) return;
 
 	drawPlayarea();
-	if (frameCount % settings.sampleMarkersDelay == 0) {
-		new Promise(() => {
-			syncMarkers();
-			syncWalls();
-			syncTurrets();
-			syncTurretObj();
-			const hasPathfindingGridChanged = syncPathfinderWithWall();
-			if (hasPathfindingGridChanged) validateAllEnemyPaths();
-		});
-	}
 
 	// If debug, draw transparent video feed on top of canvas
 	if (settings.debug) drawCalibrationBox();
@@ -87,4 +78,30 @@ function drawPlayarea() {
 	);
 
 	pop();
+}
+
+let autoSyncAllIntervalHook: number;
+function initSyncAll() {
+	try {
+		autoSyncAllIntervalHook = setInterval(syncAll, settings.sampleMarkersDelay);
+	} catch (error) {
+		console.log(error);
+	}
+}
+export function updateSyncAllInterval(interval: number) {
+	try {
+		clearInterval(autoSyncAllIntervalHook);
+		autoSyncAllIntervalHook = setInterval(syncAll, interval);
+		syncAll();
+	} catch (error) {
+		console.log(error);
+	}
+}
+function syncAll() {
+	syncMarkers();
+	syncWalls();
+	syncTurrets();
+	syncTurretObj();
+	const hasPathfindingGridChanged = syncPathfinderWithWall();
+	if (hasPathfindingGridChanged) validateAllEnemyPaths();
 }
