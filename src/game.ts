@@ -10,8 +10,11 @@ export function setScore(x: number): void {
 	score = x;
 }
 
-export function killScore(): void {
+export function incrementScore(): void {
 	score = getScore() + 1;
+}
+export function decrementScore(): void {
+	score = getScore() - 1;
 }
 
 export function showScore(): void {
