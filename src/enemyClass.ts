@@ -118,7 +118,7 @@ export class Enemy {
 			this.position = targetPoint;
 			this.currentTargetIndex++;
 			if (this.currentTargetIndex >= this.path.length) {
-				popups.push(new Popup('-10', this.position));
+				popups.push(new Popup('-10', this.position, color(255, 0, 0)));
 				this.die();
 				decrementScore();
 
@@ -303,7 +303,7 @@ export function bulletsCollide() {
 				)
 			) {
 				allShots.splice(i, 1);
-				popups.push(new Popup('+1', object.position));
+				popups.push(new Popup('+1', object.position, color(0,255,0)));
 				object.isAlive = false;
 				incrementScore();
 				continue outer;
@@ -315,7 +315,7 @@ export function bulletsCollide() {
 export function sprayAOE(turret: SprayTower) {
 	for (let i = enemies.length - 1; i >= 0; i--) {
 		if (dist(turret.positionX, turret.positionY, enemies[i].position.x, enemies[i].position.y) <= turret.diameter * 2.5 / 2) {
-			popups.push(new Popup('+1', enemies[i].position));
+			popups.push(new Popup('+1', enemies[i].position,color(0,255,0)));
 			enemies[i].isAlive = false;
 			incrementScore();
 		}

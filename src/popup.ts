@@ -1,9 +1,11 @@
+import { Color } from "p5";
+
 export let popups: Popup[] = [];
 
 export class Popup {
 	isDisplaying: boolean = true;
 	time: number = 0;
-	constructor(public message: string, public pos: Point) {}
+	constructor(public message: string, public pos: Point, public color: Color) { }
 
 	update() {
 		this.displayTime();
@@ -12,8 +14,9 @@ export class Popup {
 
 	draw() {
 		push();
-		colorMode(HSB);
-		fill(random(0, 360), 360, 360, 150 + 6 * (1 - (this.time / 1000)) * 255);
+		const alpha = 150 + 6 * (1 - (this.time / 1000)) * 255;
+		this.color.setAlpha(alpha);
+		fill(this.color);
 		textSize(25);
 		textAlign(CENTER);
 		translate(this.pos.x, this.pos.y);
