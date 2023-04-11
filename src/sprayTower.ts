@@ -47,7 +47,6 @@ export class SprayTower extends TurretParent {
 
 	hitBoxHitCheck() {
 		if (dist(this.positionX, this.positionY, mouseX, mouseY) <= this.diameter * 2.5 / 2) {
-			console.log('hit');
 			return true;
 		}
 		return false;
