@@ -6,6 +6,7 @@ import { collideCirclePoly } from './collision-helpers';
 import { getWalls } from './walls';
 import { SprayTower } from './sprayTower';
 import { decrementScore, incrementScore } from './game';
+import { Popup, popups } from './popup';
 
 const enemies: Enemy[] = [];
 export let quadtree: Quadtree;
@@ -300,6 +301,7 @@ export function bulletsCollide() {
 				)
 			) {
 				allShots.splice(i, 1);
+				popups.push(new Popup('+1', object.position));
 				object.isAlive = false;
 				incrementScore();
 				continue outer;
@@ -311,6 +313,7 @@ export function bulletsCollide() {
 export function sprayAOE(turret: SprayTower) {
 	for (let i = enemies.length - 1; i >= 0; i--) {
 		if (dist(turret.positionX, turret.positionY, enemies[i].position.x, enemies[i].position.y) <= turret.diameter * 2.5 / 2) {
+			popups.push(new Popup('+1', enemies[i].position));
 			enemies[i].isAlive = false;
 			incrementScore();
 		}
