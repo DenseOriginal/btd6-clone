@@ -16,6 +16,7 @@ import { drawWalls, syncWalls } from './walls';
 import { syncPathfinderWithWall } from './pathfindering';
 import { syncTurretObj, syncTurrets, updateTurretObj } from './turrets';
 import { updateAllShots } from './gatlingTower';
+import { showScore } from './game';
 
 let capture: ReturnType<typeof createCapture>;
 
@@ -61,6 +62,7 @@ export const canvasHeight = window.innerHeight;
 	updateAllShots();
 	bulletsCollide();
 	if (settings.debug) { quadtree.draw(); }
+	showScore();
 	quadtree.clear();
 };
 

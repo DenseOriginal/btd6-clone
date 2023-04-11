@@ -5,6 +5,7 @@ import { allShots } from './gatlingTower';
 import { collideCirclePoly } from './collision-helpers';
 import { getWalls } from './walls';
 import { SprayTower } from './sprayTower';
+import { killScore } from './game';
 
 const enemies: Enemy[] = [];
 export let quadtree: Quadtree;
@@ -299,6 +300,7 @@ export function bulletsCollide() {
 			) {
 				allShots.splice(i, 1);
 				object.isAlive = false;
+				killScore();
 				continue outer;
 			}
 		}
@@ -309,6 +311,7 @@ export function sprayAOE(turret: SprayTower) {
 	for (let i = enemies.length - 1; i >= 0; i--) {
 		if (dist(turret.positionX, turret.positionY, enemies[i].position.x, enemies[i].position.y) <= turret.diameter * 2.5 / 2) {
 			enemies[i].isAlive = false;
+			killScore();
 		}
 	}
 }
