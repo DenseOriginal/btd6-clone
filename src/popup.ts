@@ -20,7 +20,6 @@ export class Popup {
 		textSize(25);
 		textAlign(CENTER);
 		translate(this.pos.x, this.pos.y);
-		rotate(random(-PI / 18, PI / 18));
 		this.pos.y = this.pos.y - 1;
 		text(this.message, 0, 0);
 		pop();
