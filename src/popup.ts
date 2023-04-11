@@ -3,7 +3,7 @@ export let popups: Popup[] = [];
 export class Popup {
 	isDisplaying: boolean = true;
 	time: number = 0;
-	constructor(public message: string, public pos: Point) {}
+	constructor(public message: string, public pos: Point) { }
 
 	update() {
 		this.displayTime();
@@ -17,7 +17,6 @@ export class Popup {
 		textSize(25);
 		textAlign(CENTER);
 		translate(this.pos.x, this.pos.y);
-		rotate(random(-PI / 18, PI / 18));
 		this.pos.y = this.pos.y - 1;
 		text(this.message, 0, 0);
 		pop();
