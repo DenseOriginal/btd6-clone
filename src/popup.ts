@@ -3,7 +3,7 @@ export let popups: Popup[] = [];
 export class Popup {
 	isDisplaying: boolean = true;
 	time: number = 0;
-	constructor(public message: string, public pos: Point) { }
+	constructor(public message: string, public pos: Point) {}
 
 	update() {
 		this.displayTime();

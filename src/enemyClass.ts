@@ -118,8 +118,10 @@ export class Enemy {
 			this.position = targetPoint;
 			this.currentTargetIndex++;
 			if (this.currentTargetIndex >= this.path.length) {
+				popups.push(new Popup('-10', this.position));
 				this.die();
 				decrementScore();
+
 			}
 		}
 		this.render();

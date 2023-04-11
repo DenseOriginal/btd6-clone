@@ -14,7 +14,7 @@ export function incrementScore(): void {
 	score = getScore() + 1;
 }
 export function decrementScore(): void {
-	score = getScore() - 1;
+	score = getScore() - 10;
 }
 
 export function showScore(): void {
