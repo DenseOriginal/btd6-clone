@@ -5,7 +5,7 @@ import { allShots } from './gatlingTower';
 import { collideCirclePoly } from './collision-helpers';
 import { getWalls } from './walls';
 import { SprayTower } from './sprayTower';
-import { decrementScore, incrementScore } from './game';
+import { decrementScore, incrementScore, shakeEarth } from './game';
 import { Popup, popups } from './popup';
 
 const enemies: Enemy[] = [];
@@ -121,7 +121,7 @@ export class Enemy {
 				popups.push(new Popup('-10', this.position, color(255, 0, 0)));
 				this.die();
 				decrementScore();
-
+				shakeEarth();
 			}
 		}
 		this.render();
@@ -303,7 +303,7 @@ export function bulletsCollide() {
 				)
 			) {
 				allShots.splice(i, 1);
-				popups.push(new Popup('+1', object.position, color(0,255,0)));
+				popups.push(new Popup('+1', object.position, color(0, 255, 0)));
 				object.isAlive = false;
 				incrementScore();
 				continue outer;
@@ -315,7 +315,7 @@ export function bulletsCollide() {
 export function sprayAOE(turret: SprayTower) {
 	for (let i = enemies.length - 1; i >= 0; i--) {
 		if (dist(turret.positionX, turret.positionY, enemies[i].position.x, enemies[i].position.y) <= turret.diameter * 2.5 / 2) {
-			popups.push(new Popup('+1', enemies[i].position,color(0,255,0)));
+			popups.push(new Popup('+1', enemies[i].position, color(0, 255, 0)));
 			enemies[i].isAlive = false;
 			incrementScore();
 		}

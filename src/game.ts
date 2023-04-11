@@ -1,6 +1,8 @@
 import { settings } from './settings';
 
 let score: number = 0;
+let earthCounter: number = 0;
+let isShakeEarth: boolean = false;
 
 export function getScore(): number {
 	return score;
@@ -18,8 +20,25 @@ export function decrementScore(): void {
 }
 
 export function showScore(): void {
+	earthCounter += deltaTime / 1000;
+	push();
+	if (isShakeEarth) {
+		translate(width - settings.gridSize + random(-10, 10), height / 2 + random(-10, 10));
+		isShakeEarth = false;
+	} else {
+		translate(width - settings.gridSize, height / 2);
+	}
+	rotate(earthCounter);
+	textSize(settings.gridSize ** 2);
+	textAlign(CENTER, CENTER);
+	text('🌍', 0, 0 + textSize() / 12);
+	pop();
 	push();
 	textAlign(RIGHT);
-	text('Score: '.concat(getScore().toString()), width - settings.gridSize * 3, height / 2);
+	text('Score: '.concat(getScore().toString()), width - settings.gridSize * 3, height / 2 + textSize() / 2);
 	pop();
+}
+
+export function shakeEarth() {
+	isShakeEarth = true;
 }
