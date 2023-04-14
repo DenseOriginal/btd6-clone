@@ -82,7 +82,9 @@ export class Enemy {
 	currentTargetIndex: number = 0;
 	position: Point = { x: 0, y: 0 };
 	isAlive: boolean = true;
-	color: number = random(0, 360);
+	health: number = 2;
+	AOEimune: boolean = false;
+	color: number = random(100, 360);
 	corners: Point[] = [];
 
 	constructor(
@@ -263,6 +265,14 @@ export class Enemy {
 		// endShape(CLOSE);
 	}
 
+	damage(amount: number) {
+		this.health -= amount;
+		this.color = 0;
+		if (this.health <= 0) {
+			this.die();
+		}
+	}
+
 	die() {
 		this.isAlive = false;
 	}
@@ -307,8 +317,10 @@ export function bulletsCollide() {
 				)
 			) {
 				allShots.splice(i, 1);
-				popups.push(new Popup('+'.concat(incrementScore().toFixed(0).toString()), object.position, color(0, 255, 0)));
-				object.isAlive = false;
+				object.damage(2);
+				if (object.health <= 0) {
+					popups.push(new Popup('+'.concat(incrementScore().toFixed(0).toString()), object.position, color(0, 255, 0)));
+				}
 				settings.enemySpawnRate -= 1;
 				continue outer;
 			}
@@ -318,9 +330,12 @@ export function bulletsCollide() {
 
 export function sprayAOE(turret: SprayTower) {
 	for (let i = enemies.length - 1; i >= 0; i--) {
-		if (dist(turret.positionX, turret.positionY, enemies[i].position.x, enemies[i].position.y) <= turret.diameter * turret.rangeMod / 2) {
-			popups.push(new Popup('+'.concat(incrementScore().toFixed(0).toString()), enemies[i].position, color(0, 255, 0)));
-			enemies[i].isAlive = false;
+		if (dist(turret.positionX, turret.positionY, enemies[i].position.x, enemies[i].position.y) <= turret.diameter * turret.rangeMod / 2 && enemies[i].AOEimune === false) {
+			enemies[i].damage(1);
+			enemies[i].AOEimune = true;
+			if (enemies[i].health <= 0) {
+				popups.push(new Popup('+'.concat(incrementScore().toFixed(0).toString()), enemies[i].position, color(0, 255, 0)));
+			}
 			settings.enemySpawnRate -= 1;
 		}
 	}
