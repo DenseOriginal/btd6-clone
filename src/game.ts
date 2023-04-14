@@ -1,6 +1,8 @@
 import { Image } from 'p5';
 import { settings } from './settings';
 import { getMarkers } from './AR-helper';
+import { activeTurrets } from './turrets';
+import { getWalls } from './walls';
 
 let score: number = 0;
 
@@ -13,7 +15,7 @@ export function setScore(x: number): void {
 }
 
 export function incrementScore(): number {
-	const incremention = 100 * 1 / (getMarkers().length - 4);
+	const incremention = 100 / ((activeTurrets.size + getWalls().length) ? (activeTurrets.size + getWalls().length) : 1);
 	score = getScore() + incremention;
 	return incremention;
 }
