@@ -12,6 +12,12 @@ ratios.set(6, { id: 6, codeWidth: 3, width: 16, height: 4, rotated: false });
 ratios.set(7, { id: 7, codeWidth: 3, width: 12, height: 4, rotated: false });
 ratios.set(8, { id: 8, codeWidth: 3, width: 20, height: 4, rotated: false });
 
+ratios.set(4, { id: 12, codeWidth: 3, width: 12, height: 4, rotated: false });
+ratios.set(5, { id: 10, codeWidth: 3, width: 16, height: 4, rotated: false });
+ratios.set(6, { id: 11, codeWidth: 3, width: 16, height: 4, rotated: false });
+ratios.set(7, { id: 13, codeWidth: 3, width: 12, height: 4, rotated: false });
+ratios.set(8, { id: 9,	codeWidth: 3, width: 20, height: 4, rotated: false });
+
 let walls: Record<number, Wall> = [];
 
 export const getWalls = () => Object.values(walls);
