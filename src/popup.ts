@@ -21,7 +21,7 @@ export class Popup {
 		textSize(25);
 		textAlign(CENTER);
 		translate(this.pos.x, this.pos.y);
-		this.pos.y -= -1;
+		this.pos.y -= 1;
 		text(this.message, 0, 0);
 		pop();
 	}

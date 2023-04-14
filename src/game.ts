@@ -18,8 +18,10 @@ export function incrementScore(): number {
 	score = getScore() + incremention;
 	return incremention;
 }
-export function decrementScore(): void {
-	score = getScore() - 10;
+export function decrementScore(): number {
+	const decremention = 2 * 100 / ((activeTurrets.size + getWalls().length) ? (activeTurrets.size + getWalls().length) : 1);
+	score = getScore() - decremention;
+	return decremention;
 }
 
 export function showScore(): void {
