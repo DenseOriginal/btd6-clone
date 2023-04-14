@@ -31,6 +31,7 @@ markerBuilder({
 		return false;
 	},
 });
+markerBuilder({ id: 103, key: 'debug', value: (cur) => !cur, timeout: 1000 });
 
 // Map to store last seen timestamp for each marker
 const lastSeen = new Map<number, number>();
