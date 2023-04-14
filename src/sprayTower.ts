@@ -4,6 +4,7 @@ import { TurretParent } from './turretParentClass';
 export class SprayTower extends TurretParent {
 	public shootTimeOut: number = 0;
 	public sprayTimeOut: number = 0;
+	public rangeMod: number = 2.2;
 
 	constructor(
 		public diameter: number,
@@ -50,7 +51,7 @@ export class SprayTower extends TurretParent {
 			if (this.sprayTimeOut != this.sprayTime) {
 				push();
 				fill(0, 200, 0, 100);
-				circle(this.positionX, this.positionY, this.diameter * 2);
+				circle(this.positionX, this.positionY, this.diameter * this.rangeMod);
 				pop();
 				sprayAOE(this);
 				this.sprayTimeOut++;

@@ -35,14 +35,10 @@ export function shakeEarth() {
 }
 
 export function showEarth(earth: Image) {
-	if (shakeTheEarth) {
-		push();
-		image(earth, width - 150 + random(-20, 20), height / 2 - 150 + random(-20, 20), 300, 300);
-		pop();
-		shakeTheEarth = false;
-	} else {
-		push();
-		image(earth, width - 150, height / 2 - 150, 300, 300);
-		pop();
-	}
+	push();
+	translate(width + (shakeTheEarth ? random(-earth.width / 10, earth.width / 10) : 0), height / 2 + (shakeTheEarth ? random(-earth.width / 10, earth.width / 10) : 0));
+	rotate(frameCount / 100);
+	image(earth, -earth.width / 2, -earth.width / 2);
+	pop();
+	shakeTheEarth = false;
 }

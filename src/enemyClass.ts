@@ -314,7 +314,7 @@ export function bulletsCollide() {
 
 export function sprayAOE(turret: SprayTower) {
 	for (let i = enemies.length - 1; i >= 0; i--) {
-		if (dist(turret.positionX, turret.positionY, enemies[i].position.x, enemies[i].position.y) <= turret.diameter * 2.5 / 2) {
+		if (dist(turret.positionX, turret.positionY, enemies[i].position.x, enemies[i].position.y) <= turret.diameter * turret.rangeMod / 2) {
 			popups.push(new Popup('+1', enemies[i].position, color(0, 255, 0)));
 			enemies[i].isAlive = false;
 			incrementScore();
