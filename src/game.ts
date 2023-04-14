@@ -1,6 +1,5 @@
 import { Image } from 'p5';
 import { settings } from './settings';
-import { getMarkers } from './AR-helper';
 import { activeTurrets } from './turrets';
 import { getWalls } from './walls';
 

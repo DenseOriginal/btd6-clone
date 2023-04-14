@@ -72,7 +72,6 @@ export const canvasHeight = window.innerHeight;
 	showScore();
 	updateAllPopups();
 	quadtree.clear();
-	activeTurrets.size > 1 ? settings.spawnEnemies = true : settings.spawnEnemies = false;
 };
 
 function drawPlayarea() {
