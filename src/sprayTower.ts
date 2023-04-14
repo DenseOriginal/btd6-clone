@@ -4,7 +4,9 @@ import { TurretParent } from './turretParentClass';
 export class SprayTower extends TurretParent {
 	public shootTimeOut: number = 0;
 	public sprayTimeOut: number = 0;
-	public rangeMod: number = 2.2;
+	public rangeMod: number = 2.5;
+	public aniMulti: number = 0;
+	public alphaOffset: number = 0;
 
 	constructor(
 		public diameter: number,
@@ -24,7 +26,7 @@ export class SprayTower extends TurretParent {
 	draw() {
 		push();
 		noStroke();
-		fill(255, 100, 100);
+		fill(255, 100, 100 - this.alphaOffset);
 
 		circle(this.positionX, this.positionY, this.diameter);
 
@@ -50,14 +52,19 @@ export class SprayTower extends TurretParent {
 		if (this.shootTimeOut === this.rateOfFire) {
 			if (this.sprayTimeOut != this.sprayTime) {
 				push();
-				fill(0, 200, 0, 100);
-				circle(this.positionX, this.positionY, this.diameter * this.rangeMod);
+				fill(0, 200, 0, 100 - this.alphaOffset);
+				noStroke();
+				circle(this.positionX, this.positionY, this.diameter * this.rangeMod * this.aniMulti);
 				pop();
 				sprayAOE(this);
 				this.sprayTimeOut++;
+				this.aniMulti += (this.rangeMod / 10) / this.sprayTimeOut;
+				this.alphaOffset += (this.aniMulti * this.rangeMod) / (this.sprayTime / 50);
 			} else {
 				this.sprayTimeOut = 0;
 				this.shootTimeOut = 0;
+				this.aniMulti = 0;
+				this.alphaOffset = 0;
 			}
 		} else {
 			this.shootTimeOut++;
