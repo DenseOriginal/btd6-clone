@@ -45,13 +45,6 @@ export class SprayTower extends TurretParent {
 		pop();
 	}
 
-	hitBoxHitCheck() {
-		if (dist(this.positionX, this.positionY, mouseX, mouseY) <= this.diameter * 2.5 / 2) {
-			return true;
-		}
-		return false;
-	}
-
 	shoot() {
 		if (this.shootTimeOut === this.rateOfFire) {
 			if (this.sprayTimeOut != this.sprayTime) {
@@ -59,7 +52,6 @@ export class SprayTower extends TurretParent {
 				fill(0, 200, 0, 100);
 				circle(this.positionX, this.positionY, this.diameter * 2);
 				pop();
-				this.hitBoxHitCheck();
 				sprayAOE(this);
 				this.sprayTimeOut++;
 			} else {
