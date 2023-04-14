@@ -1,4 +1,5 @@
 import { getRawMarkers } from './AR-helper';
+import { calibrate } from './calibration';
 import { setSetting, settings } from './settings';
 
 const settingMarkers = new Map<number, SettingsMarkerConfig<unknown>>();
@@ -11,12 +12,24 @@ markerBuilder({
 	id: 101,
 	key: 'showVirtualMarkers',
 	value: (cur) => !cur,
+	timeout: 1000,
 	onDetect: (_, newVal) => {
 		setSetting('showVirtualMarkers', newVal);
 		setSetting('autoCalibrateInterval', newVal ? 2000 : 100000000000);
 		return false;
 	},
+});
+markerBuilder({
+	id: 102,
+	key: 'showVirtualMarkers',
+	value: (cur) => cur,
 	timeout: 1000,
+	onDetect: (curVal) => {
+		setSetting('showVirtualMarkers', true);
+		calibrate();
+		setTimeout(() => setSetting('showVirtualMarkers', curVal), 1000);
+		return false;
+	},
 });
 
 // Map to store last seen timestamp for each marker
