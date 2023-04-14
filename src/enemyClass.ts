@@ -305,6 +305,7 @@ export function bulletsCollide() {
 				allShots.splice(i, 1);
 				popups.push(new Popup('+'.concat(incrementScore().toFixed(0).toString()), object.position, color(0, 255, 0)));
 				object.isAlive = false;
+				settings.enemySpawnRate = settings.enemySpawnRate - 1;
 				continue outer;
 			}
 		}
@@ -316,6 +317,7 @@ export function sprayAOE(turret: SprayTower) {
 		if (dist(turret.positionX, turret.positionY, enemies[i].position.x, enemies[i].position.y) <= turret.diameter * turret.rangeMod / 2) {
 			popups.push(new Popup('+'.concat(incrementScore().toFixed(0).toString()), enemies[i].position, color(0, 255, 0)));
 			enemies[i].isAlive = false;
+			settings.enemySpawnRate = settings.enemySpawnRate - 1;
 		}
 	}
 }
