@@ -36,9 +36,9 @@ export function shakeEarth() {
 
 export function showEarth(earth: Image) {
 	push();
-	translate(width + (shakeTheEarth ? random(-20, 20) : 0), height / 2 + (shakeTheEarth ? random(-20, 20) : 0));
+	translate(width + (shakeTheEarth ? random(-earth.width / 10, earth.width / 10) : 0), height / 2 + (shakeTheEarth ? random(-earth.width / 10, earth.width / 10) : 0));
 	rotate(frameCount / 100);
-	image(earth, -150, -150);
+	image(earth, -earth.width / 2, -earth.width / 2);
 	pop();
 	shakeTheEarth = false;
 }
