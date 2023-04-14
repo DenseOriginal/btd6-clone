@@ -15,7 +15,7 @@ import { drawEmptyGrid } from './grid-builder';
 import { initSettingsMenu, settings } from './settings';
 import { drawWalls, syncWalls } from './walls';
 import { syncPathfinderWithWall } from './pathfindering';
-import { syncTurretObj, syncTurrets, updateTurretObj } from './turrets';
+import { activeTurrets, syncTurretObj, syncTurrets, updateTurretObj } from './turrets';
 import { updateAllShots } from './gatlingTower';
 import { showEarth, showScore } from './game';
 import { updateAllPopups } from './popup';
@@ -72,6 +72,7 @@ export const canvasHeight = window.innerHeight;
 	showScore();
 	updateAllPopups();
 	quadtree.clear();
+	activeTurrets.size > 1 ? settings.spawnEnemies = true : settings.spawnEnemies = false;
 };
 
 function drawPlayarea() {
