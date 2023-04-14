@@ -13,6 +13,11 @@ export let quadtree: Quadtree;
 export function initQuadtree() {
 	quadtree = new Quadtree(0, 0, width, height, 4, 10, 0);
 }
+
+export function resetEnemies(): void {
+	enemies.splice(0, enemies.length);
+}
+
 let enemiesSpawnIntervalHook: ReturnType<typeof setInterval>;
 
 export function initEnemySpawner() {
