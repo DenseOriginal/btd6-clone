@@ -97,7 +97,7 @@ export function calibrate() {
 (window as any).calibrate = calibrate;
 calibrationButton.addEventListener('click', calibrate);
 
-let autoCalibrateIntervalHook: number;
+let autoCalibrateIntervalHook: ReturnType<typeof setInterval>;
 export function initAutoCalibrate() {
 	try {
 		autoCalibrateIntervalHook = setInterval(calibrate, settings.autoCalibrateInterval);

@@ -13,7 +13,7 @@ export let quadtree: Quadtree;
 export function initQuadtree() {
 	quadtree = new Quadtree(0, 0, width, height, 4, 10, 0);
 }
-let enemiesSpawnIntervalHook: number;
+let enemiesSpawnIntervalHook: ReturnType<typeof setInterval>;
 
 export function initEnemySpawner() {
 	updateEnemySpawnInterval(settings.enemySpawnRate);
@@ -120,9 +120,8 @@ export class Enemy {
 			this.position = targetPoint;
 			this.currentTargetIndex++;
 			if (this.currentTargetIndex >= this.path.length) {
-				popups.push(new Popup('-10', this.position, color(255, 0, 0)));
+				popups.push(new Popup('-'.concat(decrementScore().toFixed(0).toString()), { x: width - settings.gridSize * 2, y: height / 2 + 30 / 2 }, color(255, 0, 0)));
 				this.die();
-				decrementScore();
 				shakeEarth();
 			}
 		}
@@ -317,6 +316,7 @@ export function bulletsCollide() {
 				if (object.health <= 0) {
 					popups.push(new Popup('+'.concat(incrementScore().toFixed(0).toString()), object.position, color(0, 255, 0)));
 				}
+				settings.enemySpawnRate -= 1;
 				continue outer;
 			}
 		}
@@ -331,6 +331,7 @@ export function sprayAOE(turret: SprayTower) {
 			if (enemies[i].health <= 0) {
 				popups.push(new Popup('+'.concat(incrementScore().toFixed(0).toString()), enemies[i].position, color(0, 255, 0)));
 			}
+			settings.enemySpawnRate -= 1;
 		}
 	}
 }

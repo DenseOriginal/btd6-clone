@@ -59,12 +59,12 @@ export const canvasHeight = window.innerHeight;
 		// debugDrawFromStartToEnd();
 		getMarkers().forEach((marker) => drawDebugMarker(marker));
 	}
+	showEarth(earth);
 	if (settings.drawGridLines) drawEmptyGrid();
 	if (settings.spawnEnemies) {
 		drawEnemySpawn();
 		updateEnemies();
 	}
-	showEarth(earth);
 	updateTurretObj();
 	updateAllShots();
 	bulletsCollide();
@@ -90,7 +90,7 @@ function drawPlayarea() {
 	pop();
 }
 
-let autoSyncAllIntervalHook: number;
+let autoSyncAllIntervalHook: ReturnType<typeof setInterval>;
 function initSyncAll() {
 	try {
 		autoSyncAllIntervalHook = setInterval(syncAll, settings.sampleMarkersDelay);
