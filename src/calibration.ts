@@ -45,8 +45,11 @@ export function calibrate() {
 		|| !bottomLeftMarker
 		|| !bottomRightMarker
 	) {
-		console.log('Found calibration markers: ', calibrationMarkers);
-		throw new Error('Missing calibration markers: ');
+		const missingMarkers = calibrationIds
+			.filter((id) => !calibrationMarkers.find((marker) => marker.id == id));
+
+		console.warn(`Cant calibrate, missing marker ids: ${missingMarkers.join(', ')}`);
+		return;
 	}
 
 	const topLeftPoint = topLeftMarker.corners[0]!;
