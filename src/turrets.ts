@@ -10,6 +10,8 @@ export const activeTurrets = new Map<number, TurretParent>();
 
 ratios.set(40, { id: 40, codeWidth: 2.5, diameter: 4, rotationOffset: Math.PI / 2, type: 'gatling' });
 ratios.set(41, { id: 41, codeWidth: 2.5, diameter: 4, rotationOffset: Math.PI / 2, type: 'gatling' });
+ratios.set(42, { id: 40, codeWidth: 2.5, diameter: 4, rotationOffset: Math.PI / 2, type: 'gatling' });
+ratios.set(43, { id: 41, codeWidth: 2.5, diameter: 4, rotationOffset: Math.PI / 2, type: 'gatling' });
 ratios.set(50, { id: 50, codeWidth: 2.5, diameter: 4, rotationOffset: Math.PI / 2, type: 'spray' });
 ratios.set(51, { id: 51, codeWidth: 2.5, diameter: 4, rotationOffset: Math.PI / 2, type: 'spray' });
 
