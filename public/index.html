@@ -1,46 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"
-      integrity="sha256-Pg1di+fBF53Rbh9oZR/FeD1xsFzTLC963lcac1D0ias="
-      crossorigin="anonymous"
-    ></script>
-    <link rel="stylesheet" href="./style.css">
-    <title>p5js</title>
-  </head>
-  <body>
-    <video id="video" autoplay="true" style="display:none;"></video>
 
-    <button id="openConfigButton">Open config</button>
-    
-    <div id="menu" class="closed">
-      <div class="overlay" id="overlay"></div>
-      <div class="inner" id="menuInner">
-        
-        <button id="calibrationButton">Calibrate</button>
-        <button id="closeButton">Close</button>
-      </div>
-    </div>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"
+		integrity="sha256-Pg1di+fBF53Rbh9oZR/FeD1xsFzTLC963lcac1D0ias=" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="./style.css">
+	<title>p5js</title>
+</head>
 
-    <div id="virtual-markers" class="">
-      <div class="marker-row">
-        <img src="./calibration-markers/4x4_1000-0.svg" alt="Marker 0">
-        <img src="./calibration-markers/4x4_1000-1.svg" alt="Marker 1">
-      </div>
-      <div class="marker-row">
-        <img src="./calibration-markers/4x4_1000-2.svg" alt="Marker 2">
-        <img src="./calibration-markers/4x4_1000-3.svg" alt="Marker 3">
-      </div>
-    </div>
+<body>
+	<video id="video" autoplay="true" style="display:none;"></video>
+
+	<button id="openConfigButton">Open config</button>
+
+	<div id="menu" class="closed">
+		<div class="overlay" id="overlay"></div>
+		<div class="inner" id="menuInner">
+
+			<button id="calibrationButton">Calibrate</button>
+			<button id="closeButton">Close</button>
+		</div>
+	</div>
+
+	<div id="Earth">
+		<img src="./images/earth.png" alt="Earth">
+	</div>
+	<div id="virtual-markers" class="">
+		<div class="marker-row">
+			<img src="./calibration-markers/4x4_1000-0.svg" alt="Marker 0">
+			<img src="./calibration-markers/4x4_1000-1.svg" alt="Marker 1">
+		</div>
+		<div class="marker-row">
+			<img src="./calibration-markers/4x4_1000-2.svg" alt="Marker 2">
+			<img src="./calibration-markers/4x4_1000-3.svg" alt="Marker 3">
+		</div>
 
 
-    <script src="./js-aruco/svd.js"></script> 
-    <script src="./js-aruco/posit1.js"></script> 
-    <script src="./js-aruco/cv.js"></script> 
-    <script src="./js-aruco/aruco.js"></script> 
-    <script src="./dist/main.js"></script>
-  </body>
+		<script src="./js-aruco/svd.js"></script>
+		<script src="./js-aruco/posit1.js"></script>
+		<script src="./js-aruco/cv.js"></script>
+		<script src="./js-aruco/aruco.js"></script>
+		<script src="./dist/main.js"></script>
+</body>
+
 </html>

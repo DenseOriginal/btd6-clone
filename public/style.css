@@ -1,98 +1,126 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 body {
-    width: 100vw;
-    height: 100vh;
-    display: grid;
-    place-items: center;
+	width: 100vw;
+	height: 100vh;
+	display: grid;
+	place-items: center;
 }
 
 #openConfigButton {
-    position: absolute;
-    left: 20px;
-    bottom: 20px;
+	position: absolute;
+	left: 20px;
+	bottom: 20px;
 }
 
 #menu {
-    position: absolute;
+	position: absolute;
 }
 
 #menu.closed {
-    display: none;
+	display: none;
 }
 
 #menu .inner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: rgba(149, 157, 165, 0.4) 0px 8px 24px;
-    padding: 8px 16px;
-    background-color: white;
-    border-radius: 4px;
-    width: 250px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	box-shadow: rgba(149, 157, 165, 0.4) 0px 8px 24px;
+	padding: 8px 16px;
+	background-color: white;
+	border-radius: 4px;
+	width: 250px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 }
 
 #menu .inner .row {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
 }
 
 #menu .inner .row input {
-    max-width: 60px;
+	max-width: 60px;
 }
 
 #menu .inner button:last-of-type {
-    margin-top: 12px;
+	margin-top: 12px;
 }
 
 #menu .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.4);
 }
 
 #virtual-markers {
-    touch-action: none;
-    pointer-events: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
+	touch-action: none;
+	pointer-events: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
 }
 
 #virtual-markers.closed {
-    display: none;
+	display: none;
 }
 
 
 #virtual-markers div {
-    touch-action: none;
-    pointer-events: none;
-    display: flex;
-    justify-content: space-between;
-    padding-left: 20px;
+	touch-action: none;
+	pointer-events: none;
+	display: flex;
+	justify-content: space-between;
+	padding-left: 20px;
 }
 
 #virtual-markers img {
-    touch-action: none;
-    pointer-events: none;
-    width: 200px;
-    padding: 30px 50px;
+	touch-action: none;
+	pointer-events: none;
+	width: 200px;
+	padding: 30px 50px;
 	background-color: white;
+}
+
+#Earth {
+	position: absolute;
+	width: 300px;
+	/* set the width of the container */
+	height: 300px;
+	/* set the height of the container */
+	overflow: hidden;
+	/* hide any overflowing content */
+}
+
+#Earth img {
+	position: absolute;
+	width: 100%;
+	/* make the image fill the container */
+	height: auto;
+	animation: rotation 8s infinite linear;
+}
+
+@keyframes rotation {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
 }

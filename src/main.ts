@@ -16,7 +16,7 @@ import { drawWalls, syncWalls } from './walls';
 import { syncPathfinderWithWall } from './pathfindering';
 import { syncTurretObj, syncTurrets, updateTurretObj } from './turrets';
 import { updateAllShots } from './gatlingTower';
-import { showScore } from './game';
+import { InitEarth, showScore } from './game';
 import { updateAllPopups } from './popup';
 
 let capture: ReturnType<typeof createCapture>;
@@ -37,6 +37,7 @@ export const canvasHeight = window.innerHeight;
 	initEnemySpawner();
 	initQuadtree();
 	initSyncAll();
+	InitEarth();
 };
 
 (window as any).draw = () => {
