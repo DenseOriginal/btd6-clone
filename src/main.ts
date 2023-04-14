@@ -31,6 +31,7 @@ export const canvasHeight = window.innerHeight;
 (window as any).setup = () => {
 	initSettingsMenu();
 	createCanvas(canvasWidth, canvasHeight);
+	earth.resize(height / 2, height / 2);
 	capture = createCapture(VIDEO);
 	capture.hide();
 
