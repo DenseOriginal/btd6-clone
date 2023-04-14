@@ -84,3 +84,10 @@ interface TurretRatioConfig {
 	diameter: number;
 	rotationOffset: number;
 }
+
+interface SettingsMarkerConfig<K extends keyof Settings | unknown, V = Settings[K]> {
+	id: number;
+	key: K;
+	value: V | ((prev: V) => V);
+	timeout: number;
+}

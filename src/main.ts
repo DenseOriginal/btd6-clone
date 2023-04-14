@@ -19,6 +19,7 @@ import { syncTurretObj, syncTurrets, updateTurretObj } from './turrets';
 import { updateAllShots } from './gatlingTower';
 import { getScore, setScore, showEarth, showScore } from './game';
 import { updateAllPopups } from './popup';
+import { checkSettingMarkers } from './settings-markers';
 
 let capture: ReturnType<typeof createCapture>;
 export let earth: Image;
@@ -127,4 +128,6 @@ function syncAll() {
 	syncTurretObj();
 	const hasPathfindingGridChanged = syncPathfinderWithWall();
 	if (hasPathfindingGridChanged) validateAllEnemyPaths();
+
+	checkSettingMarkers();
 }

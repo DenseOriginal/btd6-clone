@@ -134,10 +134,12 @@ function toggleVirtualMarkers(toggle: boolean) {
 	}
 }
 
-// Register settings for the console
-(window as any).settings = settings;
-(window as any).setSetting = <K extends keyof Settings>(key: K, value: never) => {
+export function setSetting<K extends keyof Settings>(key: K, value: never) {
 	const config = initialConfig[key];
 	settings[key] = value;
 	config.onChange?.(value);
-};
+}
+
+// Register settings for the console
+(window as any).settings = settings;
+(window as any).setSetting = setSetting;
