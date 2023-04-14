@@ -1,5 +1,6 @@
 import { Image } from 'p5';
 import { settings } from './settings';
+import { getMarkers } from './AR-helper';
 
 let score: number = 0;
 
@@ -11,8 +12,10 @@ export function setScore(x: number): void {
 	score = x;
 }
 
-export function incrementScore(): void {
-	score = getScore() + 1;
+export function incrementScore(): number {
+	const incremention = 100 * 1 / (getMarkers().length - 4);
+	score = getScore() + incremention;
+	return incremention;
 }
 export function decrementScore(): void {
 	score = getScore() - 10;
@@ -24,7 +27,7 @@ export function showScore(): void {
 	textSize(30);
 	stroke(0);
 	strokeWeight(5);
-	text('Score: '.concat(getScore().toString()), width - settings.gridSize * 2, height / 2 + textSize() / 2);
+	text('Score: '.concat(getScore().toFixed(0).toString()), width - settings.gridSize * 2, height / 2 + textSize() / 2);
 	pop();
 }
 
