@@ -29,6 +29,7 @@ export const canvasHeight = window.innerHeight;
 	earth = loadImage('../public/images/earth.png');
 };
 (window as any).setup = () => {
+	earth.resize(300, 300);
 	initSettingsMenu();
 	createCanvas(canvasWidth, canvasHeight);
 	capture = createCapture(VIDEO);
