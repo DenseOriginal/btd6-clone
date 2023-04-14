@@ -89,5 +89,6 @@ interface SettingsMarkerConfig<K extends keyof Settings | unknown, V = Settings[
 	id: number;
 	key: K;
 	value: V | ((prev: V) => V);
+	onDetect?: (prevVal: V, newVal: V) => boolean; // If returning false, wont update anything
 	timeout: number;
 }

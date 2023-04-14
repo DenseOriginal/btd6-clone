@@ -134,10 +134,10 @@ function toggleVirtualMarkers(toggle: boolean) {
 	}
 }
 
-export function setSetting<K extends keyof Settings>(key: K, value: never) {
+export function setSetting<K extends keyof Settings>(key: K, value: Settings[K]) {
 	const config = initialConfig[key];
 	settings[key] = value;
-	config.onChange?.(value);
+	config.onChange?.(value as never);
 }
 
 // Register settings for the console

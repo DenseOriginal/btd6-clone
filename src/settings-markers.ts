@@ -7,6 +7,17 @@ const settingMarkers = new Map<number, SettingsMarkerConfig<unknown>>();
 const markerBuilder = <K extends keyof Settings>(config: SettingsMarkerConfig<K>) => settingMarkers.set(config.id, config as SettingsMarkerConfig<unknown>);
 
 markerBuilder({ id: 100, key: 'spawnEnemies', value: (cur) => !cur, timeout: 1000 });
+markerBuilder({
+	id: 101,
+	key: 'showVirtualMarkers',
+	value: (cur) => !cur,
+	onDetect: (_, newVal) => {
+		setSetting('showVirtualMarkers', newVal);
+		setSetting('autoCalibrateInterval', newVal ? 2000 : 100000000000);
+		return false;
+	},
+	timeout: 1000,
+});
 
 // Map to store last seen timestamp for each marker
 const lastSeen = new Map<number, number>();
@@ -23,10 +34,14 @@ export function checkSettingMarkers(): void {
 			if (now - lastSeenTime > config.timeout) {
 				const currentValue = settings[config.key as keyof Settings];
 				const newValue = typeof config.value === 'function' ? config.value(currentValue) : config.value;
+				const shouldUpdate = config.onDetect ? config.onDetect(currentValue, newValue) : true;
 
-				console.log(`Settings marker detected: ${config.key} = ${newValue}`);
-
-				setSetting(config.key as keyof Settings, newValue as never);
+				if (shouldUpdate) {
+					console.log(`Settings marker detected: ${config.key} = ${newValue}`);
+					setSetting(config.key as keyof Settings, newValue);
+				} else {
+					console.log(`Settings marker detected: ID ${config.id}`);
+				}
 			}
 		}
 
