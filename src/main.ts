@@ -15,7 +15,7 @@ import { drawEmptyGrid } from './grid-builder';
 import { initSettingsMenu, settings } from './settings';
 import { drawWalls, syncWalls } from './walls';
 import { syncPathfinderWithWall } from './pathfindering';
-import { activeTurrets, syncTurretObj, syncTurrets, updateTurretObj } from './turrets';
+import { syncTurretObj, syncTurrets, updateTurretObj } from './turrets';
 import { updateAllShots } from './gatlingTower';
 import { showEarth, showScore } from './game';
 import { updateAllPopups } from './popup';
@@ -90,7 +90,7 @@ function drawPlayarea() {
 	pop();
 }
 
-let autoSyncAllIntervalHook: number;
+let autoSyncAllIntervalHook: ReturnType<typeof setInterval>;
 function initSyncAll() {
 	try {
 		autoSyncAllIntervalHook = setInterval(syncAll, settings.sampleMarkersDelay);

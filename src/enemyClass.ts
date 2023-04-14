@@ -13,7 +13,7 @@ export let quadtree: Quadtree;
 export function initQuadtree() {
 	quadtree = new Quadtree(0, 0, width, height, 4, 10, 0);
 }
-let enemiesSpawnIntervalHook: number;
+let enemiesSpawnIntervalHook: ReturnType<typeof setInterval>;
 
 export function initEnemySpawner() {
 	updateEnemySpawnInterval(settings.enemySpawnRate);
