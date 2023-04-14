@@ -2,7 +2,7 @@ import { calibrationBox, isCalibrationMarker } from './calibration';
 import { settings } from './settings';
 
 let video: HTMLVideoElement;
-let detector: any;
+let worker: Worker;
 
 export const captureWidth = 320 * 1.5;
 export const captureHeight = 240 * 1.5;
@@ -11,14 +11,18 @@ const captureToCanvasRatioX = window.innerWidth / captureWidth;
 const captureToCanvasRatioY = window.innerHeight / captureHeight;
 
 export function setupDetector() {
-	// Load the actual detecotr from the js-aruco library
-	// The library doesn't have any types
-	// And typescript doesn't know it exists, so just throw all typesafety out the window
-	// Using the any type
-	detector = new (window as any).AR.Detector({
-		dictionaryName: 'ARUCO_4X4_1000',
-		maxHammingDistance: 2,
-	});
+	worker = new Worker('marker-webworker.js');
+	worker.onerror = console.log;
+	worker.onmessageerror = console.log;
+	worker.onmessage = (e: MessageEvent<RawMarker[]>) => onMarkersDetected(e.data);
+}
+
+function onMarkersDetected(inputMarkers: RawMarker[]) {
+	rawMarkers = inputMarkers;
+	markers = inputMarkers
+		.map((marker: RawMarker) => shiftTowardsCenter(marker))
+		.map((marker: RawMarker) => translateMarker(marker))
+		.map((marker: RawMarker) => markerMapper(marker));
 }
 
 export function setupVideoStream() {
@@ -49,7 +53,7 @@ export function setupVideoStream() {
 		});
 }
 
-export function getRawMarkers(): RawMarker[] {
+export function syncMarkers() {
 	// Idk why we create a canvas element, but this code is mostly from the js-aruco examples
 	const canvas = document.createElement('canvas');
 	canvas.width = captureWidth;
@@ -68,17 +72,13 @@ export function getRawMarkers(): RawMarker[] {
 
 	// Step 21: Sprinkle in some magic from js-aruco library and boom
 	// Code detection
-	return detector.detect(imageData);
+	return worker.postMessage(imageData);
 }
 
 let markers: Marker[] = [];
 export const getMarkers = () => markers;
-export function syncMarkers() {
-	markers = getRawMarkers()
-		.map((marker: RawMarker) => shiftTowardsCenter(marker))
-		.map((marker: RawMarker) => translateMarker(marker))
-		.map((marker: RawMarker) => markerMapper(marker));
-}
+let rawMarkers: RawMarker[] = [];
+export const getRawMarkers = () => rawMarkers;
 
 export function isReady() {
 	// Idk what this is ＼（〇_ｏ）／
