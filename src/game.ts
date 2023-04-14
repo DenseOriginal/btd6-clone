@@ -35,7 +35,10 @@ export function showScore(): void {
 	pop();
 	push();
 	textAlign(RIGHT);
-	text('Score: '.concat(getScore().toString()), width - settings.gridSize * 3, height / 2 + textSize() / 2);
+	textSize(30);
+	stroke(0);
+	strokeWeight(5);
+	text('Score: '.concat(getScore().toString()), width - settings.gridSize * 2, height / 2 + textSize() / 2);
 	pop();
 }
 
