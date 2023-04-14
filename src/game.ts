@@ -1,3 +1,4 @@
+import { Image } from 'p5';
 import { settings } from './settings';
 
 let score: number = 0;
@@ -27,19 +28,21 @@ export function showScore(): void {
 	pop();
 }
 
+let shakeTheEarth: boolean;
+
 export function shakeEarth() {
-	const earth = select('#Earth');
-	const pos = earth?.position();
-	const posTemp = pos;
-	earth?.position(pos?.x + random(-20, 20), pos?.y + random(-20, 20));
-	setTimeout(() => {
-		earth?.position(posTemp?.x, posTemp?.y);
-	}, 20);
+	shakeTheEarth = true;
 }
 
-export function InitEarth() {
-	const earth = select('#Earth');
-	earth?.center('veritcal');
-	earth?.center('horizontal');
-	earth?.position(width - earth.width / 2, height / 2 - earth.height / 2);
+export function showEarth(earth: Image) {
+	if (shakeTheEarth) {
+		push();
+		image(earth, width - 150 + random(-20, 20), height / 2 - 150 + random(-20, 20), 300, 300);
+		pop();
+		shakeTheEarth = false;
+	} else {
+		push();
+		image(earth, width - 150, height / 2 - 150, 300, 300);
+		pop();
+	}
 }

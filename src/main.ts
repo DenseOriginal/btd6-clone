@@ -1,5 +1,6 @@
 /// <reference path="../node_modules/@types/p5/global.d.ts"/>
 
+import { Image } from 'p5';
 import {
 	getMarkers, isReady, setupDetector, setupVideoStream, syncMarkers,
 } from './AR-helper';
@@ -16,14 +17,17 @@ import { drawWalls, syncWalls } from './walls';
 import { syncPathfinderWithWall } from './pathfindering';
 import { syncTurretObj, syncTurrets, updateTurretObj } from './turrets';
 import { updateAllShots } from './gatlingTower';
-import { InitEarth, showScore } from './game';
+import { showEarth, showScore } from './game';
 import { updateAllPopups } from './popup';
 
 let capture: ReturnType<typeof createCapture>;
+export let earth: Image;
 
 export const canvasWidth = window.innerWidth;
 export const canvasHeight = window.innerHeight;
-
+(window as any).preload = () => {
+	earth = loadImage('../public/images/earth.png');
+};
 (window as any).setup = () => {
 	initSettingsMenu();
 	createCanvas(canvasWidth, canvasHeight);
@@ -37,7 +41,6 @@ export const canvasHeight = window.innerHeight;
 	initEnemySpawner();
 	initQuadtree();
 	initSyncAll();
-	InitEarth();
 };
 
 (window as any).draw = () => {
@@ -60,6 +63,7 @@ export const canvasHeight = window.innerHeight;
 		drawEnemySpawn();
 		updateEnemies();
 	}
+	showEarth(earth);
 	updateTurretObj();
 	updateAllShots();
 	bulletsCollide();
