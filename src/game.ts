@@ -29,7 +29,6 @@ export function showScore(): void {
 
 export function shakeEarth() {
 	const earth = select('#Earth');
-	console.log(earth);
 	const pos = earth?.position();
 	const posTemp = pos;
 	earth?.position(pos?.x + random(-20, 20), pos?.y + random(-20, 20));
@@ -40,9 +39,7 @@ export function shakeEarth() {
 
 export function InitEarth() {
 	const earth = select('#Earth');
-	console.log(earth);
 	earth?.center('veritcal');
 	earth?.center('horizontal');
 	earth?.position(width - earth.width / 2, height / 2 - earth.height / 2);
-	console.log(earth?.position());
 }
