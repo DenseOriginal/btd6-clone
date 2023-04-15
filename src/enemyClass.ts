@@ -7,6 +7,7 @@ import { getWalls } from './walls';
 import { SprayTower } from './sprayTower';
 import { decrementScore, incrementScore, shakeEarth } from './game';
 import { Popup, popups } from './popup';
+import { TurretParent } from './turretParentClass';
 
 const enemies: Enemy[] = [];
 export let quadtree: Quadtree;
@@ -82,10 +83,13 @@ export class Enemy {
 	currentTargetIndex: number = 0;
 	position: Point = { x: 0, y: 0 };
 	isAlive: boolean = true;
-	health: number = 2;
-	AOEimune: boolean = false;
+	maxHealth: number = 2;
+	health: number = this.maxHealth;
 	color: number = random(100, 360);
 	corners: Point[] = [];
+	scale: number = 0.2;
+	towersImuneTo: TurretParent[] = [];
+	imunityTimer: number = 0;
 
 	constructor(
 		public speed: number,
@@ -132,6 +136,7 @@ export class Enemy {
 		}
 		this.render();
 		this.quadtree.insert(this);
+		this.removeToweImunity();
 	}
 
 	isPathStillValid() {
@@ -231,29 +236,28 @@ export class Enemy {
 		// This are relative to the current origin, and we have already translated to the enemy position
 		const xPos = 0;
 		const yPos = 0;
-		const scale = 0.2;
 
 		// Enemy Ship Design
 		noStroke();
 		fill(this.color % 360, 360, 300);
-		ellipse(xPos, yPos, 100 * scale, 100 * scale);
-		triangle(xPos + (60 * scale), yPos + (75 * scale), xPos + (120 * scale), yPos + (100 * scale), xPos + (250 * scale), yPos + (20 * scale));
-		triangle(xPos + (60 * scale), yPos - (75 * scale), xPos + (120 * scale), yPos - (100 * scale), xPos + (250 * scale), yPos - (20 * scale));
-		quad(xPos - (350 * scale), yPos + (30 * scale), xPos - (220 * scale), yPos + (30 * scale), xPos + (70 * scale), yPos + (75 * scale), xPos + (170 * scale), yPos + (120 * scale));
-		quad(xPos - (350 * scale), yPos - (30 * scale), xPos - (220 * scale), yPos - (30 * scale), xPos + (70 * scale), yPos - (75 * scale), xPos + (170 * scale), yPos - (120 * scale));
+		ellipse(xPos, yPos, 100 * this.scale, 100 * this.scale);
+		triangle(xPos + (60 * this.scale), yPos + (75 * this.scale), xPos + (120 * this.scale), yPos + (100 * this.scale), xPos + (250 * this.scale), yPos + (20 * this.scale));
+		triangle(xPos + (60 * this.scale), yPos - (75 * this.scale), xPos + (120 * this.scale), yPos - (100 * this.scale), xPos + (250 * this.scale), yPos - (20 * this.scale));
+		quad(xPos - (350 * this.scale), yPos + (30 * this.scale), xPos - (220 * this.scale), yPos + (30 * this.scale), xPos + (70 * this.scale), yPos + (75 * this.scale), xPos + (170 * this.scale), yPos + (120 * this.scale));
+		quad(xPos - (350 * this.scale), yPos - (30 * this.scale), xPos - (220 * this.scale), yPos - (30 * this.scale), xPos + (70 * this.scale), yPos - (75 * this.scale), xPos + (170 * this.scale), yPos - (120 * this.scale));
 
 		fill((this.color + 100) % 360, 360, 300);
-		ellipse(xPos - (32 * scale), yPos, 30 * scale, 30 * scale);
-		quad(xPos + (15 * scale), yPos + (50 * scale), xPos - (10 * scale), yPos + (50 * scale), xPos + (5 * scale), yPos + (65 * scale), xPos + (80 * scale), yPos + (80 * scale));
-		quad(xPos + (15 * scale), yPos - (50 * scale), xPos - (10 * scale), yPos - (50 * scale), xPos + (5 * scale), yPos - (65 * scale), xPos + (80 * scale), yPos - (80 * scale));
+		ellipse(xPos - (32 * this.scale), yPos, 30 * this.scale, 30 * this.scale);
+		quad(xPos + (15 * this.scale), yPos + (50 * this.scale), xPos - (10 * this.scale), yPos + (50 * this.scale), xPos + (5 * this.scale), yPos + (65 * this.scale), xPos + (80 * this.scale), yPos + (80 * this.scale));
+		quad(xPos + (15 * this.scale), yPos - (50 * this.scale), xPos - (10 * this.scale), yPos - (50 * this.scale), xPos + (5 * this.scale), yPos - (65 * this.scale), xPos + (80 * this.scale), yPos - (80 * this.scale));
 
 		colorMode(RGB, 255);
 
 		// Thruster Flame
 		fill(255, 255, 0);
-		triangle(xPos + (60 * scale), yPos + (20 * scale), xPos + (60 * scale), yPos - (20 * scale), xPos + (400 * scale), yPos);
+		triangle(xPos + (60 * this.scale), yPos + (20 * this.scale), xPos + (60 * this.scale), yPos - (20 * this.scale), xPos + (400 * this.scale), yPos);
 		fill(240, 200, 60);
-		triangle(xPos + (60 * scale), yPos + (10 * scale), xPos + (60 * scale), yPos - (10 * scale), xPos + (300 * scale), yPos);
+		triangle(xPos + (60 * this.scale), yPos + (10 * this.scale), xPos + (60 * this.scale), yPos - (10 * this.scale), xPos + (300 * this.scale), yPos);
 
 		pop();
 
@@ -265,9 +269,24 @@ export class Enemy {
 		// endShape(CLOSE);
 	}
 
+	removeToweImunity() {
+		if (this.towersImuneTo.length > 0) {
+			this.imunityTimer += deltaTime;
+			if (this.imunityTimer >= 1500) {
+				this.towersImuneTo.shift();
+				this.imunityTimer = 0;
+			}
+		}
+	}
+
 	damage(amount: number) {
 		this.health -= amount;
-		this.color = 0;
+		// shows that an enemy is damaged
+		// if statement because idk might be useful?
+		if (this.health < this.maxHealth) {
+			this.speed /= 2;
+			this.scale /= 1.5;
+		}
 		if (this.health <= 0) {
 			this.die();
 		}
@@ -317,7 +336,7 @@ export function bulletsCollide() {
 				)
 			) {
 				allShots.splice(i, 1);
-				object.damage(2);
+				object.damage(object.maxHealth);
 				if (object.health <= 0) {
 					popups.push(new Popup('+'.concat(incrementScore().toFixed(0).toString()), object.position, color(0, 255, 0)));
 				}
@@ -330,9 +349,9 @@ export function bulletsCollide() {
 
 export function sprayAOE(turret: SprayTower) {
 	for (let i = enemies.length - 1; i >= 0; i--) {
-		if (dist(turret.positionX, turret.positionY, enemies[i].position.x, enemies[i].position.y) <= turret.diameter * turret.rangeMod / 2 && enemies[i].AOEimune === false) {
-			enemies[i].damage(1);
-			enemies[i].AOEimune = true;
+		if (dist(turret.positionX, turret.positionY, enemies[i].position.x, enemies[i].position.y) <= turret.diameter * turret.rangeMod / 2 && enemies[i].towersImuneTo.includes(turret) == false) {
+			enemies[i].damage(enemies[i].maxHealth / 2);
+			enemies[i].towersImuneTo.push(turret);
 			if (enemies[i].health <= 0) {
 				popups.push(new Popup('+'.concat(incrementScore().toFixed(0).toString()), enemies[i].position, color(0, 255, 0)));
 			}
