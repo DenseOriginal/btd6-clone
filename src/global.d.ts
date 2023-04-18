@@ -54,6 +54,7 @@ interface Settings {
 	spawnEnemies: boolean;
 	enemySpawnRate: number;
 	enemyBaseSpeed: number;
+	enemyIncrementSpeed: number;
 	enemyDecrementRate: number;
 	objectOffsetMultiplier: number;
 	spawnBoxSize: number;

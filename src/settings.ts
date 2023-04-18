@@ -27,10 +27,11 @@ const initialConfig: SettingsConfig = {
 	enemySpawnRate: { defaultValue: 2500, onChange: (spawnRate) => updateEnemySpawnInterval(spawnRate) },
 	enemyBaseSpeed: { defaultValue: 0.3 },
 	spawnBoxSize: { defaultValue: 0.3 },
+	enemyIncrementSpeed: { defaultValue: 0.01 },
 	enemyDecrementRate: { defaultValue: 5 },
 
 	// Score settings
-	scoreDecrementWeight: { defaultValue: 50, header: 'Score' },
+	scoreDecrementWeight: { defaultValue: 35, header: 'Score' },
 	scoreIncrementWeight: { defaultValue: 100 },
 };
 
