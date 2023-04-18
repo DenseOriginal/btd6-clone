@@ -55,7 +55,7 @@ let highScore: number = 0;
 let lost: boolean = false;
 export function GameOvering() {
 	const scoreRN = getScore();
-	if (scoreRN > highScore) { highScore = scoreRN; }
+	if (scoreRN > highScore && !lost) { highScore = scoreRN; }
 	if (scoreRN < 0 || lost) {
 		lost = true;
 		transparentGameOver += 2;

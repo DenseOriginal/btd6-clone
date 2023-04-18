@@ -27,6 +27,7 @@ const initialConfig: SettingsConfig = {
 	enemySpawnRate: { defaultValue: 2500, onChange: (spawnRate) => updateEnemySpawnInterval(spawnRate) },
 	enemyBaseSpeed: { defaultValue: 0.3 },
 	spawnBoxSize: { defaultValue: 0.3 },
+	enemyDecrementRate: { defaultValue: 5 },
 };
 
 const menuContainer = document.getElementById('menu')!;
