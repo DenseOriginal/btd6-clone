@@ -9,7 +9,7 @@ import {
 	drawCalibrationBox, drawDebugMarker, drawDebugText, drawVideoFeed,
 } from './debug-draw';
 import {
-	bulletsCollide, drawEnemySpawn, initEnemySpawner, initQuadtree, quadtree, resetEnemies, updateEnemies, validateAllEnemyPaths,
+	bulletsCollide, drawEnemySpawn, initEnemySpawner, initQuadtree, quadtree, updateEnemies, validateAllEnemyPaths,
 } from './enemyClass';
 import { drawEmptyGrid } from './grid-builder';
 import { initSettingsMenu, settings } from './settings';
@@ -17,7 +17,7 @@ import { drawWalls, syncWalls } from './walls';
 import { syncPathfinderWithWall } from './pathfindering';
 import { syncTurretObj, syncTurrets, updateTurretObj } from './turrets';
 import { updateAllShots } from './gatlingTower';
-import { getScore, setScore, showEarth, showScore } from './game';
+import { GameOvering, showEarth, showScore } from './game';
 import { updateAllPopups } from './popup';
 import { checkSettingMarkers } from './settings-markers';
 
@@ -73,19 +73,7 @@ export const canvasHeight = window.innerHeight;
 	showScore();
 	updateAllPopups();
 	quadtree.clear();
-	if (getScore() < 0) {
-		push();
-		fill(255, 0, 0);
-		rect(0, 0, width, height);
-		pop();
-		push();
-		textAlign(CENTER, CENTER);
-		textSize(100);
-		text('GAME OVER', width / 2, height / 2);
-		pop();
-		resetEnemies();
-		setTimeout(() => { setScore(0); }, 5000);
-	}
+	GameOvering();
 };
 
 function drawPlayarea() {

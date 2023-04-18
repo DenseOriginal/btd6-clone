@@ -2,6 +2,7 @@ import { Image } from 'p5';
 import { settings } from './settings';
 import { activeTurrets } from './turrets';
 import { getWalls } from './walls';
+import { resetEnemies, updateEnemySpawnInterval } from './enemyClass';
 
 let score: number = 0;
 
@@ -47,4 +48,34 @@ export function showEarth(earth: Image) {
 	image(earth, -earth.width / 2, -earth.width / 2);
 	pop();
 	shakeTheEarth = false;
+}
+
+let transparentGameOver: number = 0;
+let highScore: number = 0;
+let lost: boolean = false;
+export function GameOvering() {
+	const scoreRN = getScore();
+	if (scoreRN > highScore) { highScore = scoreRN; }
+	if (scoreRN < 0 || lost) {
+		lost = true;
+		transparentGameOver++;
+		push();
+		fill(255, 0, 0, transparentGameOver);
+		rect(0, 0, width, height);
+		pop();
+		push();
+		textAlign(CENTER, CENTER);
+		textSize(100);
+		text('GAME OVER', width / 2, height / 2);
+		textSize(50);
+		text('High score: '.concat(highScore.toFixed(0).toString()), width / 2, height * 2 / 3);
+		pop();
+		setTimeout(() => {
+			settings.spawnEnemies = false;
+			updateEnemySpawnInterval(1000);
+			setScore(0);
+			resetEnemies();
+			lost = false;
+		}, 6500);
+	}
 }
