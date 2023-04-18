@@ -57,6 +57,15 @@ let highScore: number = 0;
 let lost: boolean = false;
 export function GameOvering() {
 	const scoreRN = getScore();
+
+	if (settings.invinsible) {
+		score = Math.max(scoreRN, 0);
+		noStroke();
+		fill(255, 0, 0);
+		circle(width - 20, 20, 10);
+		return;
+	}
+
 	if (scoreRN > highScore && !lost) { highScore = scoreRN; }
 	if (scoreRN < 0 || lost) {
 		lost = true;

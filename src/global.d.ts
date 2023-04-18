@@ -60,6 +60,7 @@ interface Settings {
 	spawnBoxSize: number;
 	scoreDecrementWeight: number;
 	scoreIncrementWeight: number;
+	invinsible: boolean;
 }
 
 type Config<T = unknown> = {

@@ -33,6 +33,7 @@ const initialConfig: SettingsConfig = {
 	// Score settings
 	scoreDecrementWeight: { defaultValue: 5, header: 'Score' },
 	scoreIncrementWeight: { defaultValue: 100 },
+	invinsible: { defaultValue: false },
 };
 
 const menuContainer = document.getElementById('menu')!;
