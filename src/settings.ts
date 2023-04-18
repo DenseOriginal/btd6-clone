@@ -4,7 +4,7 @@ import { updateSyncAllInterval } from './main';
 
 const initialConfig: SettingsConfig = {
 	// General settings
-	debug: { defaultValue: true, header: 'General' },
+	debug: { defaultValue: false, header: 'General' },
 	showFPS: { defaultValue: true },
 	drawGridLines: { defaultValue: false, label: 'drawGridLines (Slow!)' },
 	targetFrameRate: { defaultValue: 30, onChange: (fps) => frameRate(fps) },
@@ -13,7 +13,7 @@ const initialConfig: SettingsConfig = {
 	showVideoFeed: { defaultValue: false },
 	preserveWallsFrames: { defaultValue: 20 },
 	sampleMarkersDelay: { defaultValue: 225, onChange: (interval) => updateSyncAllInterval(interval) },
-	objectOffsetMultiplier: { defaultValue: 0.95 },
+	objectOffsetMultiplier: { defaultValue: 0.9 },
 
 	// Calibrations settings
 	skewThreshold: { defaultValue: 10, header: 'Calibrations' },
