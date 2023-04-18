@@ -74,6 +74,7 @@ export function GameOvering() {
 		pop();
 		setTimeout(() => {
 			settings.spawnEnemies = false;
+			settings.enemyBaseSpeed = 0.3;
 			updateEnemySpawnInterval(1000);
 			setScore(0);
 			resetEnemies();
