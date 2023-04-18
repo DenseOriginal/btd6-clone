@@ -5,6 +5,7 @@ import { getWalls } from './walls';
 import { resetEnemies, updateEnemySpawnInterval } from './enemyClass';
 
 let score: number = 0;
+(window as any).score = score;
 
 export function getScore(): number {
 	return score;
