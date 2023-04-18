@@ -95,6 +95,7 @@ export function calibrate() {
 			y: (topLeftPoint.y + topRightPoint.y + bottomLeftPoint.y + bottomRightPoint.y) / 4,
 		},
 	};
+	console.log('Calibration success');
 }
 
 (window as any).calibrate = calibrate;
