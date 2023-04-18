@@ -129,7 +129,7 @@ export class Enemy {
 			this.position = targetPoint;
 			this.currentTargetIndex++;
 			if (this.currentTargetIndex >= this.path.length) {
-				popups.push(new Popup('-'.concat(decrementScore().toFixed(0).toString()), { x: width - settings.gridSize * 2, y: height / 2 + 30 / 2 }, color(255, 0, 0)));
+				popups.push(new Popup('-'.concat(decrementScore().toFixed(0).toString()), { x: width - settings.gridSize * 3, y: height / 2 + 30 / 2 }, color(255, 0, 0)));
 				this.die();
 				shakeEarth();
 			}
