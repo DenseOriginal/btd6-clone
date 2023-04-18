@@ -58,7 +58,7 @@ export function GameOvering() {
 	if (scoreRN > highScore) { highScore = scoreRN; }
 	if (scoreRN < 0 || lost) {
 		lost = true;
-		transparentGameOver++;
+		transparentGameOver += 2;
 		push();
 		fill(255, 0, 0, transparentGameOver);
 		rect(0, 0, width, height);
@@ -76,6 +76,7 @@ export function GameOvering() {
 			setScore(0);
 			resetEnemies();
 			lost = false;
+			transparentGameOver = 0;
 		}, 6500);
 	}
 }
