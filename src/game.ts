@@ -29,11 +29,11 @@ export function decrementScore(): number {
 
 export function showScore(): void {
 	push();
-	textAlign(RIGHT);
+	textAlign(CENTER, CENTER);
 	textSize(30);
 	stroke(0);
 	strokeWeight(5);
-	text('Score: '.concat(getScore().toFixed(0).toString()), width - settings.gridSize * 2, height / 2 + textSize() / 2);
+	text('Score: '.concat(getScore().toFixed(0).toString()), width / 2, textSize() / 2 + settings.gridSize * 3);
 	pop();
 }
 
