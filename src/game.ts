@@ -77,6 +77,7 @@ export function GameOvering() {
 			updateEnemySpawnInterval(1000);
 			setScore(0);
 			resetEnemies();
+			highScore = 0;
 			lost = false;
 			transparentGameOver = 0;
 		}, 6500);
