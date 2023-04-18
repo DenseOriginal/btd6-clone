@@ -69,7 +69,7 @@ body {
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 100%;
+	width: 99%;
 	height: 100%;
 	display: flex;
 	justify-content: space-between;
@@ -93,7 +93,7 @@ body {
 	touch-action: none;
 	pointer-events: none;
 	width: 200px;
-	padding: 30px 50px;
+	padding: 40px 50px;
 	background-color: white;
 }
 
