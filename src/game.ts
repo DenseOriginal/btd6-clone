@@ -5,7 +5,8 @@ import { getWalls } from './walls';
 import { resetEnemies, updateEnemySpawnInterval } from './enemyClass';
 
 let score: number = 0;
-(window as any).score = score;
+// eslint-disable-next-line no-return-assign
+(window as any).setScore = (x: number) => score = x;
 
 export function getScore(): number {
 	return score;
