@@ -57,6 +57,8 @@ interface Settings {
 	enemyDecrementRate: number;
 	objectOffsetMultiplier: number;
 	spawnBoxSize: number;
+	scoreDecrementWeight: number;
+	scoreIncrementWeight: number;
 }
 
 type Config<T = unknown> = {

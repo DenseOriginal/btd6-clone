@@ -16,12 +16,12 @@ export function setScore(x: number): void {
 }
 
 export function incrementScore(): number {
-	const incremention = 100 / ((activeTurrets.size + getWalls().length) ? (activeTurrets.size + getWalls().length) : 1);
+	const incremention = settings.scoreIncrementWeight / ((activeTurrets.size + getWalls().length) ? (activeTurrets.size + getWalls().length) : 1);
 	score = getScore() + incremention;
 	return incremention;
 }
 export function decrementScore(): number {
-	const decremention = 2 * 100 / ((activeTurrets.size + getWalls().length) ? (activeTurrets.size + getWalls().length) : 1);
+	const decremention = settings.scoreDecrementWeight * ((activeTurrets.size + getWalls().length) ? (activeTurrets.size + getWalls().length) : 1);
 	score = getScore() - decremention;
 	return decremention;
 }
