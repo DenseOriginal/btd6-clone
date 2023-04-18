@@ -340,7 +340,7 @@ export function bulletsCollide() {
 				if (object.health <= 0) {
 					popups.push(new Popup('+'.concat(incrementScore().toFixed(0).toString()), object.position, color(0, 255, 0)));
 				}
-				settings.enemySpawnRate -= 1;
+				settings.enemySpawnRate -= settings.enemyDecrementRate;
 				continue outer;
 			}
 		}
@@ -355,7 +355,7 @@ export function sprayAOE(turret: SprayTower) {
 			if (enemies[i].health <= 0) {
 				popups.push(new Popup('+'.concat(incrementScore().toFixed(0).toString()), enemies[i].position, color(0, 255, 0)));
 			}
-			settings.enemySpawnRate -= 1;
+			settings.enemySpawnRate -= settings.enemyDecrementRate;
 		}
 	}
 }

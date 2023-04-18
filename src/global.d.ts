@@ -19,7 +19,7 @@ interface Wall extends Marker {
 
 interface TurretPlacement extends Marker {
 	type: 'turret';
-	turretType: TurretRatioConfig['type']
+	turretType: TurretRatioConfig['type'];
 	diameter: number;
 	timestamp: number; // Timestamp as the current frame
 }
@@ -54,6 +54,7 @@ interface Settings {
 	spawnEnemies: boolean;
 	enemySpawnRate: number;
 	enemyBaseSpeed: number;
+	enemyDecrementRate: number;
 	objectOffsetMultiplier: number;
 	spawnBoxSize: number;
 }
@@ -79,7 +80,7 @@ interface WallRatioConfig {
 
 interface TurretRatioConfig {
 	id: number;
-	type: 'gatling' | 'spray'
+	type: 'gatling' | 'spray';
 	codeWidth: number;
 	diameter: number;
 	rotationOffset: number;
