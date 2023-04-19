@@ -90,6 +90,7 @@ export class Enemy {
 	scale: number = 0.2;
 	towersImuneTo: TurretParent[] = [];
 	imunityTimer: number = 0;
+	damaged: boolean = false;
 
 	constructor(
 		public speed: number,
@@ -283,9 +284,10 @@ export class Enemy {
 		this.health -= amount;
 		// shows that an enemy is damaged
 		// if statement because idk might be useful?
-		if (this.health < this.maxHealth) {
+		if (this.health < this.maxHealth && this.damaged == false) {
 			this.speed /= 2;
 			this.scale /= 1.5;
+			this.damaged = true;
 		}
 		if (this.health <= 0) {
 			this.die();
