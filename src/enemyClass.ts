@@ -350,7 +350,7 @@ export function bulletsCollide() {
 
 export function sprayAOE(turret: SprayTower) {
 	for (let i = enemies.length - 1; i >= 0; i--) {
-		if (dist(turret.positionX, turret.positionY, enemies[i].position.x, enemies[i].position.y) <= turret.diameter * turret.rangeMod / 2 && enemies[i].towersImuneTo.includes(turret) == false) {
+		if (dist(turret.positionX, turret.positionY, enemies[i].position.x, enemies[i].position.y) <= turret.diameter * settings.rangeMod / 2 && enemies[i].towersImuneTo.includes(turret) == false) {
 			enemies[i].damage(1);
 			enemies[i].towersImuneTo.push(turret);
 			if (enemies[i].health <= 0) {
