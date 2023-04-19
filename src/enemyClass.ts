@@ -284,7 +284,7 @@ export class Enemy {
 		this.health -= amount;
 		// shows that an enemy is damaged
 		// if statement because idk might be useful?
-		if (this.health < this.maxHealth && this.damaged == false) {
+		if (this.damaged == false) {
 			this.speed /= 2;
 			this.scale /= 1.5;
 			this.damaged = true;
@@ -353,7 +353,7 @@ export function bulletsCollide() {
 export function sprayAOE(turret: SprayTower) {
 	for (let i = enemies.length - 1; i >= 0; i--) {
 		if (dist(turret.positionX, turret.positionY, enemies[i].position.x, enemies[i].position.y) <= turret.diameter * settings.rangeMod / 2 && enemies[i].towersImuneTo.includes(turret) == false) {
-			enemies[i].damage(1);
+			enemies[i].damage(0);
 			enemies[i].towersImuneTo.push(turret);
 			if (enemies[i].health <= 0) {
 				popups.push(new Popup('+'.concat(incrementScore().toFixed(0).toString()), enemies[i].position, color(0, 255, 0)));
