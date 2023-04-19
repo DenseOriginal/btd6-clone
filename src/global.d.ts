@@ -60,6 +60,8 @@ interface Settings {
 	spawnBoxSize: number;
 	scoreDecrementWeight: number;
 	scoreIncrementWeight: number;
+	rateOfSpray: number;
+	rateOfGatling: number;
 	invinsible: boolean;
 }
 

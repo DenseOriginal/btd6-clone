@@ -1,4 +1,5 @@
 import { sprayAOE } from './enemyClass';
+import { settings } from './settings';
 import { TurretParent } from './turretParentClass';
 
 export class SprayTower extends TurretParent {
@@ -49,7 +50,7 @@ export class SprayTower extends TurretParent {
 	}
 
 	shoot() {
-		if (this.shootTimeOut === this.rateOfFire) {
+		if (this.shootTimeOut == settings.rateOfSpray) {
 			if (this.sprayTimeOut != this.sprayTime) {
 				push();
 				fill(0, 200, 0, 100 - this.alphaOffset);
