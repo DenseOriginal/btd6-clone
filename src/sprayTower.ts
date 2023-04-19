@@ -5,7 +5,7 @@ import { TurretParent } from './turretParentClass';
 export class SprayTower extends TurretParent {
 	public shootTimeOut: number = 0;
 	public sprayTimeOut: number = 0;
-	public rangeMod: number = 2.5;
+	public rangeMod: number = 5;
 	public aniMulti: number = 0;
 	public alphaOffset: number = 0;
 

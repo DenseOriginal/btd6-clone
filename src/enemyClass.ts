@@ -83,7 +83,7 @@ export class Enemy {
 	currentTargetIndex: number = 0;
 	position: Point = { x: 0, y: 0 };
 	isAlive: boolean = true;
-	maxHealth: number = 2;
+	maxHealth: number = 3;
 	health: number = this.maxHealth;
 	color: number = random(100, 360);
 	corners: Point[] = [];
@@ -351,7 +351,7 @@ export function bulletsCollide() {
 export function sprayAOE(turret: SprayTower) {
 	for (let i = enemies.length - 1; i >= 0; i--) {
 		if (dist(turret.positionX, turret.positionY, enemies[i].position.x, enemies[i].position.y) <= turret.diameter * turret.rangeMod / 2 && enemies[i].towersImuneTo.includes(turret) == false) {
-			enemies[i].damage(enemies[i].maxHealth / 2);
+			enemies[i].damage(1);
 			enemies[i].towersImuneTo.push(turret);
 			if (enemies[i].health <= 0) {
 				popups.push(new Popup('+'.concat(incrementScore().toFixed(0).toString()), enemies[i].position, color(0, 255, 0)));
