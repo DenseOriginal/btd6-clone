@@ -62,6 +62,7 @@ interface Settings {
 	scoreIncrementWeight: number;
 	rateOfSpray: number;
 	rateOfGatling: number;
+	rangeMod: number;
 	invinsible: boolean;
 }
 

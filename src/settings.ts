@@ -38,6 +38,7 @@ const initialConfig: SettingsConfig = {
 	// Turrets
 	rateOfSpray: { defaultValue: 25, header: 'Turrets' },
 	rateOfGatling: { defaultValue: 15 },
+	rangeMod: { defaultValue: 5 },
 };
 
 const menuContainer = document.getElementById('menu')!;
