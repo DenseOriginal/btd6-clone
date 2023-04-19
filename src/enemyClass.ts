@@ -83,7 +83,7 @@ export class Enemy {
 	currentTargetIndex: number = 0;
 	position: Point = { x: 0, y: 0 };
 	isAlive: boolean = true;
-	maxHealth: number = 3;
+	maxHealth: number = 5;
 	health: number = this.maxHealth;
 	color: number = random(100, 360);
 	corners: Point[] = [];
